@@ -1,0 +1,11 @@
+
+# Default ignored files
+.idea/workspace.xml
+syntax: glob
+public/uploads/images/**
+public/uploads/videos/**
+public/img/**
+storage/framwork/sessions/**
+storage/**
+database/migrations/2019_12_26_125306_create_treatment_requests_table.php
+src.zip
