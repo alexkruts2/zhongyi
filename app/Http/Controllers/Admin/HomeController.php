@@ -63,11 +63,11 @@ class HomeController extends Controller
             $obj["id"] = $data->id;
             array_push($departmentData,$obj);
         }
-        $totalCount = department::all()->count();
+
         $result = array(
             "aaData"=>$departmentData,
             "iTotalRecords"=>count($datas),
-            "iTotalDisplayRecords"=>$totalCount,
+            "iTotalDisplayRecords"=>count($datas),
         );
         return json_encode($result);
     }
@@ -177,7 +177,7 @@ class HomeController extends Controller
             $datas = doctor::select('*')->where('name','like','%'.$searchValue.'%')->where('department_id',$department)
                 ->orderBy($orderColumn, $orderDirection)->skip($start)->take($length)->get();
         }
-        $totalCount = doctor::all()->count();
+
         $doctorData = array();
         foreach($datas as $data) {
             $data->department_name = $data->department->name;
@@ -187,7 +187,7 @@ class HomeController extends Controller
         $result = array(
             "aaData"=>$doctorData,
             "iTotalRecords"=>count($datas),
-            "iTotalDisplayRecords"=>$totalCount,
+            "iTotalDisplayRecords"=>count($datas),
         );
         return json_encode($result);
     }
@@ -270,11 +270,11 @@ class HomeController extends Controller
             $obj["id"] = $data->id;
             array_push($departmentData,$obj);
         }
-        $totalCount = recipe_part::all()->count();
+
         $result = array(
             "aaData"=>$departmentData,
             "iTotalRecords"=>count($datas),
-            "iTotalDisplayRecords"=>$totalCount,
+            "iTotalDisplayRecords"=>count($datas),
         );
         return json_encode($result);
     }
@@ -392,11 +392,11 @@ class HomeController extends Controller
             $obj["id"] = $data->id;
             array_push($departmentData,$obj);
         }
-        $totalCount = recipe_part::all()->count();
+
         $result = array(
             "aaData"=>$departmentData,
             "iTotalRecords"=>count($datas),
-            "iTotalDisplayRecords"=>$totalCount,
+            "iTotalDisplayRecords"=>count($datas),
         );
         return json_encode($result);
     }
@@ -541,11 +541,11 @@ class HomeController extends Controller
             $obj["doctor_name"] = $data->doctor->name;
             array_push($qaData,$obj);
         }
-        $totalCount = question::all()->count();
+
         $result = array(
             "aaData"=>$qaData,
             "iTotalRecords"=>count($datas),
-            "iTotalDisplayRecords"=>$totalCount,
+            "iTotalDisplayRecords"=>count($datas),
         );
         return json_encode($result);
     }
@@ -623,7 +623,7 @@ class HomeController extends Controller
 
         $datas = doctor::select('*')->where('name','like','%'.$searchValue.'%')
             ->orderBy($orderColumn, $orderDirection)->skip($start)->take($length)->get();
-        $totalCount = doctor::all()->count();
+
         $doctorData = array();
         foreach($datas as $data) {
             $data->department_name = $data->department->name;
@@ -633,7 +633,7 @@ class HomeController extends Controller
         $result = array(
             "aaData"=>$doctorData,
             "iTotalRecords"=>count($datas),
-            "iTotalDisplayRecords"=>$totalCount,
+            "iTotalDisplayRecords"=>count($datas),
         );
         return json_encode($result);
     }

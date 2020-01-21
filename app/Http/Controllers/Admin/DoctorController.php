@@ -87,12 +87,11 @@ class DoctorController extends Controller{
         $datas = medicine::select('*')->where('name','like','%'.$searchValue.'%')
             ->orderBy($orderColumn, $orderDirection)->skip($start)->take($length)->get();
 
-        $totalCount = medicine::all()->count();
 
         $result = array(
             "aaData"=>$datas,
             "iTotalRecords"=>count($datas),
-            "iTotalDisplayRecords"=>$totalCount,
+            "iTotalDisplayRecords"=>count($datas),
         );
         return json_encode($result);
     }
@@ -183,12 +182,11 @@ class DoctorController extends Controller{
         $datas = contrary::select('*')->where('name','like','%'.$searchValue.'%')
             ->orderBy($orderColumn, $orderDirection)->skip($start)->take($length)->get();
 
-        $totalCount = contrary::all()->count();
 
         $result = array(
             "aaData"=>$datas,
             "iTotalRecords"=>count($datas),
-            "iTotalDisplayRecords"=>$totalCount,
+            "iTotalDisplayRecords"=>count($datas),
         );
         return json_encode($result);
     }
@@ -542,7 +540,6 @@ class DoctorController extends Controller{
             $i++;
         }
 
-        $totalCount = treatment::all()->count();
 
         $result = array(
             "aaData"=>$guahaoDatas,
@@ -665,12 +662,11 @@ class DoctorController extends Controller{
             $i++;
         }
 
-        $totalCount = treatment::all()->count();
 
         $result = array(
             "aaData"=>$guahaoDatas,
             "iTotalRecords"=>count($guahaoDatas),
-            "iTotalDisplayRecords"=>$totalCount,
+            "iTotalDisplayRecords"=>count($guahaoDatas),
         );
         return json_encode($result);
     }

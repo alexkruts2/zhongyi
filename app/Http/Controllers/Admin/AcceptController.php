@@ -118,11 +118,10 @@ class AcceptController extends Controller
             $obj['doctor_name'] = $data->doctor->name;
             array_push($guahaoData,$obj);
         }
-        $totalCount = treatment::all()->count();
         $result = array(
             "aaData"=>$guahaoData,
             "iTotalRecords"=>count($datas),
-            "iTotalDisplayRecords"=>$totalCount,
+            "iTotalDisplayRecords"=>count($datas),
         );
         return json_encode($result);
     }
