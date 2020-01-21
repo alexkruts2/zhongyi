@@ -36,7 +36,13 @@ function drawYieldTable() {
                 "aTargets": [3],
                 'orderable': false,
                 "mRender": function (data, type, full) {
-                    return data==null||data==''||data==undefined?data:data.substring(0, 10);;
+                    return data==null||data==''||data==undefined?data:data.substring(0, 10);
+                }
+            },{
+                "aTargets": [5],
+                'orderable': false,
+                "mRender": function (data, type, full) {
+                    return getStateWord(data);
                 }
             }, {
                 "aTargets": [6],

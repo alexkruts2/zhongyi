@@ -46,12 +46,12 @@
                             <input class="form-control w-75" type="text" value="{{$recipe_name}}" name='recipe_name' id="recipe_name" readonly>
                         </div>
                         <div class="col-md-4 form-inline">
-                            <label for="guahao" >state&nbsp;&nbsp; </label>
+                            <label for="guahao" >状态&nbsp;&nbsp; </label>
                             <input class="form-control w-75" type="text" value="{{$state}}" name='disease_name' id="disease_name" readonly>
                         </div>
                     </div>
                     <div class="mt-3 row">
-                        <table class="table table-bordered">
+                        <table class="table table-bordered text-center">
                             <thead>
                             <tr>
                                 <th>药材</th>

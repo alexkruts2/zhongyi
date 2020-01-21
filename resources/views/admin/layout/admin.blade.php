@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="{{asset('static/images/hc-logo.png')}}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{asset('static/images/hccenter.png')}}">
     <title>医院管理平台</title>
     <!-- This page CSS -->
     <link href="{{asset('static/plugin/toast-master/css/jquery.toast.css')}}" rel="stylesheet">

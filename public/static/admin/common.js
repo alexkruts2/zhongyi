@@ -141,3 +141,29 @@ function changeMaxMinValue(){
         }
     })
 }
+
+function getStateWord(data) {
+    switch (data) {
+        case 'ACCEPT':
+            return '接受';
+            break;
+        case 'WAITING_TREATMENT':
+            return '等待治疗';
+            break;
+        case 'TREATING':
+            return '在治疗中';
+            break;
+        case 'BEFORE_TREATING_PAY':
+            return '结束治疗';
+            break;
+        case 'AFTER_TREATING_PAY':
+            return '结束治疗付款';
+            break;
+        case 'CLOSE':
+            return '结束';
+            break;
+        default:
+            return '';
+    }
+
+}

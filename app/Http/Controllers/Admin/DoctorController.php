@@ -626,7 +626,7 @@ class DoctorController extends Controller{
             $orderColumn = 'patients.name';
 
         $datas = treatment::select('treatments.*')
-            ->where('patients.name','like','%'.$searchValue.'%')
+            ->where('guahao','like','%'.$searchValue.'%')
             ->where(function($query){
                 $query->where('state',config('constant.treat_state.after_treating_pay'));
                 $query->orWhere('state',config('constant.treat_state.close'));
@@ -684,7 +684,7 @@ class DoctorController extends Controller{
             'patient_name' => $treatment->patient->name,
             'ID_Number' => $treatment->patient->ID_Number,
             'doctor_name' => $treatment->doctor->name,
-            'state' =>$treatment->state,
+            'state' =>getStateWord($treatment->state),
             'disease_name' => $treatment->disease_name,
             'date' => $treatment->start,
             'recipes' => json_decode($treatment->recipe),
