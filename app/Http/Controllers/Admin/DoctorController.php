@@ -265,10 +265,17 @@ class DoctorController extends Controller{
     }
     public function getTreatementData(Request $request){
         validate($request->all(), [
-            'length'=>'required',
-            'id' => 'required'
+            'length'=>'required'
         ]);
         $id = $request->get('id');
+        if(empty($id)){
+            $result = array(
+                "aaData"=>[],
+                "iTotalRecords"=>0,
+                "iTotalDisplayRecords"=>0,
+            );
+            return json_encode($result);
+        }
 
         $columns = $request->get('columns');
         $length = $request->get('length');
@@ -290,7 +297,16 @@ class DoctorController extends Controller{
             ->orderBy('treat_start', $orderDirection)->skip($start)->take($length)->get();
         $guahaoDatas = [];
         $i = 1;
+        $prev_patient_name = '';
+        if(!empty($datas[0]))
+            $prev_patient_name = $datas[0]->patient->name;
+
         foreach($datas as $data){
+            if($prev_patient_name!=$data->patient->name){
+                $i=1;
+            }
+            $prev_patient_name = $data->patient->name;
+
             $temp = array();
             $temp['id'] = $data->id;
             $temp['state'] = $data->state;
@@ -399,12 +415,14 @@ class DoctorController extends Controller{
         $medicine_names = $request->get('medicine_name');
         $min_weights = $request->get("min_weight");
         $max_weights = $request->get("max_weight");
+        $weights = $request->get("mass");
         $prices = $request->get("price");
 
         $medicines = array();
         foreach($medicine_names as $key=>$medicine_name){
             $min_weight = $min_weights[$key];
             $max_weight = $max_weights[$key];
+            $weight = $weights[$key];
             $price = $prices[$key];
             $medicine = medicine::where('name',$medicine_name)->first();
             $item = array(
@@ -412,6 +430,7 @@ class DoctorController extends Controller{
                 "medicine"=>$medicine_name,
                 "min_weight"=>$min_weight,
                 "max_weight"=>$max_weight,
+                "weight" => $weight,
                 "price"=>$price
             );
             array_push($medicines,$item);
@@ -456,7 +475,8 @@ class DoctorController extends Controller{
             $temp->questions = json_decode($history->question);
             $temp->annotations = json_decode($history->comment);
             $temp->medicines = json_decode($history->recipe);
-            $temp->recipe_name = recipe::where("id",$history->original_recipe)->first()->prescription_name;
+            $recipe = recipe::where("id",$history->original_recipe)->first();
+            $temp->recipe_name = empty($recipe)?'':$recipe->prescription_name;
             array_push($historyData,$temp);
         }
         return view('admin.inquiry.detail')->with([
@@ -492,7 +512,14 @@ class DoctorController extends Controller{
             ->orderBy('treat_start', 'desc')->orderBy($orderColumn, $orderDirection)->skip($start)->take($length)->get();
         $guahaoDatas = [];
         $i = 1;
+        $prev_patient_name = '';
+        if(!empty($datas[0]))
+            $prev_patient_name = $datas[0]->patient->name;
         foreach($datas as $data){
+            if($prev_patient_name!=$data->patient->name){
+                $i=1;
+            }
+            $prev_patient_name = $data->patient->name;
             $temp = array();
             $temp['id'] = $data->id;
             $temp['state'] = $data->state;
@@ -572,8 +599,109 @@ class DoctorController extends Controller{
             'new_password' => ['required'],
             'repeat_password' => ['same:new_password'],
         ]);
-
         doctor::find(auth()->user()->id)->update(['password'=> Hash::make($request->new_password)]);
         return success('ok');
+    }
+    public function incomeAll(){
+        return view('admin.income.all');
+    }
+    public function yieldView(){
+        return view('admin.yield.view');
+    }
+    public function getYieldData(Request $request){
+        validate($request->all(), [
+            'length'=>'required'
+        ]);
+        $columns = $request->get('columns');
+        $length = $request->get('length');
+        $start = $request->get('start');
+        $order = $request->get('order');
+        $orderColumnIndex = $order[0]['column'];
+        $orderColumn = $columns[$orderColumnIndex]['data'];
+        $orderDirection = $order[0]['dir'];
+        $search = $request->get('search');
+        $searchValue = $search['value'];
+
+        if($orderColumn=='patient_name')
+            $orderColumn = 'patients.name';
+
+        $datas = treatment::select('treatments.*')
+            ->where('patients.name','like','%'.$searchValue.'%')
+            ->where(function($query){
+                $query->where('state',config('constant.treat_state.after_treating_pay'));
+                $query->orWhere('state',config('constant.treat_state.close'));
+            })
+            ->join('patients', 'treatments.patient_id', '=', 'patients.id')
+            ->orderBy('treat_start', 'desc')->orderBy($orderColumn, $orderDirection)->skip($start)->take($length)->get();
+        $guahaoDatas = [];
+        $i = 1;
+        $prev_patient_name = '';
+        if(!empty($datas[0]))
+            $prev_patient_name = $datas[0]->patient->name;
+        foreach($datas as $data){
+            if($prev_patient_name!=$data->patient->name){
+                $i=1;
+            }
+            $prev_patient_name = $data->patient->name;
+            $temp = array();
+            $temp['id'] = $data->id;
+            $temp['state'] = $data->state;
+            $temp['guahao'] = $data->guahao;
+            $temp['patient_name'] = $data->patient->name;
+            $temp['disease_name'] = $data->disease_name;
+            $temp['number'] = $i;
+            $temp['date'] = $data->treat_start;
+            $original_recipe = $data->original_recipe;
+            $arr_recipe = explode(',',$original_recipe);
+            $recipe_name = '';
+            foreach($arr_recipe as $recipe_id){
+                $db_recipe = recipe::where('id',$recipe_id)->first();
+                if(empty($db_recipe))
+                    continue;
+                $recipe_name .= $db_recipe->prescription_name.',';
+            }
+            $temp['recipe'] = rtrim($recipe_name,',');
+
+            array_push($guahaoDatas,$temp);
+            $i++;
+        }
+
+        $totalCount = treatment::all()->count();
+
+        $result = array(
+            "aaData"=>$guahaoDatas,
+            "iTotalRecords"=>count($guahaoDatas),
+            "iTotalDisplayRecords"=>$totalCount,
+        );
+        return json_encode($result);
+    }
+    function detailYieldView($id){
+        $treatment = treatment::where('id',$id)->first();
+        $recipe_id = $treatment->original_recipe;
+        $recipe_name = recipe::where('id',$recipe_id)->first()->prescription_name;
+        return view('admin.yield.detail')->with([
+            'guahao' => $treatment->guahao,
+            'patient_name' => $treatment->patient->name,
+            'ID_Number' => $treatment->patient->ID_Number,
+            'doctor_name' => $treatment->doctor->name,
+            'state' =>$treatment->state,
+            'disease_name' => $treatment->disease_name,
+            'date' => $treatment->start,
+            'recipes' => json_decode($treatment->recipe),
+            "price" => $treatment->price,
+            'recipe_name' => $recipe_name
+        ]);
+    }
+    function payTreatment(Request $request){
+        validate($request->all(), [
+            'guahao'=>'required'
+        ]);
+
+        $guahao = $request->get('guahao');
+        $treatment = treatment::where('guahao',$guahao)->first();
+        $treatment->update([
+           'state'=>config('constant.treat_state.close')
+        ]);
+        return success("OK");
     }
 }

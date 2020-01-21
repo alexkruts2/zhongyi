@@ -91,6 +91,7 @@ function deleteRecipe(id, obj) {
         closeOnCancel: true
     }).then(result => {
         if (result.value) {
+            showOverlay();
             $.ajax({
                 url: '/doctor/recipe/delete',
                 data: "id=" + id,
@@ -99,6 +100,7 @@ function deleteRecipe(id, obj) {
                 processData: false,
                 type: 'POST',
                 success: function (resp) {
+                    hideOverlay();
                     if (resp.code == '0') {
                         Swal.fire({
                             type: 'success',
@@ -122,6 +124,7 @@ function deleteRecipe(id, obj) {
                     }
                 },
                 error: function (e) {
+                    hideOverlay();
                     Swal.fire({
                         type: 'error',
                         text: 'Internal Error ' + e.status + ' - ' + e.responseJSON.message,
@@ -136,58 +139,8 @@ function deleteRecipe(id, obj) {
 }
 $(function () {
 
-    $('#recipe-form').submit(function (e) {
-        e.preventDefault();
-        if($("#recipe_id").length)
-            url = '/doctor/recipe/update';
-        else
-            url = '/doctor/recipe/create';
-
-        showOverlay();
-        var forms = new FormData($(this)[0]);
-
-        $.ajax({
-            url: url,
-            data: forms,
-            type: 'POST',
-            cache: false,
-            contentType: false,
-            processData: false,
-            success: function (resp) {
-                hideOverlay();
-                if (resp.code == 0) {
-                    hideOverlay();
-                    Swal.fire({
-                        type: 'success',
-                        text: '',
-                        title: '成功',
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                } else {
-                    hideOverlay();
-                    Swal.fire({
-                        type: 'error',
-                        text: resp.message,
-                        title: '错误',
-                        showConfirmButton: false,
-                        timer: 3000
-                    });
-                }
-            },
-            error: function (e) {
-                hideOverlay();
-                Swal.fire({
-                    type: 'error',
-                    text: 'Internal Error ' + e.status + ' - ' + e.responseJSON.message,
-                    title: '错误',
-                    showConfirmButton: false,
-                    timer: 3000
-                });
-            }
-        });
-    });
-    recipe_table = $('#recipe').DataTable({
+    if($("#recipe").length)
+        recipe_table = $('#recipe').DataTable({
         "processing":true,
         'fnCreatedRow': function (nRow, aData, iDataIndex) {
             $(nRow).attr('id', 'immi_' + aData.id); // or whatever you choose to set as the id
@@ -222,4 +175,75 @@ $(function () {
         ]
     });
 
+});
+$('#recipe-form').submit(function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (typeof e.originalEvent === 'undefined' || e.isTrigger) {
+        console.log('Prevent duplicate events');
+        return false;
+    }
+
+    if($("#recipe_id").length)
+        url = '/doctor/recipe/update';
+    else
+        url = '/doctor/recipe/create';
+    var form = $(this);
+    if(!form.parsley().validate()){
+        return ;
+    }
+    var minValue= $("input[name='min_weight[]'").val();
+    console.log(minValue);
+    if(minValue==undefined||minValue==null||minValue==''){
+        Swal.fire({
+            type: 'success',
+            title: '请添加至少一种药物。',
+            showConfirmButton: false,
+            timer: 1500
+        });
+        return;
+    }
+    showOverlay();
+    var forms = new FormData($(this)[0]);
+
+    $.ajax({
+        url: url,
+        data: forms,
+        type: 'POST',
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function (resp) {
+            hideOverlay();
+            if (resp.code == 0) {
+                hideOverlay();
+                Swal.fire({
+                    type: 'success',
+                    text: '',
+                    title: '成功',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            } else {
+                hideOverlay();
+                Swal.fire({
+                    type: 'error',
+                    text: resp.message,
+                    title: '错误',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            }
+        },
+        error: function (e) {
+            hideOverlay();
+            Swal.fire({
+                type: 'error',
+                text: 'Internal Error ' + e.status + ' - ' + e.responseJSON.message,
+                title: '错误',
+                showConfirmButton: false,
+                timer: 3000
+            });
+        }
+    });
 });

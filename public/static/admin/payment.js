@@ -15,7 +15,7 @@ function inputGuahao() {
         });
         return;
     }
-
+    showOverlay();
     $.ajax({
         url: '/doctor/accept/payment/getData',
         data: "guahao=" + guahao,
@@ -24,6 +24,7 @@ function inputGuahao() {
         processData: false,
         type: 'GET',
         success: function (resp) {
+            hideOverlay();
             if (resp.code == '0') {
                 $("#guahaoID").val(resp.data.guahao);
                 $("#patient_name").val(resp.data.patient_name);
@@ -44,6 +45,7 @@ function inputGuahao() {
             }
         },
         error: function (e) {
+            hideOverlay();
             Swal.fire({
                 type: 'error',
                 text: 'Internal Error ' + e.status + ' - ' + e.responseJSON.message,
@@ -56,6 +58,7 @@ function inputGuahao() {
 }
 function payTreatment() {
     var treat_id = $("#treat_id").val();
+    showOverlay();
     $.ajax({
         url: '/doctor/accept/payment/done',
         data: "id=" + treat_id,
@@ -64,6 +67,7 @@ function payTreatment() {
         processData: false,
         type: 'GET',
         success: function (resp) {
+            hideOverlay();
             if (resp.code == '0') {
                 Swal.fire({
                     type: 'info',
@@ -71,6 +75,7 @@ function payTreatment() {
                     showConfirmButton: false,
                     timer: 3000
                 });
+                window.location.href = '/doctor/accept/payment/list';
             } else {
                 Swal.fire({
                     type: 'error',
@@ -82,6 +87,7 @@ function payTreatment() {
             }
         },
         error: function (e) {
+            hideOverlay();
             Swal.fire({
                 type: 'error',
                 text: 'Internal Error ' + e.status + ' - ' + e.responseJSON.message,

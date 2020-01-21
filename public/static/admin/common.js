@@ -43,6 +43,7 @@ function formatPrice(val) {
 $(function(){
     $("#department").on("change",function(){
         var department_id = $(this).val();
+        showOverlay();
         $.ajax({
             url:'/doctor/getDoctors',
             type:'GET',
@@ -51,6 +52,7 @@ $(function(){
             dataType: 'json',
             processData: false,
             success: function (resp) {
+                hideOverlay();
                 if (resp.code == '0') {
                     var doctors = resp.data;
                     var html = '<option value="">请选择医生</option>';
@@ -69,6 +71,7 @@ $(function(){
                 }
             },
             error: function (e) {
+                hideOverlay();
                 Swal.fire({
                     type: 'error',
                     text: 'Internal Error ' + e.status + ' - ' + e.responseJSON.message,
@@ -86,8 +89,10 @@ function removeMedicine(obj) {
     $("#medicine option[value='" + id + "']").attr("disabled",false);
     var row = $(obj).parent().parent();
     row.remove();
+    calcPrice();
 }
 function getContraryMedicines(medicine_id,callback){
+    showOverlay();
     $.ajax({
         url:'/doctor/getContraryMedicines',
         type:'GET',
@@ -96,6 +101,7 @@ function getContraryMedicines(medicine_id,callback){
         dataType: 'json',
         processData: false,
         success: function (resp) {
+            hideOverlay();
             if (resp.code == '0') {
                 callback(resp);
             } else {
@@ -109,6 +115,7 @@ function getContraryMedicines(medicine_id,callback){
             }
         },
         error: function (e) {
+            hideOverlay();
             Swal.fire({
                 type: 'error',
                 text: 'Internal Error ' + e.status + ' - ' + e.responseJSON.message,
@@ -121,6 +128,8 @@ function getContraryMedicines(medicine_id,callback){
     })
 }
 function changeMaxMinValue(){
+    return;
+
     $('input[type="number"]').on('change',function(){
         v = parseInt($(this).val());
         min = parseInt($(this).attr('min'));

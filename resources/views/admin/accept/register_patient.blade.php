@@ -30,14 +30,14 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <form id="patient-form" novalidate method="post" style="display: none;">
+                    <form id="patient-form" novalidate method="post" style="display: none;" data-parsley-validate="">
                         <div class="row">
                             <div class="col-5">
                                 <div class="form-group mt-3 row">
                                     <label for="example-text-input" class="col-2 col-form-label text-right">科室</label>
                                     <div class="col-10">
-                                        <select class="form-control" name='department' id="department">
-                                            <option>--请选择科室--</option>
+                                        <select class="form-control" name='department' id="department" data-parsley-required>
+                                            <option value="">--请选择科室--</option>
                                             @foreach ($departments as $department)
                                                 <option value="{{$department->id}}">{{$department->name}}</option>
                                             @endforeach
@@ -47,7 +47,7 @@
                                 <div class="form-group mt-3 row">
                                     <label for="example-text-input" class="col-2 col-form-label text-right">医生</label>
                                     <div class="col-10">
-                                        <select class="form-control" name="doctor_id" id="doctor_id">
+                                        <select class="form-control" name="doctor_id" id="doctor_id" data-parsley-required>
                                         </select>
                                     </div>
                                 </div>
@@ -71,8 +71,8 @@
                                 <div class="form-group mt-3 row">
                                     <label for="example-text-input" class="col-2 col-form-label text-right">性别</label>
                                     <div class="col-10">
-                                        <select class="form-control" name='sex' id="sex">
-                                            <option value="-1">请选择</option>
+                                        <select class="form-control" name='sex' id="sex" data-parsley-required>
+                                            <option value="">请选择</option>
                                             <option value="男">男</option>
                                             <option value="女">女</option>
                                         </select>
@@ -82,7 +82,7 @@
                                 <div class="form-group mt-3 row">
                                     <label for="example-text-input" class="col-2 col-form-label text-right">姓名</label>
                                     <div class="col-10">
-                                        <input class="form-control" type="text" value="" name='name' id="name" placeholder="姓名">
+                                        <input class="form-control" type="text" value="" name='name' id="name" placeholder="姓名" data-parsley-required>
                                     </div>
                                 </div>
 
@@ -95,7 +95,7 @@
                                 <div class="form-group mt-3 row">
                                     <label for="example-text-input" class="col-2 col-form-label text-right">手机号码</label>
                                     <div class="col-10">
-                                        <input class="form-control" type="text" value="" name='phone_number' id="phone_number" placeholder="请输入手机号码">
+                                        <input class="form-control" type="text" value="" name='phone_number' id="phone_number" placeholder="请输入手机号码" data-parsley-required data-parsley-maxlength="11" data-parsley-minlength="11">
                                     </div>
                                 </div>
                                 <div class="form-group mt-3 row">
@@ -203,5 +203,8 @@
     <script src="{{ asset('static/plugin/clockpicker/dist/bootstrap-clockpicker.min.js') }}"></script>
     <script src="{{ asset('static/plugin/print/print.min.js') }}"></script>
     <script src="{{ asset('static/plugin/barcode/JsBarcode.all.min.js') }}"></script>
+    <script src="{{ asset('static/plugin/parsley/parsley.min.js') }}"></script>
+    <script src="{{ asset('static/plugin/parsley/zh_cn.js') }}"></script>
+    <script src="{{ asset('static/plugin/parsley/zh_cn.extra.js') }}"></script>
 
 @endsection

@@ -17,9 +17,16 @@ use Illuminate\Http\Request;
 class HomeController extends Controller
 {
     public function loginView() {
+        $id = auth()->guard('admin')->id();
+        if(!empty($id)) {
+            return redirect()->route('admin.doctor.view');
+        }else{
+            $id = auth()->guard('doctor')->id();
+            if(!empty($id))
+                return redirect()->route('doctor.history.all.view');
+        }
 
-        $password = bcrypt('1234');
-        return view('admin.auth.login');
+            return view('admin.auth.login');
     }
     public function test(){
         echo "OK";
@@ -104,6 +111,7 @@ class HomeController extends Controller
             'hospital_name' => 'required',
             'name' => 'required',
             'phone' => 'required',
+            'introduction' => 'required',
             'department' => 'required',
             'from' => 'required',
             'to' => 'required'
@@ -309,7 +317,10 @@ class HomeController extends Controller
     }
     public function createRecipe(Request $request){
         validate($request->all(), [
-            'department' => 'required'
+            'department' => 'required',
+            'disease_name' => 'required',
+            'medicine_name' => 'required',
+            'prescription_name' => 'required'
         ]);
         $recipe_part_id = $request->get('department');
         $conditions = $request->get('disease');
@@ -402,6 +413,7 @@ class HomeController extends Controller
         return success();
     }
     public function editRecipe($id){
+
         $recipe = recipe::where("id",$id)->first();
         $datas = recipe_part::select('*')
             ->orderBy('name')->get();
@@ -420,8 +432,12 @@ class HomeController extends Controller
     public function updateRecipe(Request $request){
         validate($request->all(), [
             'department' => 'required',
+            'disease_name' => 'required',
+            'medicine_name' => 'required',
+            'prescription_name' => 'required',
             'recipe_id' => 'required'
         ]);
+
         $id = $request->get('recipe_id');
         $recipe_part_id = $request->get('department');
         $conditions = $request->get('disease');
@@ -545,7 +561,13 @@ class HomeController extends Controller
     }
     public function editQAData(Request $request){
         validate($request->all(), [
-            'question_id'=>'required'
+            'question_id'=>'required',
+            'title'=>'required',
+            'doctor_id' => 'required',
+            'recipes' => 'required',
+            'disease_name' => 'required',
+            'questions' => 'required',
+            'number' => 'required'
         ]);
         $question_id = $request->get('question_id');
         $title = $request->get('title');
@@ -617,7 +639,8 @@ class HomeController extends Controller
     }
     public function updateAuthoriry(Request $request){
         validate($request->all(), [
-            'id'=>'required'
+            'id'=>'required',
+            'authority'=>'required'
         ]);
         $doctor_id = $request->get('id');
         $authority = $request->get('authority');

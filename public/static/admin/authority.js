@@ -60,7 +60,8 @@ function editAuthority(id,obj) {
 function updateAuthority() {
     var doctor_id = $("#doctor_id").val();
     var authority = JSON.stringify($("#authority").val());
-    console.log(authority);
+
+    showOverlay();
     $.ajax({
         url: '/admin/authority/update',
         data: "id=" + doctor_id+'&authority='+authority,
@@ -69,6 +70,7 @@ function updateAuthority() {
         processData: false,
         type: 'POST',
         success: function (resp) {
+            hideOverlay();
             $("#myModal").modal('hide');
             if (resp.code == '0') {
                 Swal.fire({
@@ -93,6 +95,7 @@ function updateAuthority() {
             }
         },
         error: function (e) {
+            hideOverlay();
             $("#myModal").modal('hide');
             Swal.fire({
                 type: 'error',

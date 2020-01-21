@@ -32,6 +32,7 @@ function deleteDoctor(id, obj) {
         closeOnCancel: true
     }).then(result => {
         if (result.value) {
+            showOverlay();
             $.ajax({
                 url: '/admin/doctor/delete',
                 data: "id=" + id,
@@ -40,6 +41,7 @@ function deleteDoctor(id, obj) {
                 processData: false,
                 type: 'POST',
                 success: function (resp) {
+                    hideOverlay();
                     if (resp.code == '0') {
                         Swal.fire({
                             type: 'success',
@@ -52,6 +54,7 @@ function deleteDoctor(id, obj) {
                             .remove()
                             .draw();
                     } else {
+                        hideOverlay();
                         Swal.fire({
                             type: 'error',
                             text: resp.message,
@@ -95,53 +98,7 @@ $(function () {
         $('.clockpicker').click(function(e){
             e.stopPropagation();
         })
-        $('#doctor-form').submit(function (e) {
-            e.preventDefault();
-            showOverlay();
-            var forms = new FormData($(this)[0]);
-
-            $.ajax({
-                url: '/admin/doctor/create',
-                data: forms,
-                type: 'POST',
-                cache: false,
-                contentType: false,
-                processData: false,
-                success: function (resp) {
-                    hideOverlay();
-                    if (resp.code == 0) {
-                        hideOverlay();
-                        Swal.fire({
-                            type: 'success',
-                            text: '',
-                            title: '添加成功',
-                            showConfirmButton: false,
-                            timer: 1500
-                        });
-                        window.location.href = '/admin/doctor/view';
-                    } else {
-                        hideOverlay();
-                        Swal.fire({
-                            type: 'error',
-                            text: resp.message,
-                            title: '错误',
-                            showConfirmButton: false,
-                            timer: 3000
-                        });
-                    }
-                },
-                error: function (e) {
-                    hideOverlay();
-                    Swal.fire({
-                        type: 'error',
-                        text: 'Internal Error ' + e.status + ' - ' + e.responseJSON.message,
-                        title: '错误',
-                        showConfirmButton: false,
-                        timer: 3000
-                    });
-                }
-            });
-        });
+        console.log("doctor form called");
     }
 
     doctor_table = $('#tbl_doctor').DataTable({
@@ -199,10 +156,12 @@ $(function () {
         "drawCallback":function(settings){
             var department = $("#department_select");
             if(department.length<1){
+                showOverlay();
                 $.ajax({
                     url:'/admin/doctor/getAllDepartment',
                     type:'GET',
                     success:function(data){
+                        hideOverlay();
                         var departments = data.data;
                         var html = "<label class=\"text-right dataTables_filter\">\n" +
                             "    科室&nbsp;\n" +
@@ -217,8 +176,6 @@ $(function () {
                         $("#department_select").on("change",function(){
                             doctor_table.column(4).search(this.value).draw();
                         });
-
-
                     }
                 })
             }
@@ -226,3 +183,60 @@ $(function () {
     });
 
 })
+$('#doctor-form').submit(function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (typeof e.originalEvent === 'undefined' || e.isTrigger) {
+        console.log('Prevent duplicate events');
+        return false;
+    }
+
+    var form = $(this);
+    if(!form.parsley().validate()){
+        return ;
+    }
+    showOverlay();
+    var forms = new FormData($(this)[0]);
+    $(this).find(':submit').attr('disabled','disabled');
+    $.ajax({
+        url: '/admin/doctor/create',
+        data: forms,
+        type: 'POST',
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function (resp) {
+            hideOverlay();
+            if (resp.code == 0) {
+                hideOverlay();
+                Swal.fire({
+                    type: 'success',
+                    text: '',
+                    title: '添加成功',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                window.location.href = '/admin/doctor/view';
+            } else {
+                hideOverlay();
+                Swal.fire({
+                    type: 'error',
+                    text: resp.message,
+                    title: '错误',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            }
+        },
+        error: function (e) {
+            hideOverlay();
+            Swal.fire({
+                type: 'error',
+                text: 'Internal Error ' + e.status + ' - ' + e.responseJSON.message,
+                title: '错误',
+                showConfirmButton: false,
+                timer: 3000
+            });
+        }
+    });
+});

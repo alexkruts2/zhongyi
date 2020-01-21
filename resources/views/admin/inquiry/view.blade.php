@@ -3,6 +3,8 @@
 @section('styles')
     <link href="{{asset('static/plugin/datatables/media/css/dataTables.bootstrap4.css')}}" rel="stylesheet">
     <link href="{{asset('static/plugin/datatables/media/css/jquery.dataTables.min.css')}}" rel="stylesheet">
+    <link href="{{ asset('static/plugin/sweetalert/sweetalert.css') }}" rel="stylesheet" type="text/css">
+
 @endsection
 
 @section('content')
@@ -80,5 +82,8 @@
     <!--morris JavaScript -->
     <script src="{{asset('static/plugin/datatables/datatables.min.js')}}"></script>
     <script src="{{ asset('static/admin/inquiry.js') }}"></script>
+    <script src="{{ asset('static/plugin/sweetalert/jquery.sweet-alert.custom.js') }}"></script>
+    <script src="{{ asset('static/plugin/sweetalert/sweetalert.min.js') }}"></script>
+    <script src="{{ asset('static/plugin/sweetalert2/sweetalert2.js') }}"></script>
 
 @endsection

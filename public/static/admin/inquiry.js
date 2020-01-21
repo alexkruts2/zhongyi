@@ -71,15 +71,16 @@ function drawGuahaoTable() {
             $('#tbl_guahao tbody').on( 'click', 'tr', function () {
                 guahaoTable.$('tr.selected').removeClass('selected');
                 $(this).addClass('selected');
-                select_treat_id = $(this).attr('id').replace('guahao_','');
+                select_treat_id = $(this).attr('id')==undefined?'':$(this).attr('id').replace('guahao_','');
                 drawInquiryTable(select_treat_id);
 
                 var rowIndex = guahaoTable.row(this).index();
                 var rowData = guahaoTable.rows( rowIndex ).data()[0];
-                $("#patient_name").val(rowData.patient_name);
-                $("#ID_Number").val(rowData.ID_Number);
+                if(rowData!=undefined&&rowData!=null&&rowData!=''){
+                    $("#patient_name").val(rowData.patient_name);
+                    $("#ID_Number").val(rowData.ID_Number);
+                }
             });
-            if(settings.aoData.length)
                 $( "#tbl_guahao tbody tr:first-child" ).trigger('click');
         }
 
@@ -121,13 +122,13 @@ function drawInquiryTable(treat_id){
             "aTargets": [3],
             'orderable': false,
             "mRender": function (data, type, full) {
-                return data.substring(0,10);
+                return data==null||data==''||data==undefined?data:data.substring(0, 10);;
             }
         },{
             "aTargets": [5],
             'orderable': false,
             "mRender": function (data, type, full) {
-                return '<button class="btn btn-sm btn-success m-l-5" onclick="location.href=\'/doctor/inquiry/detail/' + data+ '\'"><i class="ti-pencil-alt"></i>详情</button>';
+                return '<button class="btn btn-sm btn-success m-l-5" onclick="location.href=\'/doctor/history/detail/' + data+ '\'"><i class="ti-pencil-alt"></i>详情</button>';
 
             }
         },
@@ -146,7 +147,7 @@ function drawInquiryTable(treat_id){
 $(function () {
     if($( "#tbl_guahao" ).length)
         drawGuahaoTable();
-    if(record_state==''){
+    if(record_state==''&&$("#myVideo").length){
         Swal.fire({
             type: 'warning',
             title: '请开始录制视频。',
@@ -162,9 +163,10 @@ $(function () {
     if($("#myVideo").length)
         startVideoCamera();
     $("#question_title").on("change",function(e){
-        showOverlay();
-
         var data = $(this).val();
+        if(data==''||data==null||data==undefined)
+            return;
+        showOverlay();
         $.ajax({
             url: '/doctor/inquiry/getRecipe',
             data: 'question_id='+data,
@@ -175,13 +177,11 @@ $(function () {
             success: function (resp) {
                 hideOverlay();
                 if (resp.code == 0) {
-                    console.log(resp.data);
-                    drawRecipe(resp.data.recipe);
-                    $("#recipe").trigger("change");
                     drawSlide(JSON.parse(resp.data.question.questions));
+                    drawRecipe(resp.data.recipe);
                     jsonQuestion = JSON.parse(resp.data.question.questions);
                     $("#question_string").val(resp.data.question.questions);
-
+                    $("#recipe").trigger("change");
                 } else {
                     hideOverlay();
                     Swal.fire({
@@ -213,87 +213,17 @@ $(function () {
         for(var i=0; i<medicines.length;i++){
             addMedicine(medicines[i]);
         }
+        calcPrice();
+        changeMaxMinValue();
     });
     $("#question_title").trigger("change");
 
-    $('#question-form').submit(function (e) {
-        e.preventDefault();
-        if(record_state=='onRecording'){
-            Swal.fire({
-                type: 'warning',
-                title: '请停止录制视频。',
-                showConfirmButton: false,
-                timer: 3000
-            });
-            return;
-        }
-
-        if($("#treatment_id").length)
-            url = '/doctor/inquiry/update';
-        else
-            url = '/doctor/inquiry/completeTreatment';
-        if(video==''){
-            Swal.fire({
-                type: 'error',
-                title: '您尚未录制视频。'
-            });
-        }
-        var disease_name = $("#disease_name").val();
-        if(disease_name==''||disease_name==undefined||disease_name==null){
-            Swal.fire({
-                type: 'error',
-                title: '请输入病名。'
-            });
-            return;
-        }
-        showOverlay();
-        var forms = new FormData($(this)[0]);
-
-        $.ajax({
-            url: url,
-            data: forms,
-            type: 'POST',
-            cache: false,
-            contentType: false,
-            processData: false,
-            success: function (resp) {
-                hideOverlay();
-                if (resp.code == 0) {
-                    hideOverlay();
-                    Swal.fire({
-                        type: 'success',
-                        text: '',
-                        title: '成功',
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                } else {
-                    hideOverlay();
-                    Swal.fire({
-                        type: 'error',
-                        text: resp.message,
-                        title: '错误',
-                        showConfirmButton: false,
-                        timer: 3000
-                    });
-                }
-            },
-            error: function (e) {
-                hideOverlay();
-                Swal.fire({
-                    type: 'error',
-                    text: 'Internal Error ' + e.status + ' - ' + e.responseJSON.message,
-                    title: '错误',
-                    showConfirmButton: false,
-                    timer: 3000
-                });
-            }
-        });
-    });
-
+    appendAnnotation();
 });
 
 function createInquiry() {
+    if(select_treat_id==''||select_treat_id==undefined||select_treat_id==null)
+        return;
     window.location.href = '/doctor/inquiry/create/'+select_treat_id;
 }
 
@@ -331,6 +261,7 @@ function startVideoCamera(){
     });
     player.on('startRecord', function() {
         var guahao = $("#guahao").val();
+        showOverlay();
         $.ajax({
             url: '/doctor/inquiry/startTreatment',
             data: 'guahao='+guahao,
@@ -339,6 +270,7 @@ function startVideoCamera(){
             dataType: 'json',
             processData: false,
             success: function (resp) {
+                hideOverlay();
                 if (resp.code == 0) {
                     console.log(resp.data);
                     record_state = 'onRecording';
@@ -353,6 +285,7 @@ function startVideoCamera(){
                 }
             },
             error: function (e) {
+                hideOverlay();
                 Swal.fire({
                     type: 'error',
                     text: 'Internal Error ' + e.status + ' - ' + e.responseJSON.message,
@@ -367,10 +300,12 @@ function startVideoCamera(){
     // Upload the Blob to your server or download it locally !
     player.on('finishRecord', function() {
         record_state = 'endRecording';
+        showOverlay();
         var videoBlob = player.recordedData;
         var formData = new FormData();
         formData.append('video', videoBlob);
         xhr('/doctor/inquiry/uploadVideo', formData, function (fName) {
+            hideOverlay();
             video = fName.data;
             $("#video_url").val(fName.data);
         });
@@ -435,33 +370,24 @@ function addMedicine(medicine) {
     if(selectedMedicine_id<1) return;
     var min_weight =  medicine.min_weight;
     var max_weight =  medicine.max_weight;
+    var weight = medicine.weight==undefined?0:medicine.weight;
     var price = medicine.price;
 
     var html="<div class=\"row\">\n" +
         "    <label class=\"col-2 col-form-label text-right\">\n" +
         "        <button type=\"button\" class=\"btn btn-default\" data-toggle=\"tooltip\" title=\"删除\" data-index=\""+selectedMedicine_id+"\" onclick=\"removeMedicine(this);\"><i class=\"fas fa-times\"></i> </button> &nbsp;"+selectedMedicine_name+"<input type='hidden' name='medicine_name[]' value='"+selectedMedicine_name+"' /></label>\n" +
         "    <div class=\"col-3\">\n" +
-        "        <input class=\"form-control\" type=\"number\" value=\""+min_weight+"\" name=\"min_weight[]\" max='"+max_weight+"' min='"+min_weight+"' id=\"min_weight_"+selectedMedicine_id+"\">\n" +
+        "        <input class=\"form-control\" type=\"number\" value=\""+weight+"\" name=\"mass[]\" onchange='calcPrice()' max='"+max_weight+"' min='"+min_weight+"' id=\"weight"+selectedMedicine_id+"\">\n" +
         "    </div>\n" +
-        "<span style=\"\n" +
-        "    padding-top: 8px;\n" +
-        "\">~</span>"+
-        "    <div class=\"col-3\">\n" +
-        "        <input class=\"form-control\" type=\"number\" value=\""+max_weight+"\" name=\"max_weight[]\" max='"+max_weight+"' min='"+min_weight+"' id=\"max_weight_"+selectedMedicine_id+"\">\n" +
-        "    </div>\n" +
-        "<div class=\"col-3 text-center\">\n" +
-        "    <label id=\"price_"+selectedMedicine_id+"\" style=\"line-height: 38px;\">"+price+" 元/10g</label><input type='hidden' name='price[]' value='"+price+"' /> \n" +
+        "<div class=\"col-3 text-left\">\n" +
+        "    <label id=\"price_"+selectedMedicine_id+"\" style=\"line-height: 38px;\">"+price+" 元/10g (最小："+min_weight+", 最大："+ max_weight+") </label><input type='hidden' name='price[]' value='"+price+"' /> \n" +
         "</div>\n"+
+        "<input class=\"form-control\" type=\"hidden\" value=\""+max_weight+"\" name=\"max_weight[]\" id=\"max_weight_"+selectedMedicine_id+"\">\n" +
+        "<input class=\"form-control\" type=\"hidden\" value=\""+min_weight+"\" name=\"min_weight[]\" id=\"min_weight_"+selectedMedicine_id+"\">\n" +
         "</div>\n"
     $("#medicineSection").append(html);
-    // $("#medicine option:selected").attr("disabled","disabled");
     $("#medicine option[value='"+selectedMedicine_id+"']").attr("disabled","disabled");
     $("#medicine").prop("selectedIndex",-1);
-    $( "input[name*='max_weight']" ).on("change",function(){
-        calcPrice();
-    });
-    calcPrice();
-    changeMaxMinValue();
 }
 function drawSlide(questions) {
     var html = '';
@@ -506,34 +432,120 @@ function addMedicineInModal() {
         "    <label class=\"col-2 col-form-label text-right\">\n" +
         "        <button type=\"button\" class=\"btn btn-default\" data-toggle=\"tooltip\" title=\"删除\" data-index=\""+selectedMedicine_id+"\" onclick=\"removeMedicine(this);\"><i class=\"fas fa-times\"></i> </button> &nbsp;"+selectedMedicine_name+"<input type='hidden' name='medicine_name[]' value='"+selectedMedicine_name+"' /></label>\n" +
         "    <div class=\"col-3\">\n" +
-        "        <input class=\"form-control\" type=\"number\" value=\""+min_weight+"\" name=\"min_weight[]\" max='"+max_weight+"' min='"+min_weight+"' id=\"min_weight_"+selectedMedicine_id+"\">\n" +
+        "        <input class=\"form-control\" type=\"number\" value=\"0\" onchange='calcPrice()' name=\"mass[]\" max='"+max_weight+"' min='"+min_weight+"' id=\"weight_"+selectedMedicine_id+"\">\n" +
         "    </div>\n" +
-        "<span style=\"\n" +
-        "    padding-top: 8px;\n" +
-        "\">~</span>"+
-        "    <div class=\"col-3\">\n" +
-        "        <input class=\"form-control\" type=\"number\" value=\""+max_weight+"\" name=\"max_weight[]\" max='"+max_weight+"' min='"+min_weight+"' id=\"max_weight_"+selectedMedicine_id+"\">\n" +
-        "    </div>\n" +
-        "<div class=\"col-3 text-center\">\n" +
-        "    <label id=\"price_"+selectedMedicine_id+"\" style=\"line-height: 38px;\">"+price+" 元/10g</label><input type='hidden' name='price[]' value='"+price+"' /> \n" +
+        "<div class=\"col-3 text-left\">\n" +
+        "    <label id=\"price_"+selectedMedicine_id+"\" style=\"line-height: 38px;\">"+price+" 元/10g (最小："+min_weight+", 最大："+ max_weight+")</label><input type='hidden' name='price[]' value='"+price+"' /> \n" +
         "</div>\n"+
+        "<input class=\"form-control\" type=\"hidden\" value=\""+max_weight+"\" name=\"max_weight[]\" id=\"max_weight_"+selectedMedicine_id+"\">\n" +
+        "<input class=\"form-control\" type=\"hidden\" value=\""+min_weight+"\" name=\"min_weight[]\" id=\"min_weight_"+selectedMedicine_id+"\">\n" +
         "</div>\n"
     $("#medicineSection").append(html);
     $("#medicine option:selected").attr("disabled","disabled");
     $("#medicine").prop("selectedIndex",-1);
-    $( "input[name*='max_weight']" ).on("change",function(){
-        calcPrice();
-    });
-    calcPrice();
     changeMaxMinValue();
 }
 function calcPrice(){
-    var weights = $("input[name*='max_weight']");
+    var weights = $("input[name*='mass']");
     var prices = $("input[name*='price']");
     var totalPrice = 0;
     for(var i =0; i < weights.length; i++){
-        totalPrice +=weights[i].value*prices[i].value;
+        if(weights[i].value!=null&&weights[i].value!=undefined&&weights[i].value!=''){
+            if(prices[i]!=undefined&&prices[i]!=null&&prices[i]!=''){
+                totalPrice +=weights[i].value*prices[i].value;
+                console.log(weights[i].value,prices[i].value);
+            }
+        }
     }
+    totalPrice /= 10.0;
     $("#total_price").val(totalPrice);
     $("#total_price_span").html(totalPrice);
+    console.log(totalPrice);
 }
+
+
+$('#question-form').submit(function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (typeof e.originalEvent === 'undefined' || e.isTrigger) {
+        console.log('Prevent duplicate events');
+        return false;
+    }
+
+    var form = $(this);
+    if(!form.parsley().validate()){
+        return ;
+    }
+
+    if(record_state=='onRecording'){
+        Swal.fire({
+            type: 'warning',
+            title: '请停止录制视频。',
+            showConfirmButton: false,
+            timer: 3000
+        });
+        return;
+    }
+
+    if($("#treatment_id").length)
+        url = '/doctor/inquiry/update';
+    else
+        url = '/doctor/inquiry/completeTreatment';
+    if(video==''){
+        Swal.fire({
+            type: 'error',
+            title: '您尚未录制视频。'
+        });
+    }
+    var disease_name = $("#disease_name").val();
+    if(disease_name==''||disease_name==undefined||disease_name==null){
+        Swal.fire({
+            type: 'error',
+            title: '请输入病名。'
+        });
+        return;
+    }
+    showOverlay();
+    var forms = new FormData($(this)[0]);
+
+    $.ajax({
+        url: url,
+        data: forms,
+        type: 'POST',
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function (resp) {
+            hideOverlay();
+            if (resp.code == 0) {
+                hideOverlay();
+                Swal.fire({
+                    type: 'success',
+                    text: '',
+                    title: '成功',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            } else {
+                hideOverlay();
+                Swal.fire({
+                    type: 'error',
+                    text: resp.message,
+                    title: '错误',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            }
+        },
+        error: function (e) {
+            hideOverlay();
+            Swal.fire({
+                type: 'error',
+                text: 'Internal Error ' + e.status + ' - ' + e.responseJSON.message,
+                title: '错误',
+                showConfirmButton: false,
+                timer: 3000
+            });
+        }
+    });
+});

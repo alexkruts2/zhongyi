@@ -12,7 +12,8 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+//    return view('welcome');
+    return redirect()->route('login');
 });
 Route::get('/login', 'Admin\HomeController@loginView')->name('login');
 Route::post('/login', 'Admin\UserController@login');

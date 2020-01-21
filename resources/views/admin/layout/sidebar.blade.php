@@ -28,74 +28,84 @@
                         </ul>
                     </li>
                     @endif
-                        @if(!empty(auth()->guard('admin')->id()) || checkAuthority(auth()->guard('doctor')->id(),'/doctor/recipe'))
-                        <li class="menu {{(strpos(request()->path(),'doctor/recipe')!==false ) ?'active':'' }}">
-                            <a href="javascript:void(0)">药方管理<i class="fa fa-angle-left float-right"></i></a>
-                            <ul class="sub-menu" style="display:{{(strpos(request()->path(),'doctor/recipe')!==false) ?'block':'none' }}">
-                                <li class="{{request()->path() == 'doctor/recipe/create' ? 'active' : ''}}"><a class="{{strpos(request()->path() ,'doctor/recipe/create')!==false ? 'active' : ''}}" href="/doctor/recipe/create">新药方</a></li>
-                                <li class="{{request()->path() == 'doctor/recipe/view' ? 'active' : ''}}"><a class="{{strpos(request()->path() ,'doctor/recipe/view')!==false ? 'active' : ''}}" href="/doctor/recipe/view">查看药方</a></li>
-                                <li class="{{request()->path() == 'doctor/recipe/part' ? 'active' : ''}}"><a class="{{strpos(request()->path() ,'doctor/recipe/part')!==false ? 'active' : ''}}" href="/doctor/recipe/part">中医科室</a></li>
-                            </ul>
-                        </li>
-                        @endif
-                        @if(!empty(auth()->guard('admin')->id()) || checkAuthority(auth()->guard('doctor')->id(),'/doctor/qa'))
-                        <li class="menu {{(strpos(request()->path(),'doctor/qa')!==false ) ?'active':'' }}">
-                            <a href="javascript:void(0)">问答圈管理<i class="fa fa-angle-left float-right"></i></a>
-                            <ul class="sub-menu" style="display:{{(strpos(request()->path(),'doctor/qa')!==false) ?'block':'none' }}">
-                                <li class="{{request()->path() == 'doctor/qa/create' ? 'active' : ''}}"><a class="{{strpos(request()->path() ,'doctor/qa/create')!==false ? 'active' : ''}}" href="/doctor/qa/create">新问答圈</a></li>
-                                <li class="{{request()->path() == 'doctor/qa/view' ? 'active' : ''}}"><a class="{{strpos(request()->path() ,'doctor/qa/view')!==false ? 'active' : ''}}" href="/doctor/qa/view">查看问答圈</a></li>
-                            </ul>
-                        </li>
-                        @endif
-                        @if(!empty(auth()->guard('admin')->id()) || checkAuthority(auth()->guard('doctor')->id(),'/doctor/accept'))
-                        <li class="menu {{(strpos(request()->path(),'doctor/accept/patient/create')!==false ||strpos(request()->path(),'doctor/accept/guahao/view')!==false || strpos(request()->path(),'doctor/accept/guahao/edit')!==false ) ?'active':'' }}">
-                            <a href="javascript:void(0)">挂号管理<i class="fa fa-angle-left float-right"></i></a>
-                            <ul class="sub-menu" style="display:{{(strpos(request()->path(),'doctor/accept/patient/create')!==false || request()->path()=='doctor/accept/guahao/view' || strpos(request()->path(),'doctor/accept/guahao/edit')!==false) ?'block':'none' }}">
-                                <li class="{{request()->path() == '/doctor/accept/patient/create' ? 'active' : ''}}"><a class="{{request()->path() == 'doctor/accept/patient/create' ? 'active' : ''}}" href="/doctor/accept/patient/create">新挂号</a></li>
-                                <li class="{{request()->path() == '/doctor/accept/guahao/view' ? 'active' : ''}}"><a class="{{request()->path() == 'doctor/accept/guahao/view' ? 'active' : ''}}" href="/doctor/accept/guahao/view">挂号列表</a></li>
-                            </ul>
-                        </li>
-                        <li class="menu {{(strpos(request()->path(),'doctor/accept/payment/create')!==false ||strpos(request()->path(),'doctor/accept/payment/list')!==false  ) ?'active':'' }}">
-                            <a href="javascript:void(0)">付费管理<i class="fa fa-angle-left float-right"></i></a>
-                            <ul class="sub-menu" style="display:{{(strpos(request()->path(),'doctor/accept/payment/create')!==false || request()->path()=='doctor/accept/payment/list') ?'block':'none' }}">
-                                <li class="{{request()->path() == '/doctor/accept/payment/create' ? 'active' : ''}}"><a class="{{request()->path() == 'doctor/accept/payment/create' ? 'active' : ''}}" href="/doctor/accept/payment/create">新挂号</a></li>
-                                <li class="{{request()->path() == '/doctor/accept/payment/list' ? 'active' : ''}}"><a class="{{request()->path() == 'doctor/accept/payment/list' ? 'active' : ''}}" href="/doctor/accept/payment/list">挂号列表</a></li>
-                            </ul>
-                        </li>
-                        @endif
-                        @if(!empty(auth()->guard('admin')->id()) || checkAuthority(auth()->guard('doctor')->id(),'/doctor/medicine'))
-                        <li class="menu {{(strpos(request()->path(),'doctor/medicine/view')!==false ||strpos(request()->path(),'doctor/medicine/contrary/view')!==false  ) ?'active':'' }}">
-                            <a href="javascript:void(0)">药材管理<i class="fa fa-angle-left float-right"></i></a>
-                            <ul class="sub-menu" style="display:{{(strpos(request()->path(),'doctor/medicine/view')!==false || request()->path()=='doctor/medicine/contrary/view') ?'block':'none' }}">
-                                <li class="{{request()->path() == '/doctor/medicine/view' ? 'active' : ''}}"><a class="{{request()->path() == 'doctor/medicine/view' ? 'active' : ''}}" href="/doctor/medicine/view">查看药材</a></li>
-                                <li class="{{request()->path() == 'doctor/medicine/contrary/view' ? 'active' : ''}}"><a class="{{request()->path() == 'doctor/medicine/contrary/view' ? 'active' : ''}}" href="/doctor/medicine/contrary/view">查看排斥药材</a></li>
-                            </ul>
-                        </li>
-                        @endif
-                        @if(!empty(auth()->guard('admin')->id()) || checkAuthority(auth()->guard('doctor')->id(),'/doctor/inquiry'))
-                        <li class="menu {{(strpos(request()->path(),'doctor/inquiry/view')!==false ||strpos(request()->path(),'doctor/inquiry/create')!==false||strpos(request()->path(),'doctor/inquiry/detail')!==false  ) ?'active':'' }}">
-                            <a href="javascript:void(0)">问诊管理<i class="fa fa-angle-left float-right"></i></a>
-                            <ul class="sub-menu" style="display:{{(strpos(request()->path(),'doctor/inquiry/view')!==false || strpos(request()->path(),'doctor/inquiry/create')!==false|| strpos(request()->path(),'doctor/inquiry/detail')!==false) ?'block':'none' }}">
-                                <li class="{{request()->path() == '/doctor/inquiry/view' ? 'active' : ''}}"><a class="{{request()->path() == 'doctor/inquiry/view' ? 'active' : ''}}" href="/doctor/inquiry/view">查看问诊</a></li>
-                            </ul>
-                        </li>
-                        @endif
-                        <li class="menu {{(strpos(request()->path(),'doctor/history')!==false ) ?'active':'' }}">
-                            <a href="javascript:void(0)">病历列表<i class="fa fa-angle-left float-right"></i></a>
-                            <ul class="sub-menu" style="display:{{(strpos(request()->path(),'doctor/history')!==false) ?'block':'none' }}">
-                                <li class="{{request()->path() == 'doctor/history/individual' ? 'active' : ''}}"><a class="{{strpos(request()->path() ,'doctor/history/individual')!==false ? 'active' : ''}}" href="/doctor/history/individual">个人病例</a></li>
-                                <li class="{{request()->path() == 'doctor/history/all' ? 'active' : ''}}"><a class="{{strpos(request()->path() ,'doctor/history/all')!==false ? 'active' : ''}}" href="/doctor/history/all">全部病例</a></li>
-                            </ul>
-                        </li>
-                        <li class="menu {{(strpos(request()->path(),'doctor/setting')!==false ) ?'active':'' }}">
-                            <a href="javascript:void(0)">设置<i class="fa fa-angle-left float-right"></i></a>
-                            <ul class="sub-menu" style="display:{{(strpos(request()->path(),'doctor/setting')!==false) ?'block':'none' }}">
-                                <li class="{{request()->path() == 'doctor/setting/change_password' ? 'active' : ''}}"><a class="{{strpos(request()->path() ,'doctor/setting/change_password')!==false ? 'active' : ''}}" href="/doctor/setting/change_password">更改密码</a></li>
-                            </ul>
-                        </li>
+                    @if(!empty(auth()->guard('admin')->id()) || checkAuthority(auth()->guard('doctor')->id(),'/doctor/recipe'))
+                    <li class="menu {{(strpos(request()->path(),'doctor/recipe')!==false ) ?'active':'' }}">
+                        <a href="javascript:void(0)">药方管理<i class="fa fa-angle-left float-right"></i></a>
+                        <ul class="sub-menu" style="display:{{(strpos(request()->path(),'doctor/recipe')!==false) ?'block':'none' }}">
+                            <li class="{{request()->path() == 'doctor/recipe/create' ? 'active' : ''}}"><a class="{{strpos(request()->path() ,'doctor/recipe/create')!==false ? 'active' : ''}}" href="/doctor/recipe/create">新药方</a></li>
+                            <li class="{{request()->path() == 'doctor/recipe/view' ? 'active' : ''}}"><a class="{{strpos(request()->path() ,'doctor/recipe/view')!==false ? 'active' : ''}}" href="/doctor/recipe/view">查看药方</a></li>
+                            <li class="{{request()->path() == 'doctor/recipe/part' ? 'active' : ''}}"><a class="{{strpos(request()->path() ,'doctor/recipe/part')!==false ? 'active' : ''}}" href="/doctor/recipe/part">中医科室</a></li>
+                        </ul>
+                    </li>
+                    @endif
+                    @if(!empty(auth()->guard('admin')->id()) || checkAuthority(auth()->guard('doctor')->id(),'/doctor/qa'))
+                    <li class="menu {{(strpos(request()->path(),'doctor/qa')!==false ) ?'active':'' }}">
+                        <a href="javascript:void(0)">问答圈管理<i class="fa fa-angle-left float-right"></i></a>
+                        <ul class="sub-menu" style="display:{{(strpos(request()->path(),'doctor/qa')!==false) ?'block':'none' }}">
+                            <li class="{{request()->path() == 'doctor/qa/create' ? 'active' : ''}}"><a class="{{strpos(request()->path() ,'doctor/qa/create')!==false ? 'active' : ''}}" href="/doctor/qa/create">新问答圈</a></li>
+                            <li class="{{request()->path() == 'doctor/qa/view' ? 'active' : ''}}"><a class="{{strpos(request()->path() ,'doctor/qa/view')!==false ? 'active' : ''}}" href="/doctor/qa/view">查看问答圈</a></li>
+                        </ul>
+                    </li>
+                    @endif
+                    @if(!empty(auth()->guard('admin')->id()) || checkAuthority(auth()->guard('doctor')->id(),'/doctor/accept'))
+                    <li class="menu {{(strpos(request()->path(),'doctor/accept/patient/create')!==false ||strpos(request()->path(),'doctor/accept/guahao/view')!==false || strpos(request()->path(),'doctor/accept/guahao/edit')!==false ) ?'active':'' }}">
+                        <a href="javascript:void(0)">挂号管理<i class="fa fa-angle-left float-right"></i></a>
+                        <ul class="sub-menu" style="display:{{(strpos(request()->path(),'doctor/accept/patient/create')!==false || request()->path()=='doctor/accept/guahao/view' || strpos(request()->path(),'doctor/accept/guahao/edit')!==false) ?'block':'none' }}">
+                            <li class="{{request()->path() == '/doctor/accept/patient/create' ? 'active' : ''}}"><a class="{{request()->path() == 'doctor/accept/patient/create' ? 'active' : ''}}" href="/doctor/accept/patient/create">新挂号</a></li>
+                            <li class="{{request()->path() == '/doctor/accept/guahao/view' ? 'active' : ''}}"><a class="{{request()->path() == 'doctor/accept/guahao/view' ? 'active' : ''}}" href="/doctor/accept/guahao/view">挂号列表</a></li>
+                        </ul>
+                    </li>
+                    <li class="menu {{(strpos(request()->path(),'doctor/accept/payment/create')!==false ||strpos(request()->path(),'doctor/accept/payment/list')!==false  ) ?'active':'' }}">
+                        <a href="javascript:void(0)">付费管理<i class="fa fa-angle-left float-right"></i></a>
+                        <ul class="sub-menu" style="display:{{(strpos(request()->path(),'doctor/accept/payment/create')!==false || request()->path()=='doctor/accept/payment/list') ?'block':'none' }}">
+                            <li class="{{request()->path() == '/doctor/accept/payment/create' ? 'active' : ''}}"><a class="{{request()->path() == 'doctor/accept/payment/create' ? 'active' : ''}}" href="/doctor/accept/payment/create">新挂号</a></li>
+                            <li class="{{request()->path() == '/doctor/accept/payment/list' ? 'active' : ''}}"><a class="{{request()->path() == 'doctor/accept/payment/list' ? 'active' : ''}}" href="/doctor/accept/payment/list">挂号列表</a></li>
+                        </ul>
+                    </li>
+                    @endif
+                    @if(!empty(auth()->guard('admin')->id()) || checkAuthority(auth()->guard('doctor')->id(),'/doctor/medicine'))
+                    <li class="menu {{(strpos(request()->path(),'doctor/medicine/view')!==false ||strpos(request()->path(),'doctor/medicine/contrary/view')!==false||strpos(request()->path(),'doctor/medicine/yield')!==false  ) ?'active':'' }}">
+                        <a href="javascript:void(0)">药材管理<i class="fa fa-angle-left float-right"></i></a>
+                        <ul class="sub-menu" style="display:{{(strpos(request()->path(),'doctor/medicine/view')!==false || request()->path()=='doctor/medicine/contrary/view'|| strpos(request()->path(),'doctor/medicine/yield')!==false) ?'block':'none' }}">
+                            <li class="{{request()->path() == '/doctor/medicine/view' ? 'active' : ''}}"><a class="{{request()->path() == 'doctor/medicine/view' ? 'active' : ''}}" href="/doctor/medicine/view">查看药材</a></li>
+                            <li class="{{request()->path() == 'doctor/medicine/contrary/view' ? 'active' : ''}}"><a class="{{request()->path() == 'doctor/medicine/contrary/view' ? 'active' : ''}}" href="/doctor/medicine/contrary/view">查看排斥药材</a></li>
+                            <li class="{{request()->path() == '/doctor/medicine/yield/view' ? 'active' : ''}}"><a class="{{request()->path() == 'doctor/medicine/yield/view' ? 'active' : ''}}" href="/doctor/medicine/yield/view">查看发药</a></li>
+
+                        </ul>
+                    </li>
+                    @endif
+                    @if(!empty(auth()->guard('admin')->id()) || checkAuthority(auth()->guard('doctor')->id(),'/doctor/inquiry'))
+                    <li class="menu {{(strpos(request()->path(),'doctor/inquiry/view')!==false ||strpos(request()->path(),'doctor/inquiry/create')!==false||strpos(request()->path(),'doctor/history/detail')!==false  ) ?'active':'' }}">
+                        <a href="javascript:void(0)">问诊管理<i class="fa fa-angle-left float-right"></i></a>
+                        <ul class="sub-menu" style="display:{{(strpos(request()->path(),'doctor/inquiry/view')!==false || strpos(request()->path(),'doctor/inquiry/create')!==false|| strpos(request()->path(),'doctor/history/detail')!==false) ?'block':'none' }}">
+                            <li class="{{request()->path() == '/doctor/inquiry/view' ? 'active' : ''}}"><a class="{{request()->path() == 'doctor/inquiry/view' ? 'active' : ''}}" href="/doctor/inquiry/view">查看问诊</a></li>
+                        </ul>
+                    </li>
+                    @endif
+                    <li class="menu {{(strpos(request()->path(),'doctor/history')!==false ) ?'active':'' }}">
+                        <a href="javascript:void(0)">病历列表<i class="fa fa-angle-left float-right"></i></a>
+                        <ul class="sub-menu" style="display:{{(strpos(request()->path(),'doctor/history')!==false) ?'block':'none' }}">
+                            <li class="{{request()->path() == 'doctor/history/individual' ? 'active' : ''}}"><a class="{{strpos(request()->path() ,'doctor/history/individual')!==false ? 'active' : ''}}" href="/doctor/history/individual">个人病例</a></li>
+                            <li class="{{request()->path() == 'doctor/history/all' ? 'active' : ''}}"><a class="{{strpos(request()->path() ,'doctor/history/all')!==false ? 'active' : ''}}" href="/doctor/history/all">全部病例</a></li>
+                        </ul>
+                    </li>
+{{--                    <li class="menu {{(strpos(request()->path(),'admin/income/all')!==false ) ?'active':'' }}">--}}
+{{--                        <a href="javascript:void(0)">收入记录<i class="fa fa-angle-left float-right"></i></a>--}}
+{{--                        <ul class="sub-menu" style="display:{{(strpos(request()->path(),'admin/income/all')!==false) ?'block':'none' }}">--}}
+{{--                            <li class="{{request()->path() == 'admin/income/all' ? 'active' : ''}}"><a class="{{strpos(request()->path() ,'admin/income/all')!==false ? 'active' : ''}}" href="/admin/income/all">医院收入</a></li>--}}
+{{--                        </ul>--}}
+{{--                    </li>--}}
+                    @if(empty(auth()->guard('admin')->id()))
+                    <li class="menu {{(strpos(request()->path(),'doctor/setting')!==false ) ?'active':'' }}">
+                        <a href="javascript:void(0)">设置<i class="fa fa-angle-left float-right"></i></a>
+                        <ul class="sub-menu" style="display:{{(strpos(request()->path(),'doctor/setting')!==false) ?'block':'none' }}">
+                            <li class="{{request()->path() == 'doctor/setting/change_password' ? 'active' : ''}}"><a class="{{strpos(request()->path() ,'doctor/setting/change_password')!==false ? 'active' : ''}}" href="/doctor/setting/change_password">更改密码</a></li>
+                        </ul>
+                    </li>
+                    @endif
                 </ul>
-                <!-- Left navbar-header end -->
-            </div>
-        </li>
-    </ul>
+<!-- Left navbar-header end -->
+</div>
+</li>
+</ul>
 </div>

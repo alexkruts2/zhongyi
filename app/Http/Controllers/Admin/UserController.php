@@ -42,7 +42,7 @@ class UserController extends Controller
         //check user login
         if (!is_null(doctor::where('name', $request->get('user_name'))->first())) {
             if (auth()->guard('doctor')->attempt($authData)) {
-                   return redirect()->route('doctor.inquiry.view');
+                   return redirect()->route('doctor.history.all.view');
 //                $doctor_id = auth()->guard('doctor')->id();
 //                $doctor_department = doctor::find($doctor_id)->department->name;
 //                if($doctor_department ==config('constant.accept'))//医院接受

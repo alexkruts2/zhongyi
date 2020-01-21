@@ -12,6 +12,7 @@ function deleteRecipe_part(id, obj) {
         closeOnCancel: true
     }).then(result => {
         if (result.value) {
+            showOverlay();
             $.ajax({
                 url: '/doctor/recipe/part/delete',
                 data: "id=" + id,
@@ -20,6 +21,7 @@ function deleteRecipe_part(id, obj) {
                 processData: false,
                 type: 'POST',
                 success: function (resp) {
+                    hideOverlay();
                     if (resp.code == '0') {
                         Swal.fire({
                             type: 'success',
@@ -43,6 +45,7 @@ function deleteRecipe_part(id, obj) {
                     }
                 },
                 error: function (e) {
+                    hideOverlay();
                     Swal.fire({
                         type: 'error',
                         text: 'Internal Error ' + e.status + ' - ' + e.responseJSON.message,

@@ -137,14 +137,10 @@
                                     <label class="col-2 col-form-label text-right">
                                         &nbsp;{{$historyData->medicines[$i]->medicine}}</label>
                                     <div class="col-3">
-                                        <input class="form-control" type="text" value="{{$historyData->medicines[$i]->min_weight}}" readonly>
-                                    </div>
-                                    <span style="padding-top: 8px;">~</span>
-                                    <div class="col-3">
-                                        <input class="form-control" type="text" value="{{$historyData->medicines[$i]->max_weight}}" readonly>
+                                        <input class="form-control" type="text" value="{{$historyData->medicines[$i]->weight}}" readonly>
                                     </div>
                                     <div class="col-3 text-center">
-                                        <label id="price_29" style="line-height: 38px;">{{$historyData->medicines[$i]->price}} 元/10g</label>
+                                        <label id="price_{{$historyData->medicines[$i]->medicine_id}}" style="line-height: 38px;">{{$historyData->medicines[$i]->price}} 元/10g</label>
                                     </div>
                                 </div>
                                 @php

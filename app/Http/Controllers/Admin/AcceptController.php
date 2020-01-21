@@ -35,10 +35,17 @@ class AcceptController extends Controller
         return success($datas);
     }
     public function createPatient(Request $request){
-        $department_id = $request->get('department');
+        validate($request->all(), [
+            'department' => 'required',
+            'doctor_id' => 'required',
+            'name' => 'required',
+            'ID_number' => 'required',
+            'phone_number' => 'required',
+            'photo' => 'required',
+            'guahaoID' => 'required'
+        ]);
+
         $doctor_id = $request->get('doctor_id');
-        $from = $request->get('from');
-        $to = $request->get('to');
         $sex = $request->get('sex');
         $name = $request->get("name");
         $ID_Number = $request->get("ID_number");
@@ -140,7 +147,7 @@ class AcceptController extends Controller
             'patient_name' => $treatment->patient->name,
             "ID_Number" => $treatment->patient->ID_Number,
             'phone_number' => $treatment->patient->phone_number,
-            'editable' => $editable,
+            'editable' => true,
             'departments' => $datas
         ]);
     }
@@ -244,7 +251,7 @@ class AcceptController extends Controller
         $id = $request->get('id');
         $treatment = treatment::where('id',$id)->first();
         $treatment->update([
-            "state" => config('constant.treat_state.close')
+            "state" => config('constant.treat_state.after_treating_pay')
         ]);
         return success("OK");
     }

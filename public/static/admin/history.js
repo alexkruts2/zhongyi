@@ -38,7 +38,7 @@ function drawAllTable() {
                 "aTargets": [3],
                 'orderable': false,
                 "mRender": function (data, type, full) {
-                    return data.substring(0, 10);
+                    return data==null||data==''||data==undefined?data:data.substring(0, 10);
                 }
             }, {
                 "aTargets": [5],
@@ -86,13 +86,13 @@ function drawIndividualTable() {
                 "aTargets": [0],
                 'orderable': false,
                 "mRender": function (data, type, full) {
-                    return data.substring(0, 10);
+                    return data==null||data==''||data==undefined?data:data.substring(0, 10);;
                 }
             }, {
                 "aTargets": [4],
                 'orderable': false,
                 "mRender": function (data, type, full) {
-                    return '<button class="btn btn-sm btn-success m-l-5" onclick="location.href=\'/doctor/inquiry/detail/' + data+ '\'"><i class="ti-pencil-alt"></i>详情</button>';
+                    return '<button class="btn btn-sm btn-success m-l-5" onclick="location.href=\'/doctor/history/detail/' + data+ '\'"><i class="ti-pencil-alt"></i>详情</button>';
 
                 }
             },
@@ -113,7 +113,7 @@ function inputIDNumber() {
         });
         return;
     }
-
+    showOverlay();
     $.ajax({
         url: '/doctor/history/getTreat_id',
         data: 'IDNumber='+IDNumber,
@@ -122,6 +122,7 @@ function inputIDNumber() {
         dataType: 'json',
         processData: false,
         success: function (resp) {
+            hideOverlay();
             if (resp.code == 0) {
                 window.location.href = '/doctor/history/individual/'+resp.data;
             } else {
@@ -135,6 +136,7 @@ function inputIDNumber() {
             }
         },
         error: function (e) {
+            hideOverlay();
             Swal.fire({
                 type: 'error',
                 text: 'Internal Error ' + e.status + ' - ' + e.resp.message,

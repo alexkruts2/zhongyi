@@ -28,36 +28,36 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <form id="doctor-form" novalidate method="post">
+                    <form id="doctor-form" method="post" data-parsley-validate="">
                         <div class="form-group mt-3 row">
                             <label for="example-text-input" class="col-2 col-form-label text-right">医院名称</label>
                             <div class="col-10">
-                                <input class="form-control" type="text" value="" name='hospital_name' id="hospital_name" placeholder="医院">
+                                <input class="form-control" type="text" value="" name='hospital_name' id="hospital_name" placeholder="医院" data-parsley-trigger="change" required="">
                             </div>
                         </div>
                         <div class="form-group mt-3 row">
                             <label for="example-text-input" class="col-2 col-form-label text-right">姓名</label>
                             <div class="col-10">
-                                <input class="form-control" type="text" value="" name='name' id="name" placeholder="姓名">
+                                <input class="form-control" type="text" value="" name='name' id="name" placeholder="姓名" data-parsley-required	>
                             </div>
                         </div>
                         <div class="form-group mt-3 row">
                             <label for="example-text-input" class="col-2 col-form-label text-right">密码</label>
                             <div class="col-10">
-                                <input class="form-control" type="text" value="" name='password' id="password" placeholder="密码">
+                                <input class="form-control" type="text" value="" name='password' id="password" placeholder="密码" data-parsley-required	>
                             </div>
                         </div>
                         <div class="form-group mt-3 row">
                             <label for="example-text-input" class="col-2 col-form-label text-right">手机号</label>
                             <div class="col-10">
-                                <input class="form-control" type="text" value="" name='phone' id="phone" placeholder="手机号">
+                                <input class="form-control" type="text" value="" name='phone' id="phone" placeholder="手机号" data-parsley-trigger="change"  data-parsley-maxlength="11" data-parsley-minlength="11" data-parsley-required>
                             </div>
                         </div>
                         <div class="form-group mt-3 row">
                             <label for="example-text-input" class="col-2 col-form-label text-right">科室</label>
                             <div class="col-10">
-                                <select class="form-control" name='department' id="department">
-                                    <option>--请选择科室--</option>
+                                <select class="form-control" name='department' id="department" data-parsley-required>
+                                    <option value="">--请选择科室--</option>
                                 @foreach ($departments as $department)
                                     <option value="{{$department->id}}">{{$department->name}}</option>
                                     @endforeach
@@ -67,13 +67,13 @@
                         <div class="form-group mt-3 row">
                             <label for="example-text-input" class="col-2 col-form-label text-right">简介</label>
                             <div class="col-10">
-                                <textarea class="form-control" type="text" value="" name='introduction' id="introduction" placeholder="按摩，抓药"></textarea>
+                                <textarea class="form-control" type="text" value="" name='introduction' id="introduction" placeholder="按摩，抓药" data-parsley-required></textarea>
                             </div>
                         </div>
                         <div class="form-group mt-3 row">
                             <label class="col-2 col-form-label text-right">从</label>
                             <div class="input-group clockpicker col-10">
-                                <input type="text" class="form-control" value="08:00" name='from' id="from">
+                                <input type="text" class="form-control" value="08:00" name='from' id="from" data-parsley-required>
                                 <div class="input-group-append">
                                     <span class="input-group-text"><i class="fa fa-clock-o"></i></span>
                                 </div>
@@ -82,7 +82,7 @@
                         <div class="form-group mt-3 row">
                             <label class="col-2 col-form-label text-right">到</label>
                             <div class="input-group clockpicker col-10">
-                                <input type="text" class="form-control" value="17:00" name='to' id="to">
+                                <input type="text" class="form-control" value="17:00" name='to' id="to" data-parsley-required>
                                 <div class="input-group-append">
                                     <span class="input-group-text"><i class="fa fa-clock-o"></i></span>
                                 </div>
@@ -92,7 +92,7 @@
                         <div class="form-group mt-3 row">
                             <label for="example-text-input" class="col-2 col-form-label text-right">出诊地点</label>
                             <div class="col-10">
-                                <input class="form-control" type="text" value="" name='visiting_place' id="visiting_place" placeholder="出诊地点"/>
+                                <input class="form-control" type="text" value="" name='visiting_place' id="visiting_place" placeholder="出诊地点" data-parsley-required/>
                             </div>
                         </div>
                         <div class="row">
@@ -124,8 +124,11 @@
     <script src="{{ asset('static/plugin/prism/prism.js')}}"></script>
     <script src="{{ asset('static/plugin/sticky-kit-master/dist/sticky-kit.min.js')}}"></script>
     <script src="{{ asset('static/plugin/sparkline/jquery.sparkline.min.js')}}"></script>
-    <script src="{{ asset('static/admin/doctor.js') }}"></script>
     <script src="{{ asset('static/plugin/sweetalert2/sweetalert2.js') }}"></script>
     <script src="{{ asset('static/plugin/clockpicker/dist/bootstrap-clockpicker.min.js') }}"></script>
+    <script src="{{ asset('static/plugin/parsley/parsley.min.js') }}"></script>
+    <script src="{{ asset('static/plugin/parsley/zh_cn.js') }}"></script>
+    <script src="{{ asset('static/plugin/parsley/zh_cn.extra.js') }}"></script>
+    <script src="{{ asset('static/admin/doctor.js') }}"></script>
 
 @endsection

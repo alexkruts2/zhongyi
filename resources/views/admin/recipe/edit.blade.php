@@ -25,13 +25,12 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <form id="recipe-form" novalidate method="post">
+                    <form id="recipe-form" novalidate method="post" data-parsley-validate="">
                         <input type="hidden" name="recipe_id" id="recipe_id" value="{{$recipe->id}}"/>
-
                         <div class="form-group mt-3 row">
                             <label for="example-text-input" class="col-2 col-form-label text-right">科室</label>
                             <div class="col-10">
-                                <select class="form-control" name='department' id="department">
+                                <select class="form-control" name='department' id="department" data-parsley-required>
                                     <option value="0">--请选择科室--</option>
                                     @foreach ($departments as $department)
                                         <option value="{{$department->id}}"  {{$department->id==$recipe->recipe_part_id?'selected':''}}>{{$department->name}}</option>
@@ -42,7 +41,7 @@
                         <div class="form-group mt-3 row">
                             <label for="disease_name" class="col-2 col-form-label text-right">病名</label>
                             <div class="col-10">
-                                <input class="form-control" type="text" value="{{$recipe->disease_name}}" name="disease_name" id="disease_name">
+                                <input class="form-control" type="text" value="{{$recipe->disease_name}}" name="disease_name" id="disease_name" data-parsley-required>
                             </div>
                         </div>
                         <div id="diseaseSection">
@@ -61,7 +60,7 @@
                         <div class="form-group mt-3 row">
                             <label for="example-text-input" class="col-2 col-form-label text-right">其他病症</label>
                             <div class="col-10">
-                                <textarea class="form-control" type="text" value="" name='other_condition' id="other_recipe" placeholder="按摩，抓药">{{$recipe->other_condition}}</textarea>
+                                <textarea class="form-control" type="text" value="" name='other_condition' id="other_recipe" placeholder="按摩，抓药" data-parsley-required>{{$recipe->other_condition}}</textarea>
                             </div>
                         </div>
                         <hr>
@@ -97,7 +96,7 @@
                         <div class="form-group mt-3 row">
                             <label for="prescription_name" class="col-2 col-form-label text-right">药方名</label>
                             <div class="col-10">
-                                <input class="form-control" type="text" value="{{$recipe->prescription_name}}" name="prescription_name" id="prescription_name">
+                                <input class="form-control" type="text" value="{{$recipe->prescription_name}}" name="prescription_name" id="prescription_name" data-parsley-required>
                             </div>
                         </div>
 
@@ -162,5 +161,8 @@
     <script src="{{ asset('static/plugin/sparkline/jquery.sparkline.min.js')}}"></script>
     <script src="{{ asset('static/admin/recipe.js') }}"></script>
     <script src="{{ asset('static/plugin/sweetalert2/sweetalert2.js') }}"></script>
+    <script src="{{ asset('static/plugin/parsley/parsley.min.js') }}"></script>
+    <script src="{{ asset('static/plugin/parsley/zh_cn.js') }}"></script>
+    <script src="{{ asset('static/plugin/parsley/zh_cn.extra.js') }}"></script>
 
 @endsection

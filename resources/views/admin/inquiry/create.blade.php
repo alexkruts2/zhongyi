@@ -24,41 +24,42 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <form id="question-form" novalidate method="post">
+                    <form id="question-form" method="post" data-parsley-validate="">
                         <input type="hidden" id="video_url" name="video_url"/>
                         <input type="hidden" id="question_string" name="question_string"/>
-                        <div class="form-group mt-3 row">
-                            <label for="example-text-input" class="col-1 col-form-label text-right">病历号</label>
-                            <div class="col-3">
-                                <input class="form-control" type="text" value="{{$treatment->guahao}}" name='guahao' id="guahao" readonly>
+                        <div class="mt-3 row">
+                            <div class="col-md-4 form-inline">
+                                <label for="guahao" >病历号&nbsp;&nbsp; </label>
+                                <input class="form-control w-75" type="text" value="{{$treatment->guahao}}" name='guahao' id="guahao" readonly>
                             </div>
-                            <label for="example-text-input" class="col-1 col-form-label text-right">姓名</label>
-                            <div class="col-3">
-                                <input class="form-control" type="text" value="{{$treatment->name}}" name='patient_name' id="patient_name" readonly>
+                            <div class="col-md-4 form-inline">
+                                <label for="patient_name" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;姓名&nbsp;&nbsp; </label>
+                                <input class="form-control w-75" type="text" value="{{$treatment->name}}" name='patient_name' id="patient_name" readonly>
                             </div>
-                            <label for="example-text-input" class="col-1 col-form-label text-right">身份证号</label>
-                            <div class="col-3">
+                            <div class="col-md-4 form-inline">
+                                <label for="ID_Number" >身份证号&nbsp;&nbsp; </label>
                                 <input class="form-control" type="text" value="{{$treatment->ID_Number}}" name='ID_Number' id="ID_Number" readonly>
                             </div>
                         </div>
-                        <div class="form-group mt-3 row">
-                            <label for="example-text-input" class="col-2 col-form-label text-right">性别</label>
-                            <div class="col-4">
-                                <select class="form-control" name='sex' id="sex" disabled>
-                                    <option value="-1">请选择</option>
+                        <div class="mt-3 row">
+                            <div class="col-md-4 form-inline">
+                                <label for="sex" >&nbsp;&nbsp;&nbsp;性别&nbsp;&nbsp; </label>
+                                <select class="form-control w-75" name='sex' id="sex" disabled>
+                                    <option value="">请选择</option>
                                     <option value="男" {{$treatment->sex=='男'?'selected':''}}>男</option>
                                     <option value="女" {{$treatment->sex=='女'?'selected':''}}>女</option>
                                 </select>
                             </div>
-                            <label for="example-text-input" class="col-2 col-form-label text-right">历次(次)</label>
-                            <div class="col-4">
-                                <input class="form-control" type="text" value="{{$history_number}}" name='history_number' id="history_number" readonly>
+                            <div class="col-md-4 form-inline">
+                                <label for="history_number" >历次(次)&nbsp;&nbsp; </label>
+                                <input class="form-control w-75" type="text" value="{{$history_number}}" name='history_number' id="history_number" readonly>
                             </div>
                         </div>
-                        <div class="form-group mt-3 row">
-                            <label for="example-text-input" class="col-2 col-form-label text-right">标题</label>
-                            <div class="col-8">
-                                <select class="select2 m-b-10" style="width: 100%" name="question_title" id="question_title" data-placeholder="请选择">
+                        <div class="mt-3 row">
+                            <div class="col-md-10 form-inline">
+                                <label for="history_number" >&nbsp;&nbsp;&nbsp;标题&nbsp;&nbsp; </label>
+                                <select class="select2 m-b-10" name="question_title" id="question_title" data-placeholder="请选择"data-parsley-required style="width:71.3%;">
+                                    <option value="">请选择</option>
                                     @foreach(\App\question::all() as $question)
                                         <option value="{{$question->id}}" >{{$question->title}}</option>
                                     @endforeach
@@ -89,18 +90,23 @@
                                 <video id="myVideo" preload="auto" autoplay  class="video-js vjs-default-skin"></video>
                             </div>
                         </div>
-
-                        <label for="example-text-input" class="col-2 col-form-label text-center">主诉</label>
-                        <div class="row">
-                            <div class="col-md-8 offset-md-2 text-left">
-                                <button type="button" class="btn btn-circle btn-success p-0-0" title="添加主诉" onclick="appendAnnotation()"><i class="fas fa-plus"></i></button>
-                            </div>
+                        <div class="row bg-gray">
+                            <label for="example-text-input" style="font-size: 27px;" class="col-2 col-form-label text-left">主诉  <button type="button" title="添加主诉" onclick="appendAnnotation()" class="btn btn-circle btn-md btn-success p-0-0"><i class="fas fa-plus"></i></button>
+                            </label>
                         </div>
+
                         <div id = "annotationSection">
                         </div>
+
+                        <div class="row bg-gray">
+                            <label for="example-text-input" style="font-size: 27px;" class="col-2 col-form-label text-left">药方  <button type="button" class="btn btn-circle btn-warning p-0-0"  data-toggle="modal" data-target="#myModal" title="添加药材" ><i class="fas fa-plus"></i></button>
+                                </button>
+                            </label>
+                        </div>
+
                         <div class="form-group mt-3 row">
-                            <label for="example-text-input" class="col-2 col-form-label text-right">药方</label>
-                            <div class="col-10">
+                            <label for="example-text-input" class="col-2 col-form-label text-right"></label>
+                            <div class="col-6">
                                 <select class="m-b-10 form-control" style="width: 100%" data-placeholder="Choose" name="recipe" id="recipe">
                                     @foreach(\App\recipe::all() as $recipe)
                                         <option value="{{$recipe->id}}" >{{$recipe->prescription_name}}</option>
@@ -110,22 +116,24 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12 text-center">
-                                <button type="button" class="btn btn-circle btn-warning p-0-0"  data-toggle="modal" data-target="#myModal" title="添加药材" ><i class="fas fa-plus"></i></button>
                             </div>
                         </div>
 
                         <div id="medicineSection" class="mt-3">
                         </div>
-
+                        <hr>
                         <div class="form-group mt-3 row">
-                            <label for="example-text-input" class="col-2 col-form-label text-right">病名</label>
-                            <div class="col-10">
-                                <input class="form-control" type="text" name='disease_name' id="disease_name">
+                            <label class="col-2 text-right">总价: </label>
+                            <div class="col-3">
+                                <span id="total_price_span" ></span>元
                             </div>
-                        </div>
-                        <div class="form-group mt-3 row">
-                            <label class="col-5 offset-1">总价: <span id="total_price_span" ></span>元</label>
                             <input type="hidden" id="total_price" name="total_price" ></input>
+                        </div>
+                        <div class="form-group mt-3 row bg-gray">
+                            <label for="example-text-input" class="col-2 col-form-label text-right" >病名</label>
+                            <div class="col-6">
+                                <input class="form-control" type="text" name='disease_name' id="disease_name" style="background-color:#ddd;" data-parsley-required>
+                            </div>
                         </div>
                         <div class="row mt-3">
                             <div class="col-md-12 text-center m-t-30">
@@ -143,6 +151,9 @@
             text-align:left;
             right:0%;
             left:7%;
+        }
+        .bg-gray{
+            background-color:#eee;
         }
     </style>
 
@@ -187,5 +198,8 @@
     <script src="{{ asset('static/plugin/video-record/js/adapter.js') }}"></script>
     <script src="{{ asset('static/plugin/video-record/js/videojs.record.min.js') }}"></script>
     <script src="{{ asset('static/admin/inquiry.js') }}"></script>
+    <script src="{{ asset('static/plugin/parsley/parsley.min.js') }}"></script>
+    <script src="{{ asset('static/plugin/parsley/zh_cn.js') }}"></script>
+    <script src="{{ asset('static/plugin/parsley/zh_cn.extra.js') }}"></script>
 
 @endsection

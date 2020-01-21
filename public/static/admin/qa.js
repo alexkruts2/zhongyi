@@ -181,62 +181,6 @@ $(function(){
         placeholder:"请选择药房"
     });
 
-    $('#question-form').submit(function (e) {
-        e.preventDefault();
-        showOverlay();
-        $("#questions").val(JSON.stringify(queries));
-        var forms = new FormData($(this)[0]);
-        var questionId = $("#question_id").val();
-        if(questionId==''||questionId==null||questionId==undefined){
-            url = '/doctor/qa/create';
-        }
-        else{
-            url = '/doctor/qa/editQA'
-        }
-
-        $.ajax({
-            url: url,
-            data: forms,
-            type: 'POST',
-            cache: false,
-            contentType: false,
-            processData: false,
-            success: function (resp) {
-                hideOverlay();
-                if (resp.code == 0) {
-                    hideOverlay();
-
-                    Swal.fire({
-                        type: 'success',
-                        text: '',
-                        title: '成功',
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                    // window.location.href = '/admin/qa/view';
-                } else {
-                    hideOverlay();
-                    Swal.fire({
-                        type: 'error',
-                        text: resp.message,
-                        title: '错误',
-                        showConfirmButton: false,
-                        timer: 3000
-                    });
-                }
-            },
-            error: function (e) {
-                hideOverlay();
-                Swal.fire({
-                    type: 'error',
-                    text: 'Internal Error ' + e.status + ' - ' + e.responseJSON.message,
-                    title: '错误',
-                    showConfirmButton: false,
-                    timer: 3000
-                });
-            }
-        });
-    });
 
     qa_table = $('#tbl_qa').DataTable({
         "processing":true,
@@ -286,6 +230,73 @@ $(function(){
 
 });
 
+$('#question-form').submit(function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (typeof e.originalEvent === 'undefined' || e.isTrigger) {
+        console.log('Prevent duplicate events');
+        return false;
+    }
+
+    var form = $(this);
+    if(!form.parsley().validate()){
+        return ;
+    }
+
+    showOverlay();
+    $("#questions").val(JSON.stringify(queries));
+    var forms = new FormData($(this)[0]);
+    var questionId = $("#question_id").val();
+    if(questionId==''||questionId==null||questionId==undefined){
+        url = '/doctor/qa/create';
+    }
+    else{
+        url = '/doctor/qa/editQA'
+    }
+
+    $.ajax({
+        url: url,
+        data: forms,
+        type: 'POST',
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function (resp) {
+            hideOverlay();
+            if (resp.code == 0) {
+                hideOverlay();
+
+                Swal.fire({
+                    type: 'success',
+                    text: '',
+                    title: '成功',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                // window.location.href = '/admin/qa/view';
+            } else {
+                hideOverlay();
+                Swal.fire({
+                    type: 'error',
+                    text: resp.message,
+                    title: '错误',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            }
+        },
+        error: function (e) {
+            hideOverlay();
+            Swal.fire({
+                type: 'error',
+                text: 'Internal Error ' + e.status + ' - ' + e.responseJSON.message,
+                title: '错误',
+                showConfirmButton: false,
+                timer: 3000
+            });
+        }
+    });
+});
 
 function deleteQA(id, obj) {
     Swal.fire({
@@ -300,6 +311,7 @@ function deleteQA(id, obj) {
         closeOnCancel: true
     }).then(result => {
         if (result.value) {
+            showOverlay();
             $.ajax({
                 url: '/doctor/qa/delete',
                 data: "id=" + id,
@@ -308,6 +320,7 @@ function deleteQA(id, obj) {
                 processData: false,
                 type: 'GET',
                 success: function (resp) {
+                    hideOverlay();
                     if (resp.code == '0') {
                         Swal.fire({
                             type: 'success',
@@ -330,6 +343,7 @@ function deleteQA(id, obj) {
                     }
                 },
                 error: function (e) {
+                    hideOverlay();
                     Swal.fire({
                         type: 'error',
                         text: 'Internal Error ' + e.status + ' - ' + e.responseJSON.message,

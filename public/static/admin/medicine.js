@@ -183,6 +183,7 @@ function deleteMedicine(id,obj) {
         closeOnCancel: true
     }).then(result => {
         if (result.value) {
+            showOverlay();
             $.ajax({
                 url: '/doctor/medicine/delete',
                 data: "id=" + id,
@@ -191,6 +192,7 @@ function deleteMedicine(id,obj) {
                 processData: false,
                 type: 'POST',
                 success: function (resp) {
+                    hideOverlay();
                     if (resp.code == '0') {
                         Swal.fire({
                             type: 'success',
@@ -203,6 +205,7 @@ function deleteMedicine(id,obj) {
                             .remove()
                             .draw();
                     } else {
+                        hideOverlay();
                         Swal.fire({
                             type: 'error',
                             text: resp.message,

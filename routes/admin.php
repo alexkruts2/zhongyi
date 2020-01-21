@@ -28,6 +28,10 @@ Route::group(['prefix' => 'admin'], function () {
             Route::post('/getDoctors','Admin\HomeController@getDoctorsInAuthority')->name('doctor.authority.getDoctors');
             Route::post('/update','Admin\HomeController@updateAuthoriry')->name('doctor.authority.update');
         });
+        Route::group(['prefix' => 'income'], function () {
+            Route::get('/all', 'Admin\DoctorController@incomeAll')->name('doctor.income.all');
+        });
+
     });
 });
 Route::group(['prefix' => 'doctor'], function () {
@@ -52,9 +56,6 @@ Route::group(['prefix' => 'doctor'], function () {
             Route::post('/payment/list','Admin\AcceptController@listPaymentData')->name('accept.payment.list.data');
         });
 
-        Route::group(['prefix' => 'common'], function () {
-            Route::get('/', 'Admin\DoctorController@dashboard')->name('doctor.common');
-        });
 
         Route::group(['prefix' => 'recipe'], function () {
             Route::get('/create','Admin\HomeController@createRecipeView')->name('doctor.recipe.create');
@@ -95,18 +96,21 @@ Route::group(['prefix' => 'doctor'], function () {
                 Route::post('/edit', 'Admin\DoctorController@editContraryData')->name('doctor.medicine.contrary.edit');
                 Route::post('/delete', 'Admin\DoctorController@deleteContraryData')->name('doctor.medicine.contrary.delete');
             });
-
+            Route::group(['prefix'=>'yield'],function(){
+                Route::get('/view', 'Admin\DoctorController@yieldView')->name('doctor.medicine.yield.view');
+                Route::get('/detail/{id}', 'Admin\DoctorController@detailYieldView')->name('doctor.medicine.yield.detail');
+                Route::post('/getData', 'Admin\DoctorController@getYieldData')->name('doctor.medicine.yield.data');
+                Route::post('/pay', 'Admin\DoctorController@payTreatment')->name('doctor.medicine.yield.pay');
+            });
         });
         Route::group(['prefix' => 'inquiry'], function () {
             Route::get('/view', 'Admin\DoctorController@viewInquiry')->name('doctor.inquiry.view');
             Route::get('/create/{id}', 'Admin\DoctorController@createInquiryView')->name('doctor.inquiry.create.view');
             Route::post('/getGuahao', 'Admin\DoctorController@getGuahao')->name('doctor.inquiry.getGuahao');
-            Route::post('/getTreatementData', 'Admin\DoctorController@getTreatementData')->name('doctor.inquiry.getTreatementData');
             Route::post('/uploadVideo', 'Admin\DoctorController@uploadVideo')->name('doctor.inquiry.uploadVideo');
             Route::post('/getRecipe', 'Admin\DoctorController@getRecipe')->name('doctor.inquiry.getRecipe');
             Route::post('/completeTreatment', 'Admin\DoctorController@completeTreatment')->name('doctor.inquiry.completeTreatment');
             Route::get('/startTreatment', 'Admin\DoctorController@startTreatment')->name('doctor.inquiry.startTreatment');
-            Route::get('/detail/{treat_id}', 'Admin\DoctorController@detailTreatment')->name('doctor.inquiry.detailTreatment');
         });
         Route::group(['prefix' => 'history'], function () {
             Route::get('/all', 'Admin\DoctorController@allHistoryView')->name('doctor.history.all.view');
@@ -115,6 +119,7 @@ Route::group(['prefix' => 'doctor'], function () {
             Route::get('/getTreat_id', 'Admin\DoctorController@getTreat_id');
             Route::post('/getAllData', 'Admin\DoctorController@getAllData')->name('doctor.history.all.data');
             Route::post('/getIndividualData', 'Admin\DoctorController@getIndividualData')->name('doctor.history.individual.data');
+            Route::get('/detail/{treat_id}', 'Admin\DoctorController@detailTreatment')->name('doctor.inquiry.detailTreatment');
         });
         Route::group(['prefix' => 'setting'], function () {
             Route::get('/change_password', 'Admin\DoctorController@change_password')->name('doctor.setting.change_password');
@@ -124,6 +129,7 @@ Route::group(['prefix' => 'doctor'], function () {
     });
     Route::get('/getDoctors','Admin\AcceptController@getDoctorsInDepartment');
     Route::get('/getContraryMedicines','Admin\DoctorController@getContraryMedicines');
+    Route::post('/inquiry/getTreatementData', 'Admin\DoctorController@getTreatementData')->name('doctor.inquiry.getTreatementData');
 
 });
 

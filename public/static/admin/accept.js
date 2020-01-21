@@ -19,157 +19,6 @@ $(function () {
     });
 
 
-    $('#patient-form').submit(function (e) {
-        e.preventDefault();
-        if(imgFile==''){
-            Swal.fire({
-                type: 'error',
-                title: '请快照'
-            });
-            return;
-        }
-        if($("#from").val()==''||$("#from").val()==undefined||$("#from").val()==null){
-            Swal.fire({
-                type: 'error',
-                title: '请选择医生'
-            });
-            return;
-        }
-        if($("#name").val()==''||$("#name").val()==undefined||$("#name").val()==null){
-            Swal.fire({
-                type: 'error',
-                title: '请输入姓名。'
-            });
-            return;
-        }
-        if($("#phone_number").val()==''||$("#phone_number").val()==undefined||$("#phone_number").val()==null){
-            Swal.fire({
-                type: 'error',
-                title: '请输入手机号码。'
-            });
-            return;
-        }
-        if($("#phone_number").val().length!=11){
-            Swal.fire({
-                type: 'error',
-                title: '手机号码错误。'
-            });
-            return;
-        }
-
-        showOverlay();
-        var forms = new FormData($(this)[0]);
-
-        $.ajax({
-            url: '/doctor/accept/patient/create',
-            data: forms,
-            type: 'POST',
-            cache: false,
-            contentType: false,
-            processData: false,
-            success: function (resp) {
-                hideOverlay();
-                if (resp.code == 0) {
-                    hideOverlay();
-                    treatment = resp.data;
-                    $("#payModal").modal({backdrop: 'static', keyboard: false});
-
-                } else {
-                    hideOverlay();
-                    Swal.fire({
-                        type: 'error',
-                        text: resp.message,
-                        title: '错误',
-                        showConfirmButton: false,
-                        timer: 3000
-                    });
-                }
-            },
-            error: function (e) {
-                hideOverlay();
-                Swal.fire({
-                    type: 'error',
-                    text: 'Internal Error ' + e.status + ' - ' + e.responseJSON.message,
-                    title: '错误',
-                    showConfirmButton: false,
-                    timer: 3000
-                });
-            }
-        });
-    });
-    $('#patient-edit-form').submit(function (e) {
-        e.preventDefault();
-        if($("#from").val()==''||$("#from").val()==undefined||$("#from").val()==null){
-            Swal.fire({
-                type: 'error',
-                title: '请选择医生'
-            });
-            return;
-        }
-        if($("#name").val()==''||$("#name").val()==undefined||$("#name").val()==null){
-            Swal.fire({
-                type: 'error',
-                title: '请输入姓名。'
-            });
-            return;
-        }
-        if($("#phone_number").val()==''||$("#phone_number").val()==undefined||$("#phone_number").val()==null){
-            Swal.fire({
-                type: 'error',
-                title: '请输入手机号码。'
-            });
-            return;
-        }
-        if($("#phone_number").val().length!=11){
-            Swal.fire({
-                type: 'error',
-                title: '手机号码错误。'
-            });
-            return;
-        }
-
-        showOverlay();
-        var forms = new FormData($(this)[0]);
-
-        $.ajax({
-            url: '/doctor/accept/guahao/update',
-            data: forms,
-            type: 'POST',
-            cache: false,
-            contentType: false,
-            processData: false,
-            success: function (resp) {
-                hideOverlay();
-                if (resp.code == 0) {
-                    hideOverlay();
-                    Swal.fire({
-                        type: 'info',
-                        title: '成功'
-                    });
-
-                } else {
-                    hideOverlay();
-                    Swal.fire({
-                        type: 'error',
-                        text: resp.message,
-                        title: '错误',
-                        showConfirmButton: false,
-                        timer: 3000
-                    });
-                }
-            },
-            error: function (e) {
-                hideOverlay();
-                Swal.fire({
-                    type: 'error',
-                    text: 'Internal Error ' + e.status + ' - ' + e.responseJSON.message,
-                    title: '错误',
-                    showConfirmButton: false,
-                    timer: 3000
-                });
-            }
-        });
-    });
 
 
     startWebcam();
@@ -202,6 +51,16 @@ $(function () {
         },
         "aoColumnDefs": [
             {
+                "aTargets":[0],
+                'orderable':false,
+                "mRender":function(data,type,full) {
+                    if(data=='0000-00-00 00:00:00')
+                        return '';
+                    else
+                        return data;
+                }
+            },
+            {
                 "aTargets":[2],
                 'orderable':false
             },
@@ -222,7 +81,7 @@ $(function () {
                 'orderable':false,
                 "mRender":function(data,type,full) {
                     return '<button class="btn btn-sm btn-primary m-l-5" onclick="viewTreatment(\'' + data+ '\', this)"><i class="ti-eye"></i>查看</button>'+
-                        '<button class="btn btn-sm btn-success m-l-5" onclick="location.href=\'/doctor/accept/guahao/edit/'+data+'\'"><i class="ti-trash"></i>修改</button>'+
+                        '<button class="btn btn-sm btn-success m-l-5" onclick="location.href=\'/doctor/accept/guahao/edit/'+data+'\'"><i class="ti-pencil"></i>修改</button>'+
                         '<button class="btn btn-sm btn-danger m-l-5" onclick="deleteTreatment(\'' + data+ '\', this)"><i class="ti-trash"></i>删除</button>';
                 }
             },
@@ -247,7 +106,7 @@ function inputIDNumber() {
     if(IDNumber.length!=18){
         Swal.fire({
             type: 'warning',
-            title: '身份证号码错误。'
+            title: '身份证号码错误。长度必须为18。'
         });
 
         return;
@@ -297,11 +156,13 @@ function snapshot() {
     img.name = 'photo';
     snapshotel.innerHTML = '';
     snapshotel.appendChild(img);
+    showOverlay();
     $.ajax({
         url: '/doctor/accept/patient/uploadImage',
         type: "POST",
         data: {"image": img.src},
         success: function (response) {
+            hideOverlay();
             if(response.code==0){
                 imgFile = response.data;
                 $("#photo").val(imgFile);
@@ -316,6 +177,7 @@ function snapshot() {
             }
         },
         error: function (e) {
+            hideOverlay();
             Swal.fire({
                 position: 'top-end',
                 type: 'error',
@@ -364,6 +226,7 @@ function deleteTreatment(id, obj) {
         closeOnCancel: true
     }).then(result => {
         if (result.value) {
+            showOverlay();
             $.ajax({
                 url: '/doctor/accept/guahao/delete',
                 data: "id=" + id,
@@ -372,6 +235,7 @@ function deleteTreatment(id, obj) {
                 processData: false,
                 type: 'POST',
                 success: function (resp) {
+                    hideOverlay();
                     if (resp.code == '0') {
                         Swal.fire({
                             type: 'success',
@@ -394,6 +258,7 @@ function deleteTreatment(id, obj) {
                     }
                 },
                 error: function (e) {
+                    hideOverlay();
                     Swal.fire({
                         type: 'error',
                         text: 'Internal Error ' + e.status + ' - ' + e.responseJSON.message,
@@ -443,6 +308,7 @@ function viewTreatment (id,obj) {
 function payAccept() {
     var treatment_id = treatment.id;
     var state = "WAITING_TREATMENT";
+    showOverlay();
     $.ajax({
         url: '/doctor/accept/treatment/update',
         data: "id="+treatment_id+"&state="+ state,
@@ -482,6 +348,7 @@ function payAccept() {
 function cancelAccept() {
     $("#payModal").modal('hide');
     var treatment_id = treatment.id;
+    showOverlay();
     $.ajax({
         url: '/doctor/accept/guahao/delete',
         data: "id=" + treatment_id,
@@ -490,6 +357,7 @@ function cancelAccept() {
         processData: false,
         type: 'POST',
         success: function (resp) {
+            hideOverlay();
             if (resp.code == '0') {
                 window.location.href = '/doctor/accept/guahao/view';
             } else {
@@ -503,6 +371,7 @@ function cancelAccept() {
             }
         },
         error: function (e) {
+            hideOverlay();
             Swal.fire({
                 type: 'error',
                 text: 'Internal Error ' + e.status + ' - ' + e.responseJSON.message,
@@ -513,3 +382,173 @@ function cancelAccept() {
         }
     });
 }
+
+
+$('#patient-form').submit(function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (typeof e.originalEvent === 'undefined' || e.isTrigger) {
+        console.log('Prevent duplicate events');
+        return false;
+    }
+
+    var form = $(this);
+    if(!form.parsley().validate()){
+        return ;
+    }
+
+    if(imgFile==''){
+        Swal.fire({
+            type: 'error',
+            title: '请快照'
+        });
+        return;
+    }
+    if($("#from").val()==''||$("#from").val()==undefined||$("#from").val()==null){
+        Swal.fire({
+            type: 'error',
+            title: '请选择医生'
+        });
+        return;
+    }
+    if($("#name").val()==''||$("#name").val()==undefined||$("#name").val()==null){
+        Swal.fire({
+            type: 'error',
+            title: '请输入姓名。'
+        });
+        return;
+    }
+    if($("#phone_number").val()==''||$("#phone_number").val()==undefined||$("#phone_number").val()==null){
+        Swal.fire({
+            type: 'error',
+            title: '请输入手机号码。'
+        });
+        return;
+    }
+    if($("#phone_number").val().length!=11){
+        Swal.fire({
+            type: 'error',
+            title: '手机号码错误。长度必须为11。'
+        });
+        return;
+    }
+
+    showOverlay();
+    var forms = new FormData($(this)[0]);
+
+    $.ajax({
+        url: '/doctor/accept/patient/create',
+        data: forms,
+        type: 'POST',
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function (resp) {
+            hideOverlay();
+            if (resp.code == 0) {
+                hideOverlay();
+                treatment = resp.data;
+                $("#payModal").modal({backdrop: 'static', keyboard: false});
+
+            } else {
+                hideOverlay();
+                Swal.fire({
+                    type: 'error',
+                    text: resp.message,
+                    title: '错误',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            }
+        },
+        error: function (e) {
+            hideOverlay();
+            Swal.fire({
+                type: 'error',
+                text: 'Internal Error ' + e.status + ' - ' + e.responseJSON.message,
+                title: '错误',
+                showConfirmButton: false,
+                timer: 3000
+            });
+        }
+    });
+});
+$('#patient-edit-form').submit(function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (typeof e.originalEvent === 'undefined' || e.isTrigger) {
+        console.log('Prevent duplicate events');
+        return false;
+    }
+
+    if($("#from").val()==''||$("#from").val()==undefined||$("#from").val()==null){
+        Swal.fire({
+            type: 'error',
+            title: '请选择医生'
+        });
+        return;
+    }
+    if($("#name").val()==''||$("#name").val()==undefined||$("#name").val()==null){
+        Swal.fire({
+            type: 'error',
+            title: '请输入姓名。'
+        });
+        return;
+    }
+    if($("#phone_number").val()==''||$("#phone_number").val()==undefined||$("#phone_number").val()==null){
+        Swal.fire({
+            type: 'error',
+            title: '请输入手机号码。'
+        });
+        return;
+    }
+    if($("#phone_number").val().length!=11){
+        Swal.fire({
+            type: 'error',
+            title: '手机号码错误。长度必须为11。'
+        });
+        return;
+    }
+
+    showOverlay();
+    var forms = new FormData($(this)[0]);
+
+    $.ajax({
+        url: '/doctor/accept/guahao/update',
+        data: forms,
+        type: 'POST',
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function (resp) {
+            hideOverlay();
+            if (resp.code == 0) {
+                hideOverlay();
+                Swal.fire({
+                    type: 'info',
+                    title: '成功'
+                });
+
+            } else {
+                hideOverlay();
+                Swal.fire({
+                    type: 'error',
+                    text: resp.message,
+                    title: '错误',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            }
+        },
+        error: function (e) {
+            hideOverlay();
+            Swal.fire({
+                type: 'error',
+                text: 'Internal Error ' + e.status + ' - ' + e.responseJSON.message,
+                title: '错误',
+                showConfirmButton: false,
+                timer: 3000
+            });
+        }
+    });
+});

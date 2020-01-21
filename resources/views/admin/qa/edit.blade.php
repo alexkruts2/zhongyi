@@ -29,7 +29,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <form id="question-form" novalidate method="post">
+                    <form id="question-form" method="post" data-parsley-validate="">
                         <div class="form-group mt-3 row">
                             <label for="example-text-input" class="col-2 col-form-label text-right">编号</label>
                             <div class="col-10">
@@ -39,14 +39,14 @@
                         <div class="form-group mt-3 row">
                             <label for="example-text-input" class="col-2 col-form-label text-right">标题</label>
                             <div class="col-10">
-                                <input class="form-control" type="text"  name='title' id="title" placeholder="请输入标题" value="{{$question->title}}">
+                                <input class="form-control" type="text"  name='title' id="title" placeholder="请输入标题" value="{{$question->title}}" data-parsley-required>
                             </div>
                         </div>
                         <div class="form-group mt-3 row">
                             <label for="example-text-input" class="col-2 col-form-label text-right">科室</label>
                             <div class="col-4">
-                                <select class="form-control" name='department' id="department">
-                                    <option>--请选择科室--</option>
+                                <select class="form-control" name='department' id="department" data-parsley-required>
+                                    <option value="">--请选择科室--</option>
                                     @foreach ($departments as $department)
                                         <option value="{{$department->id}}" {{$department->id==$department_id?'selected':''}}>{{$department->name}}</option>
                                     @endforeach
@@ -54,7 +54,7 @@
                             </div>
                             <label for="example-text-input" class="col-2 col-form-label text-right">医生</label>
                             <div class="col-4">
-                                <select class="form-control" name="doctor_id" id="doctor_id">
+                                <select class="form-control" name="doctor_id" id="doctor_id" data-parsley-required>
                                     @foreach ($doctors as $doctor)
                                         <option value="{{$doctor->id}}" {{$doctor->id==$question->doctor_id?'selected':''}}>{{$doctor->name}}</option>
                                     @endforeach
@@ -64,7 +64,7 @@
                         <div class="form-group mt-3 row">
                             <label for="example-text-input" class="col-2 col-form-label text-right">药方</label>
                             <div class="col-10">
-                                <select class="select2 m-b-10 select2-multiple" style="width: 100%" multiple="multiple" data-placeholder="Choose" name="recipes[]" value='{{$question->recipes}}'>
+                                <select class="select2 m-b-10 select2-multiple" style="width: 100%" multiple="multiple" data-placeholder="Choose" name="recipes[]" value='{{$question->recipes}}' data-parsley-required>
                                     @foreach(\App\recipe::all() as $recipe)
                                         <option value="{{$recipe->id}}" {{in_array($recipe->id,json_decode($question->recipes))?'selected':''}}>{{$recipe->prescription_name}}</option>
                                     @endforeach
@@ -74,7 +74,7 @@
                         <div class="form-group mt-3 row">
                             <label for="example-text-input" class="col-2 col-form-label text-right">病名</label>
                             <div class="col-10">
-                                <input class="form-control" type="text" value="{{$question->disease_name}}" data-role="tagsinput" name='disease_name' id="disease_name" placeholder="请输入病名">
+                                <input class="form-control" type="text" value="{{$question->disease_name}}" data-role="tagsinput" name='disease_name' id="disease_name" placeholder="请输入病名" data-parsley-required>
                             </div>
                         </div>
                         <div id="answerSection">
@@ -154,6 +154,9 @@
     <script src="{{ asset('static/plugin/sweetalert2/sweetalert2.js') }}"></script>
     <script src="{{ asset('static/plugin/select2/dist/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('static/plugin/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js')}}" ></script>
+    <script src="{{ asset('static/plugin/parsley/parsley.min.js') }}"></script>
+    <script src="{{ asset('static/plugin/parsley/zh_cn.js') }}"></script>
+    <script src="{{ asset('static/plugin/parsley/zh_cn.extra.js') }}"></script>
 
     <script>
         var strQueries = "{{$question->questions}}";

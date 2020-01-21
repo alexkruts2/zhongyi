@@ -17,9 +17,6 @@
                 <li class="breadcrumb-item active">个人病历</li>
             </ol>
         </div>
-        <div class="col-md-6 text-right">
-            <button type="button" class="btn btn-info" onclick="createInquiry()">添加</button>
-        </div>
     </div>
     <div class="row">
         <div class="col-md-12">
