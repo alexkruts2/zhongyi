@@ -331,12 +331,11 @@ class DoctorController extends Controller{
             $i++;
         }
 
-        $totalCount = treatment::all()->count();
 
         $result = array(
             "aaData"=>$guahaoDatas,
             "iTotalRecords"=>count($guahaoDatas),
-            "iTotalDisplayRecords"=>$totalCount,
+            "iTotalDisplayRecords"=>count($guahaoDatas),
         );
         return json_encode($result);
     }
@@ -548,7 +547,7 @@ class DoctorController extends Controller{
         $result = array(
             "aaData"=>$guahaoDatas,
             "iTotalRecords"=>count($guahaoDatas),
-            "iTotalDisplayRecords"=>$totalCount,
+            "iTotalDisplayRecords"=>count($guahaoDatas),
         );
         return json_encode($result);
     }

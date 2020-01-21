@@ -1,6 +1,12 @@
 var yieldTable;
 $(function(){
     drawYieldTable();
+    if($( "#tbl_yield" ).length){
+        setInterval( function () {
+            yieldTable.ajax.reload();
+        }, 120000 );
+    }
+
 });
 function drawYieldTable() {
     yieldTable = $('#tbl_yield').DataTable({

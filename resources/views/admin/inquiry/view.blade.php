@@ -81,6 +81,7 @@
 @section('scripts')
     <!--morris JavaScript -->
     <script src="{{asset('static/plugin/datatables/datatables.min.js')}}"></script>
+    <script src="//cdn.datatables.net/plug-ins/1.10.15/api/fnReloadAjax.js"></script>
     <script src="{{ asset('static/admin/inquiry.js') }}"></script>
     <script src="{{ asset('static/plugin/sweetalert/jquery.sweet-alert.custom.js') }}"></script>
     <script src="{{ asset('static/plugin/sweetalert/sweetalert.min.js') }}"></script>

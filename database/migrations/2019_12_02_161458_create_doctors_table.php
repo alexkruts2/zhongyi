@@ -19,10 +19,10 @@ class CreateDoctorsTable extends Migration
             $table->string('name',128);
             $table->string('phone',64);
             $table->integer('department_id');
-            $table->text('introduction');
+            $table->text('introduction')->nullable();
             $table->string('from',16);
             $table->string('to',16);
-            $table->string('visiting_place',128);
+            $table->string('visiting_place',128)->nullable();
             $table->string('password',128);
             $table->string('authority',128);
             $table->timestamps();

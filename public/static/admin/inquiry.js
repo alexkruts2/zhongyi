@@ -6,6 +6,8 @@ var jsonQuestion = '';
 var record_state = '';
 
 function drawGuahaoTable() {
+    if(guahaoTable)
+        guahaoTable.destroy();
     guahaoTable = $('#tbl_guahao').DataTable({
         "processing":true,
         'fnCreatedRow': function (nRow, aData, iDataIndex) {
@@ -68,19 +70,6 @@ function drawGuahaoTable() {
             {"className": "text-center", "targets": "_all"}
         ],
         "drawCallback":function(settings){
-            $('#tbl_guahao tbody').on( 'click', 'tr', function () {
-                guahaoTable.$('tr.selected').removeClass('selected');
-                $(this).addClass('selected');
-                select_treat_id = $(this).attr('id')==undefined?'':$(this).attr('id').replace('guahao_','');
-                drawInquiryTable(select_treat_id);
-
-                var rowIndex = guahaoTable.row(this).index();
-                var rowData = guahaoTable.rows( rowIndex ).data()[0];
-                if(rowData!=undefined&&rowData!=null&&rowData!=''){
-                    $("#patient_name").val(rowData.patient_name);
-                    $("#ID_Number").val(rowData.ID_Number);
-                }
-            });
                 $( "#tbl_guahao tbody tr:first-child" ).trigger('click');
         }
 
@@ -219,6 +208,26 @@ $(function () {
     $("#question_title").trigger("change");
 
     appendAnnotation();
+    if($( "#tbl_guahao" ).length){
+        setInterval( function () {
+            guahaoTable.ajax.reload();
+        }, 120000 );
+    }
+
+
+    $('#tbl_guahao tbody').on( 'click', 'tr', function () {
+        guahaoTable.$('tr.selected').removeClass('selected');
+        $(this).addClass('selected');
+        select_treat_id = $(this).attr('id')==undefined?'':$(this).attr('id').replace('guahao_','');
+        drawInquiryTable(select_treat_id);
+
+        var rowIndex = guahaoTable.row(this).index();
+        var rowData = guahaoTable.rows( rowIndex ).data()[0];
+        if(rowData!=undefined&&rowData!=null&&rowData!=''){
+            $("#patient_name").val(rowData.patient_name);
+            $("#ID_Number").val(rowData.ID_Number);
+        }
+    });
 });
 
 function createInquiry() {
@@ -549,3 +558,4 @@ $('#question-form').submit(function (e) {
         }
     });
 });
+

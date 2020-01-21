@@ -19,18 +19,18 @@ class CreateTreatmentsTable extends Migration
             $table->integer('doctor_id');
             $table->timestamp('request_time');
             $table->integer('accept_by');
-            $table->integer('question_id');
-            $table->text('question');
-            $table->text('comment');
-            $table->text('recipe');
+            $table->integer('question_id')->nullable();
+            $table->text('question')->nullable();
+            $table->text('comment')->nullable();
+            $table->text('recipe')->nullable();
             $table->string('guahao');
             $table->string('state',64);
-            $table->string('record_video');
-            $table->dateTime('treat_start');
-            $table->dateTime('treat_end');
-            $table->string('disease_name');
-            $table->double('price');
-            $table->string('original_recipe');
+            $table->string('record_video')->nullable();
+            $table->dateTime('treat_start')->nullable();
+            $table->dateTime('treat_end')->nullable();
+            $table->string('disease_name')->nullable();
+            $table->double('price')->nullable();
+            $table->string('original_recipe')->nullable();
             $table->timestamps();
         });
     }

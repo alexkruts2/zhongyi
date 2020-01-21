@@ -3,6 +3,13 @@ $(function(){
     $('#myModal').modal({backdrop: 'static', keyboard: false});
     if($("#tbl_payment").length)
         drawPaymentTable();
+
+    $('#tbl_payment tbody').on( 'click', 'tr', function () {
+        paymentTable.$('tr.selected').removeClass('selected');
+        $(this).addClass('selected');
+        select_treat_id = $(this).attr('id').replace('payment_','');
+    });
+
 })
 function inputGuahao() {
     var guahao = $('#guahao').val();
@@ -143,11 +150,6 @@ function drawPaymentTable() {
             {"className": "text-center", "targets": "_all"}
         ],
         "drawCallback":function(settings){
-            $('#tbl_payment tbody').on( 'click', 'tr', function () {
-                paymentTable.$('tr.selected').removeClass('selected');
-                $(this).addClass('selected');
-                select_treat_id = $(this).attr('id').replace('payment_','');
-            });
             if(settings.aoData.length)
                 $( "#tbl_guahao tbody tr:first-child" ).trigger('click');
         }

@@ -83,7 +83,7 @@
                     </div>
                     <div class="row mt-3">
                         <div class="col-md-12 text-center m-t-30">
-                            <button type="button" class="btn btn-success" onclick="payTreatment('{{$guahao}}')" {{$state==config('constant.treat_state.close')?'disabled':''}}><i class="fab fa-amazon-pay"></i> 发药</button>
+                            <button type="button" class="btn btn-success" onclick="payTreatment('{{$guahao}}')" {{$state==config('constant.treat_state.close')?'disabled':''}}><i class="ti-support"></i> 发药</button>
                             <button type="button" class="btn btn-danger" onclick="cancelTreatment()"><i class="ti-close"></i> 取消</button>
                         </div>
                     </div>

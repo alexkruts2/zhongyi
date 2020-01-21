@@ -18,7 +18,7 @@ class CreateRecipesTable extends Migration
             $table->string('disease_name');
             $table->integer('recipe_part_id');
             $table->text('condition');
-            $table->text('other_condition');
+            $table->text('other_condition')->nullable();
             $table->text('medicine');
             $table->string('prescription_name');
 
