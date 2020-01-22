@@ -30,6 +30,12 @@ Route::group(['prefix' => 'admin'], function () {
         });
         Route::group(['prefix' => 'income'], function () {
             Route::get('/all', 'Admin\DoctorController@incomeAll')->name('doctor.income.all');
+            Route::get('/doctor', 'Admin\DoctorController@doctorAll')->name('doctor.income.all.doctor');
+            Route::get('/getAllMonth', 'Admin\DoctorController@getAllMonthData')->name('doctor.income.getAllMonth');
+            Route::get('/getAllDay', 'Admin\DoctorController@getAllDayData')->name('doctor.income.getAllDay');
+            Route::get('/getAllWeek', 'Admin\DoctorController@getAllWeekData')->name('doctor.income.getAllWeekData');
+            Route::get('/getHourlyData', 'Admin\DoctorController@getHourlyData')->name('doctor.income.getHourlyData');
+            Route::get('/getDoctorAll', 'Admin\DoctorController@getDoctorAll')->name('doctor.income.getDoctorAll');
         });
 
     });

@@ -834,6 +834,15 @@ if (!function_exists('getStateWord')) {
             default:
                 return '';
         }
-
     }
+    if (!function_exists('getMonthData')) {
+        function getMonthData(){
+            $result = DB::select('SELECT MONTHNAME(treat_start) AS `month`,YEAR(treat_start) AS `year`, SUM(price) AS `sum`
+                                    FROM treatments
+                                    GROUP BY YEAR(treat_start), MONTH(treat_start)
+                                    ');
+            return $result;
+        }
+    }
+
 }

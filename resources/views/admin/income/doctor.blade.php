@@ -24,44 +24,40 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="row mt-3 form-group">
-                                    <div class="col-md-5">
-                                        <h4 class="card-title">收入金额趋势</h4>
-                                    </div>
-                                    <div class="col-md-7 text-right">
-                                        <button type="button" class="btn btn-sm btn-default" onclick="drawAll('day')">今日</button>
-                                        <button type="button" class="btn btn-sm btn-default" onclick="drawAll('week')">本周</button>
-                                        <button type="button" class="btn btn-default" onclick="drawAll('month')">本月</button>
-                                        <button type="button" class="btn btn-default" onclick="drawAll('year')">全年</button>
-                                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row mt-3 form-group">
+                                <div class="col-md-5">
+                                    <h4 class="card-title">收入金额趋势</h4>
                                 </div>
-                                <div class="chart-container">
-                                    <canvas id="chart2" width="100%"></canvas>
+                                <div class="col-md-7 text-right">
                                 </div>
                             </div>
+                            <div class="chart-container">
+                                <canvas id="chart2" width="100%"></canvas>
+                            </div>
                         </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-<style>
-    .chart-container {
-        position: relative;
-        margin: auto;
-        height: 80vh;
-        width: calc(90vw - 240px);
-    }
+    <style>
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 80vh;
+            width: calc(90vw - 240px);
+        }
 
-</style>
+    </style>
 @endsection
 
 @section('scripts')
     <!--morris JavaScript -->
     <script src="{{ asset('static/plugin/Chart.js/Chart.js') }}"></script>
-    <script src="{{ asset('static/admin/income.js') }}"></script>
+    <script src="{{ asset('static/admin/doctor_income.js') }}"></script>
     <script src="{{ asset('static/plugin/sweetalert/jquery.sweet-alert.custom.js') }}"></script>
     <script src="{{ asset('static/plugin/sweetalert/sweetalert.min.js') }}"></script>
     <script src="{{ asset('static/plugin/sweetalert2/sweetalert2.js') }}"></script>

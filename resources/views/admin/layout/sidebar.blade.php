@@ -89,12 +89,13 @@
                             <li class="{{request()->path() == 'doctor/history/all' ? 'active' : ''}}"><a class="{{strpos(request()->path() ,'doctor/history/all')!==false ? 'active' : ''}}" href="/doctor/history/all">全部病例</a></li>
                         </ul>
                     </li>
-{{--                    <li class="menu {{(strpos(request()->path(),'admin/income/all')!==false ) ?'active':'' }}">--}}
-{{--                        <a href="javascript:void(0)">收入记录<i class="fa fa-angle-left float-right"></i></a>--}}
-{{--                        <ul class="sub-menu" style="display:{{(strpos(request()->path(),'admin/income/all')!==false) ?'block':'none' }}">--}}
-{{--                            <li class="{{request()->path() == 'admin/income/all' ? 'active' : ''}}"><a class="{{strpos(request()->path() ,'admin/income/all')!==false ? 'active' : ''}}" href="/admin/income/all">医院收入</a></li>--}}
-{{--                        </ul>--}}
-{{--                    </li>--}}
+                    <li class="menu {{(strpos(request()->path(),'admin/income/all')!==false||strpos(request()->path(),'admin/income/doctor')!==false ) ?'active':'' }}">
+                        <a href="javascript:void(0)">收入记录<i class="fa fa-angle-left float-right"></i></a>
+                        <ul class="sub-menu" style="display:{{(strpos(request()->path(),'admin/income/all')!==false||strpos(request()->path(),'admin/income/doctor')!==false) ?'block':'none' }}">
+                            <li class="{{request()->path() == 'admin/income/all' ? 'active' : ''}}"><a class="{{strpos(request()->path() ,'admin/income/all')!==false ? 'active' : ''}}" href="/admin/income/all">医院收入</a></li>
+                            <li class="{{request()->path() == 'admin/income/doctor' ? 'active' : ''}}"><a class="{{strpos(request()->path() ,'admin/income/doctor')!==false ? 'active' : ''}}" href="/admin/income/doctor">医生收入</a></li>
+                        </ul>
+                    </li>
                     @if(empty(auth()->guard('admin')->id()))
                     <li class="menu {{(strpos(request()->path(),'doctor/setting')!==false ) ?'active':'' }}">
                         <a href="javascript:void(0)">设置<i class="fa fa-angle-left float-right"></i></a>

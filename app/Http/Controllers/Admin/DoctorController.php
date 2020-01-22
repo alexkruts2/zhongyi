@@ -14,6 +14,7 @@ use App\treatment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
+use PhpParser\Node\Stmt\Return_;
 
 class DoctorController extends Controller{
     public function dashboard(){
@@ -698,5 +699,98 @@ class DoctorController extends Controller{
            'state'=>config('constant.treat_state.close')
         ]);
         return success("OK");
+    }
+    function getAllMonthData(Request $request){
+        $doctor_name = $request->get('doctor_name');
+
+        if(!empty($doctor_name)){
+            $result = \DB::select('SELECT MONTHNAME(treat_start) AS `month`,YEAR(treat_start) AS `year`, SUM(price) AS `sum`
+                                    FROM treatments LEFT JOIN doctors ON treatments.`doctor_id`=doctors.`id` where (state=\'AFTER_TREATING_PAY\' or state=\'CLOSE\') and doctors.name=\''.$doctor_name.'\'
+                                    GROUP BY YEAR(treat_start), MONTH(treat_start)
+                                    ');
+        }else{
+            $result = \DB::select('SELECT MONTHNAME(treat_start) AS `month`,YEAR(treat_start) AS `year`, SUM(price) AS `sum`
+                                    FROM treatments where (state=\'AFTER_TREATING_PAY\' or state=\'CLOSE\')
+                                    GROUP BY YEAR(treat_start), MONTH(treat_start)');
+        }
+        return success($result);
+    }
+    function getAllDayData(Request $request){
+        $doctor_name = $request->get('doctor_name');
+        $month = date('m');
+
+        if(!empty($doctor_name)) {
+            $result = \DB::select('SELECT DAY(treat_start) AS `day`, SUM(price) AS `sum`
+                                FROM treatments LEFT JOIN doctors ON treatments.`doctor_id`=doctors.`id`
+                                WHERE MONTH(treat_start)>' . ($month - 1) . ' AND MONTH(treat_start)<' . ($month + 1) . ' AND (state=\'AFTER_TREATING_PAY\' or state=\'CLOSE\') and doctors.name=\'' . $doctor_name . '\'
+                                GROUP BY DAY(treat_start)
+                          ');
+        }else{
+            $result = \DB::select('SELECT DAY(treat_start) AS `day`, SUM(price) AS `sum`
+                                FROM treatments 
+                                WHERE MONTH(treat_start)>' . ($month - 1) . ' AND MONTH(treat_start)<' . ($month + 1) . ' AND (state=\'AFTER_TREATING_PAY\' or state=\'CLOSE\') 
+                                GROUP BY DAY(treat_start)
+                          ');
+        }
+        return success($result);
+    }
+    function getAllWeekData(Request $request){
+        $doctor_name = $request->get('doctor_name');
+
+        $mon_value= date('Y-m-d', strtotime('Sunday this week'));
+        $sat_value = date('Y-m-d', strtotime('Saturday this week'));
+
+        if(!empty($doctor_name)) {
+            $result = \DB::select('SELECT DAY(treat_start) AS `day`, SUM(price) AS `sum`
+                                FROM treatments LEFT JOIN doctors ON treatments.`doctor_id`=doctors.`id`
+                                WHERE (treat_start)>\'' . $mon_value . '\' AND (treat_start)<\'' . $sat_value . '\' AND (state=\'AFTER_TREATING_PAY\' or state=\'CLOSE\') and doctors.name=\'' . $doctor_name . '\'
+                                GROUP BY DAY(treat_start)
+                          ');
+        }else{
+            $result = \DB::select('SELECT DAY(treat_start) AS `day`, SUM(price) AS `sum`
+                                FROM treatments 
+                                WHERE (treat_start)>\'' . $mon_value . '\' AND (treat_start)<\'' . $sat_value . '\' AND (state=\'AFTER_TREATING_PAY\' or state=\'CLOSE\')
+                                GROUP BY DAY(treat_start)
+                          ');
+        }
+        return success($result);
+    }
+    function getHourlyData(Request $request){
+        $doctor_name = $request->get('doctor_name');
+
+        $yesterday = date('Y-m-d',strtotime("-1 days"));
+        $yesterday = $yesterday.' 23:59:59';
+        $tomorrow = date('Y-m-d',strtotime("+1 days"));
+        $tomorrow = $tomorrow.' 00:00:00';
+
+        if(!empty($doctor_name)) {
+            $result = \DB::select('
+            SELECT HOUR(treat_start) AS `hour`, SUM(price) AS `sum`
+            FROM treatments LEFT JOIN doctors ON treatments.`doctor_id`=doctors.`id`
+            WHERE DAY(treat_start)> \'' . $yesterday . '\' AND DAY(treat_start)< \'' . $tomorrow . '\' AND (state=\'AFTER_TREATING_PAY\' or state=\'CLOSE\') and doctors.name=\'' . $doctor_name . '\'
+            GROUP BY HOUR(treat_start)
+        ');
+        }else{
+            $result = \DB::select('
+            SELECT HOUR(treat_start) AS `hour`, SUM(price) AS `sum`
+            FROM treatments 
+            WHERE DAY(treat_start)> \'' . $yesterday . '\' AND DAY(treat_start)< \'' . $tomorrow . '\' AND (state=\'AFTER_TREATING_PAY\' or state=\'CLOSE\')
+            GROUP BY HOUR(treat_start)
+        ');
+        }
+        return success($result);
+    }
+
+    public function doctorAll(){
+        return view('admin.income.doctor');
+    }
+    public function getDoctorAll(){
+        $month = date('m');
+        $sql = 'SELECT SUM(price) AS `sum`,doctors.`name`
+            FROM treatments LEFT JOIN doctors ON treatments.`doctor_id`=doctors.`id`
+            WHERE MONTH(treat_start)>'.($month-1).' AND MONTH(treat_start)<'.($month+1).' AND (state=\'AFTER_TREATING_PAY\' or state=\'CLOSE\')
+            GROUP BY doctor_id';
+        $result = \DB::select($sql);
+        return success($result);
     }
 }
