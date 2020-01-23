@@ -93,7 +93,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success" onclick="inputGuahao()"><i class="ti-pencil"></i> 输入</button>
+                    <button type="button" class="btn btn-success" onclick="inputGuahao()"><i class="ti-pencil"></i> 确认</button>
                 </div>
             </div>
         </div>

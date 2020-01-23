@@ -5,7 +5,7 @@
             <div class="sidebarmenu">
                 <!-- Left navbar-header -->
                 <h3 class="menu-title">管理平台</h3>
-                <ul class="sidebar-menu">
+                <ul class="sidebar-menu" style="overflow-y: auto;height: calc(100vh - 180px)">
                     @if(!empty(auth()->guard('admin')->id()))
                     <li class="menu {{(strpos(request()->path(),'admin/doctor')!==false ) ?'active':'' }}">
                         <a href="javascript:void(0)">医生管理<i class="fa fa-angle-left float-right"></i></a>
@@ -96,6 +96,12 @@
                             <li class="{{request()->path() == 'admin/income/doctor' ? 'active' : ''}}"><a class="{{strpos(request()->path() ,'admin/income/doctor')!==false ? 'active' : ''}}" href="/admin/income/doctor">医生收入</a></li>
                         </ul>
                     </li>
+                        <li class="menu">
+                            <a href="javascript:void(0)">&nbsp;</a>
+                            <ul class="sub-menu">
+                            </ul>
+                        </li>
+
                     @if(empty(auth()->guard('admin')->id()))
                     <li class="menu {{(strpos(request()->path(),'doctor/setting')!==false ) ?'active':'' }}">
                         <a href="javascript:void(0)">设置<i class="fa fa-angle-left float-right"></i></a>
