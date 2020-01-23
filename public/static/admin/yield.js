@@ -6,7 +6,7 @@ $(function(){
             yieldTable.ajax.reload();
         }, 120000 );
     }
-
+    scrollSidebarTop();
 });
 function drawYieldTable() {
     yieldTable = $('#tbl_yield').DataTable({

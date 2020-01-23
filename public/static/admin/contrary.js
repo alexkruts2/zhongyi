@@ -109,6 +109,8 @@ $(function(){
             }
         });
     });
+
+    scrollSidebarTop();
 });
 function drawTable(){
     contraryTable = $('#tbl_contrary').DataTable({

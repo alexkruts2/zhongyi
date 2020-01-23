@@ -228,6 +228,8 @@ $(function () {
             $("#ID_Number").val(rowData.ID_Number);
         }
     });
+
+    scrollSidebarTop();
 });
 
 function createInquiry() {

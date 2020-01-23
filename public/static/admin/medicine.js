@@ -109,7 +109,7 @@ $(function(){
             }
         });
     });
-
+    scrollSidebarTop();
 });
 function drawTable(){
     medicineTable = $('#tbl_medicine').DataTable({

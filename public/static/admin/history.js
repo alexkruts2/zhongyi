@@ -4,6 +4,7 @@ $(function(){
     drawAllTable();
     drawIndividualTable();
     showIDModal();
+    scrollSidebarTop();
 });
 function drawAllTable() {
     allTable = $('#tbl_history_all').DataTable({

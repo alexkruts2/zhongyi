@@ -180,3 +180,13 @@ var monthLabel = {
     'November':'十一月',
     'December':'十二月'
 }
+function scrollSidebarTop(){
+
+    if (navigator.userAgent.indexOf("Chrome") !== -1){
+        $(".sidebar-menu").scrollTop($(".sidebar-menu").prop("scrollHeight")-700);
+        $(".sidebar-menu").perfectScrollbar('update');
+    }else if (navigator.userAgent.indexOf("Mozilla") !== -1){
+        $(".sidebar-menu").scrollTop($(".sidebar-menu").prop("scrollHeight"));
+        $(".sidebar-menu").perfectScrollbar('update');
+    }
+}
