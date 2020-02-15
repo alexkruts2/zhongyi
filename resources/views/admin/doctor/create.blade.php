@@ -32,7 +32,12 @@
                         <div class="form-group mt-3 row">
                             <label for="example-text-input" class="col-2 col-form-label text-right">医院名称</label>
                             <div class="col-10">
-                                <input class="form-control" type="text" value="" name='hospital_name' id="hospital_name" placeholder="医院" data-parsley-trigger="change" required="">
+                                <select class="form-control" name='hospital_name' id="hospital_name" data-parsley-required>
+                                    <option value="">--请选择医院--</option>
+                                    @foreach ($hospitals as $hospital)
+                                        <option value="{{$hospital->id}}">{{$hospital->name}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="form-group mt-3 row">
@@ -93,6 +98,16 @@
                             <label for="example-text-input" class="col-2 col-form-label text-right">出诊地点</label>
                             <div class="col-10">
                                 <input class="form-control" type="text" value="" name='visiting_place' id="visiting_place" placeholder="出诊地点" data-parsley-required/>
+                            </div>
+                        </div>
+                        <div class="form-group mt-3 row">
+                            <label for="example-text-input" class="col-2 col-form-label text-right">分成比例</label>
+                            <div class="col-10">
+                                <div class="slidecontainer">
+                                    <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+                                    <p>医生: <span id="doctor_value"></span>&nbsp;医院:<span id="hospital_value"></span></p>
+                                </div>
+                                <input type="hidden" value="" name='doctor_ratio' id="doctor_ratio" />
                             </div>
                         </div>
                         <div class="row">

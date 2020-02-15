@@ -15,7 +15,7 @@ class CreateDoctorsTable extends Migration
     {
         Schema::create('doctors', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('hospital_name',128);
+            $table->integer('hospital_id');
             $table->string('name',128);
             $table->string('phone',64);
             $table->integer('department_id');
@@ -25,6 +25,7 @@ class CreateDoctorsTable extends Migration
             $table->string('visiting_place',128)->nullable();
             $table->string('password',128);
             $table->string('authority',128);
+            $table->integer('doctor_ratio');
             $table->timestamps();
         });
     }

@@ -71,6 +71,7 @@ function drawGuahaoTable() {
         ],
         "drawCallback":function(settings){
                 $( "#tbl_guahao tbody tr:first-child" ).trigger('click');
+
         }
 
         });

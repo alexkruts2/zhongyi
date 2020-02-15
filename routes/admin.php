@@ -3,6 +3,10 @@ Route::group(['prefix' => 'admin'], function () {
     Route::group(['middleware' => 'admin'], function() {
         Route::get('/setting','Admin\HomeController@setting')->name('admin.setting');
         Route::post('/setting','Admin\HomeController@saveQRImage');
+        Route::get('/hospital','Admin\HomeController@hospitalView')->name('admin.hospital');
+        Route::get('/hospital/getList','Admin\HomeController@getHospitalList');
+        Route::post('/hospital/create','Admin\HomeController@createHospital');
+        Route::post('/hospital/edit','Admin\HomeController@editHospital');
 
         Route::get('/', 'Admin\HomeController@dashboard')->name('admin.dashboard');
         Route::get('/department', 'Admin\HomeController@department')->name('admin.department');
@@ -11,6 +15,7 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/department/get','Admin\HomeController@getDepartments');
             Route::get('/getAllDepartment','Admin\HomeController@getAllDepartment');
             Route::post('/department/delete','Admin\HomeController@deleteDepartment');
+            Route::post('/department/edit','Admin\HomeController@editDepartment');
             Route::post('/department/create','Admin\HomeController@createDepartment');
 
             Route::get('/create','Admin\HomeController@createDoctor')->name('doctor.create');
@@ -29,6 +34,10 @@ Route::group(['prefix' => 'admin'], function () {
             Route::post('/update','Admin\HomeController@updateAuthoriry')->name('doctor.authority.update');
         });
         Route::group(['prefix' => 'income'], function () {
+            Route::get('/hospital', 'Admin\DoctorController@incomeHospital')->name('doctor.income.hospital');
+            Route::post('/getHospitalProfit', 'Admin\DoctorController@getHospitalProfit')->name('doctor.income.getHospitalProfit');
+            Route::get('/doctor', 'Admin\DoctorController@incomeDoctor')->name('doctor.income.doctor');
+
             Route::get('/all', 'Admin\DoctorController@incomeAll')->name('doctor.income.all');
             Route::get('/doctor', 'Admin\DoctorController@doctorAll')->name('doctor.income.all.doctor');
             Route::get('/getAllMonth', 'Admin\DoctorController@getAllMonthData')->name('doctor.income.getAllMonth');

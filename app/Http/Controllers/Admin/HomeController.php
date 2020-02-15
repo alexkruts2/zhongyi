@@ -6,11 +6,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\department;
 use App\doctor;
+use App\hospital;
 use App\Http\Controllers\Controller;
 use App\medicine;
 use App\question;
 use App\recipe;
-use App\recipe_part;
 use App\setting;
 use Illuminate\Http\Request;
 
@@ -79,9 +79,20 @@ class HomeController extends Controller
         if (is_null($department)) {
             return error('找不到该数据');
         }
-
         $department->delete();
         return success();
+    }
+    public function editDepartment(Request $request){
+        validate($request->all(), [
+            'id' => 'required',
+            'name' => 'required'
+        ]);
+        $department = department::where('id',$request->get('id'))->first();
+        $department->update([
+            'name'=>$request->get('name')
+        ]);
+        return success($department);
+
     }
     public function createDepartment(Request $request){
         validate($request->all(), [
@@ -101,9 +112,14 @@ class HomeController extends Controller
         }
     }
     public function createDoctor(){
-        $datas = department::select('*')
+        $departments = department::select('*')
             ->orderBy('name')->get();
-        return view('admin.doctor.create')->with('departments',$datas);
+        $hospitals = hospital::select('*')
+            ->orderBy('name')->get();
+        return view('admin.doctor.create')->with([
+            'departments'=>$departments,
+            'hospitals' => $hospitals
+        ]);
     }
 
     public function saveDoctor(Request $request){
@@ -121,7 +137,7 @@ class HomeController extends Controller
             $result = doctor::updateOrCreate([
                 "id"=>$request->get("id")
             ],[
-                "hospital_name"=>$request->get("hospital_name"),
+                "hospital_id"=>$request->get("hospital_name"),
                 "name"=>$request->get("name"),
                 "phone"=>$request->get("phone"),
                 "department_id"=>$request->get("department"),
@@ -136,7 +152,7 @@ class HomeController extends Controller
             $result = doctor::updateOrCreate([
                 "id"=>$request->get("id")
             ],[
-                "hospital_name"=>$request->get("hospital_name"),
+                "hospital_id"=>$request->get("hospital_name"),
                 "name"=>$request->get("name"),
                 "phone"=>$request->get("phone"),
                 "department_id"=>$request->get("department"),
@@ -181,6 +197,7 @@ class HomeController extends Controller
         $doctorData = array();
         foreach($datas as $data) {
             $data->department_name = $data->department->name;
+            $data->hospital_name = hospital::where("id",$data->hospital_id)->first()->name;
             array_push($doctorData,$data);
         }
 
@@ -211,7 +228,9 @@ class HomeController extends Controller
         $doctor = doctor::select('*')->where('id',$id)->get();
         $departments = department::select('*')
             ->orderBy('name')->get();
-        return view('admin.doctor.edit')->with(['departments'=>$departments,'doctor'=>$doctor]);
+        $hospitals = hospital::select('*')
+            ->orderBy('name')->get();
+        return view('admin.doctor.edit')->with(['departments'=>$departments,'doctor'=>$doctor,'hospitals'=>$hospitals]);
     }
     public function detailDoctor($id){
         $doctor = doctor::select('*')->where('id',$id)->get();
@@ -227,90 +246,36 @@ class HomeController extends Controller
     }
     public function saveQRImage(Request $request){
         $weixin_image = $request->hasFile('weixin_image') ? $request->file('weixin_image') : $request->input('weixin_image');
-        $filename = sha1($weixin_image->getClientOriginalName() . time()) . '.' . $weixin_image->getClientOriginalExtension();
-        save_file_as($weixin_image, config('asset.image_path'), $filename);
-        $result = setting::updateOrCreate([
-            "name"=> config('asset.weixin_pay')
-        ],[
-            "value"=>config('asset.image_path').$filename
-        ]);
+        if(!empty($weixin_image)){
+            $filename = sha1($weixin_image->getClientOriginalName() . time()) . '.' . $weixin_image->getClientOriginalExtension();
+            save_file_as($weixin_image, config('asset.image_path'), $filename);
+            $result = setting::updateOrCreate([
+                "name"=> config('asset.weixin_pay')
+            ],[
+                "value"=>config('asset.image_path').$filename
+            ]);
+        }
         $zhifubao_image = $request->hasFile('zhifubao_image') ? $request->file('zhifubao_image') : $request->input('zhifubao_image');
-        $filename = sha1($zhifubao_image->getClientOriginalName() . time()) . '.' . $zhifubao_image->getClientOriginalExtension();
-        save_file_as($zhifubao_image, config('asset.image_path'), $filename);
-        $result = setting::updateOrCreate([
-            "name"=> config('asset.zhifubao_pay')
-        ],[
-            "value"=>config('asset.image_path').$filename
-        ]);
-        return success($result);
+        if(!empty($zhifubao_image)){
+            $filename = sha1($zhifubao_image->getClientOriginalName() . time()) . '.' . $zhifubao_image->getClientOriginalExtension();
+            save_file_as($zhifubao_image, config('asset.image_path'), $filename);
+            $result = setting::updateOrCreate([
+                "name"=> config('asset.zhifubao_pay')
+            ],[
+                "value"=>config('asset.image_path').$filename
+            ]);
+        }
+
+        return success("ok");
     }
     public function viewRecipePart(){
         return view('admin.recipe.part');
 
     }
-    public function getRecipePart(Request $request){
-        validate($request->all(), [
-            'length'=>'required'
-        ]);
-        $columns = $request->get('columns');
-        $length = $request->get('length');
-        $start = $request->get('start');
-        $order = $request->get('order');
-        $search = $request->get('search');
-        $searchValue = $search['value'];
-        $orderColumnIndex = $order[0]['column'];
-        $orderColumn = $columns[$orderColumnIndex]['data'];
-        $orderDirection = $order[0]['dir'];
-        $datas = recipe_part::select('*')->where('name','like','%'.$searchValue.'%')
-            ->orderBy($orderColumn, $orderDirection)->skip($start)->take($length)->get();
-        $departmentData = array();
-        foreach($datas as $data) {
-            $obj["created_at"] = date_format($data->created_at,'Y-m-d H:m:s');
-            $obj["name"] = is_null($data->name) ? '' : $data->name;
-            $obj["id"] = $data->id;
-            array_push($departmentData,$obj);
-        }
 
-        $result = array(
-            "aaData"=>$departmentData,
-            "iTotalRecords"=>count($datas),
-            "iTotalDisplayRecords"=>count($datas),
-        );
-        return json_encode($result);
-    }
-
-    public function createRecipePart(Request $request){
-        validate($request->all(), [
-            'name' => 'required'
-        ]);
-        $department_name = $request->get('name');
-        $department_check = recipe_part::where("name",$department_name)->first();
-        if(empty($department_check)){
-            $recipe_part = recipe_part::create([
-                'name'=>$department_name
-            ]);
-            return success([
-                'id'=>$recipe_part->id
-            ]);
-        }else{
-            return error('已经存在');
-        }
-    }
-    public function deleteRecipePart(Request $request){
-        validate($request->all(), [
-            'id' => 'required'
-        ]);
-        $recipe_part = recipe_part::where("id",$request->get('id'));
-        if (is_null($recipe_part)) {
-            return error('找不到该数据');
-        }
-
-        $recipe_part->delete();
-        return success();
-    }
 
     public function createRecipeView(Request $request){
-        $datas = recipe_part::select('*')
+        $datas = department::select('*')
             ->orderBy('name')->get();
         $medicines = medicine::select('*')->orderBy('name')->get();
         return view('admin.recipe.create')->with(['departments'=>$datas,'medicines'=>$medicines]);
@@ -318,18 +283,16 @@ class HomeController extends Controller
     public function createRecipe(Request $request){
         validate($request->all(), [
             'department' => 'required',
-            'disease_name' => 'required',
             'medicine_name' => 'required',
             'prescription_name' => 'required'
         ]);
-        $recipe_part_id = $request->get('department');
+        $department_id = $request->get('department');
         $conditions = $request->get('disease');
         $other_condition = $request->get('other_condition');
         $medicine_names = $request->get('medicine_name');
         $min_weights = $request->get("min_weight");
         $max_weights = $request->get("max_weight");
         $prices = $request->get("price");
-        $disease_name = $request->get('disease_name');
         $prescription_name = $request->get('prescription_name');
 
         $str_conditions = implode(', ', $conditions);
@@ -349,8 +312,8 @@ class HomeController extends Controller
             array_push($medicines,$item);
         }
         $recipe = recipe::create([
-            'disease_name'=>$disease_name,
-            'recipe_part_id'=>$recipe_part_id,
+            'disease_name'=>'disease_name',
+            'department_id'=>$department_id,
             'condition'=>$str_conditions,
             'other_condition'=>$other_condition,
             'medicine'=>json_encode($medicines),
@@ -379,7 +342,7 @@ class HomeController extends Controller
         $orderColumn = $columns[$orderColumnIndex]['data'];
         $orderDirection = $order[0]['dir'];
 
-        $orderColumn = $orderColumn=='recipe_part'?'recipe_part_id':$orderColumn;
+        $orderColumn = $orderColumn=='department'?'department_id':$orderColumn;
 
         $datas = recipe::select('*')->where('disease_name','like','%'.$searchValue.'%')
             ->orderBy($orderColumn, $orderDirection)->skip($start)->take($length)->get();
@@ -388,7 +351,7 @@ class HomeController extends Controller
             $obj["created_at"] = date_format($data->created_at,'Y-m-d H:m:s');
             $obj["disease_name"] = is_null($data->disease_name) ? '' : $data->disease_name;
             $obj["prescription_name"] = is_null($data->prescription_name) ? '' : $data->prescription_name;
-            $obj["recipe_part"] = is_null($data->recipe_part_id) ? '' : $data->recipe_part->name;
+            $obj["department"] = is_null($data->department_id) ? '' : $data->department->name;
             $obj["id"] = $data->id;
             array_push($departmentData,$obj);
         }
@@ -404,18 +367,18 @@ class HomeController extends Controller
         validate($request->all(), [
             'id' => 'required'
         ]);
-        $recipe_part = recipe::where("id",$request->get('id'));
-        if (is_null($recipe_part)) {
+        $recipe = recipe::where("id",$request->get('id'));
+        if (is_null($recipe)) {
             return error('找不到该数据');
         }
 
-        $recipe_part->delete();
+        $recipe->delete();
         return success();
     }
     public function editRecipe($id){
 
         $recipe = recipe::where("id",$id)->first();
-        $datas = recipe_part::select('*')
+        $datas = department::select('*')
             ->orderBy('name')->get();
         $medicines = medicine::select('*')->orderBy('name')->get();
         $recipe_medicines = json_decode($recipe->medicine);
@@ -432,21 +395,19 @@ class HomeController extends Controller
     public function updateRecipe(Request $request){
         validate($request->all(), [
             'department' => 'required',
-            'disease_name' => 'required',
             'medicine_name' => 'required',
             'prescription_name' => 'required',
             'recipe_id' => 'required'
         ]);
 
         $id = $request->get('recipe_id');
-        $recipe_part_id = $request->get('department');
+        $department_id = $request->get('department');
         $conditions = $request->get('disease');
         $other_condition = $request->get('other_condition');
         $medicine_names = $request->get('medicine_name');
         $min_weights = $request->get("min_weight");
         $max_weights = $request->get("max_weight");
         $prices = $request->get("price");
-        $disease_name = $request->get('disease_name');
         $prescription_name = $request->get('prescription_name');
 
         $str_conditions = implode(', ', $conditions);
@@ -468,8 +429,7 @@ class HomeController extends Controller
         $recipe = recipe::updateOrCreate([
             'id'=>$id
         ],[
-            'disease_name'=>$disease_name,
-            'recipe_part_id'=>$recipe_part_id,
+            'department_id'=>$department_id,
             'condition'=>$str_conditions,
             'other_condition'=>$other_condition,
             'medicine'=>json_encode($medicines),
@@ -650,5 +610,61 @@ class HomeController extends Controller
         ]);
         return success($doctor);
     }
+    public function hospitalView(){
+        return view('admin.setting.hospital');
+    }
+    public function getHospitalList(Request $request){
+        validate($request->all(), [
+            'length'=>'required'
+        ]);
+        $columns = $request->get('columns');
+        $length = $request->get('length');
+        $start = $request->get('start');
+        $order = $request->get('order');
+        $search = $request->get('search');
+        $searchValue = $search['value'];
+        $orderColumnIndex = $order[0]['column'];
+        $orderColumn = $columns[$orderColumnIndex]['data'];
+        $orderDirection = $order[0]['dir'];
+        $datas = hospital::select('*')->where('name','like','%'.$searchValue.'%')
+            ->orderBy($orderColumn, $orderDirection)->skip($start)->take($length)->get();
+        $departmentData = array();
+        foreach($datas as $data) {
+            $obj["created_at"] = date_format($data->created_at,'Y-m-d H:m:s');
+            $obj["name"] = is_null($data->name) ? '' : $data->name;
+            $obj["id"] = $data->id;
+            array_push($departmentData,$obj);
+        }
+
+        $result = array(
+            "aaData"=>$departmentData,
+            "iTotalRecords"=>count($datas),
+            "iTotalDisplayRecords"=>count($datas),
+        );
+        return json_encode($result);
+    }
+    public function createHospital(Request $request){
+        validate($request->all(), [
+            'name' => 'required'
+        ]);
+        $hospital_name = $request->get('name');
+        $hospital = hospital::create([
+           'name' => $hospital_name
+        ]);
+        return success($hospital);
+    }
+    public function editHospital(Request $request){
+        validate($request->all(), [
+            'name' => 'required',
+            'id' => 'required'
+        ]);
+        $hospital = hospital::where('id',$request->get('id'))->first();
+        $hospital->update([
+            'name'=>$request->get('name')
+        ]);
+        return success($hospital);
+
+    }
+
 
 }

@@ -39,12 +39,12 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group mt-3 row">
-                            <label for="disease_name" class="col-2 col-form-label text-right">病名</label>
-                            <div class="col-10">
-                                <input class="form-control" type="text" value="" name="disease_name" id="disease_name" data-parsley-required>
-                            </div>
-                        </div>
+{{--                        <div class="form-group mt-3 row">--}}
+{{--                            <label for="disease_name" class="col-2 col-form-label text-right">病名</label>--}}
+{{--                            <div class="col-10">--}}
+{{--                                <input class="form-control" type="text" value="" name="disease_name" id="disease_name" data-parsley-required>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                         <div id="diseaseSection">
                             <div class="row">
                                 <label class="col-2 col-form-label text-right">

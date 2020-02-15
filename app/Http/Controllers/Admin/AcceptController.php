@@ -249,7 +249,13 @@ class AcceptController extends Controller
         ]);
         $id = $request->get('id');
         $treatment = treatment::where('id',$id)->first();
+        $price = $treatment->price;
+        $ratio = $treatment->doctor->doctor_ratio;
+        $doctor_profit = $price*$ratio/100.0;
+        $hospital_profit = $price - $doctor_profit;
         $treatment->update([
+            'hospital_profit' => $hospital_profit,
+            'doctor_profit' => $doctor_profit,
             "state" => config('constant.treat_state.after_treating_pay')
         ]);
         return success("OK");

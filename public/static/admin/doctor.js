@@ -86,6 +86,7 @@ function editDoctor(id,obj){
 }
 $(function () {
 
+    initSlider();
     if($('#from').length>0){
         $('#from').clockpicker({
             donetext: '完成',
@@ -147,8 +148,7 @@ $(function () {
                 'orderable':false,
                 "mRender":function(data,type,full) {
                     return '<button class="btn btn-sm btn-primary m-l-5" onclick="viewDoctor(\'' + data+ '\', this)"><i class="ti-eye"></i>查看</button>'+
-                     '<button class="btn btn-sm btn-success m-l-5" onclick="editDoctor(\'' + data+ '\', this)"><i class="ti-pencil-alt"></i>修改</button>'+
-                     '<button class="btn btn-sm btn-danger m-l-5" onclick="deleteDoctor(\'' + data+ '\', this)"><i class="ti-trash"></i>删除</button>';
+                     '<button class="btn btn-sm btn-success m-l-5" onclick="editDoctor(\'' + data+ '\', this)"><i class="ti-pencil-alt"></i>修改</button>';
                 }
             },
             {"className": "text-center", "targets": "_all"}
@@ -240,3 +240,21 @@ $('#doctor-form').submit(function (e) {
         }
     });
 });
+
+function initSlider(){
+    var slider = document.getElementById("myRange");
+    if(slider!=null && slider!=undefined && slider!=''){
+        var doctor_value = document.getElementById("doctor_value");
+        var hospital_value = document.getElementById("hospital_value");
+        doctor_value.innerHTML = slider.value;
+        hospital_value.innerHTML = 100 - slider.value;
+        $("#doctor_ratio").val(slider.value);
+
+        slider.oninput = function() {
+            doctor_value.innerHTML = this.value;
+            hospital_value.innerHTML = 100 - this.value;
+            $("#doctor_ratio").val(this.value);
+        }
+    }
+
+}

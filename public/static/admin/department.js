@@ -1,60 +1,52 @@
 var department_table;
 var selected_row;
-function deleteDepartment(id, obj) {
-    Swal.fire({
-        title: "你确定要删除该信息吗?",
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#DD6B55",
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        showLoaderOnConfirm: true,
-        closeOnConfirm: true,
-        closeOnCancel: true
-    }).then(result => {
-        if (result.value) {
-            showOverlay();
-            $.ajax({
-                url: '/admin/doctor/department/delete',
-                data: "id=" + id,
-                cache: false,
-                dataType: 'json',
-                processData: false,
-                type: 'POST',
-                success: function (resp) {
-                    hideOverlay();
-                    if (resp.code == '0') {
-                        Swal.fire({
-                            type: 'success',
-                            text: '',
-                            title: '删除成功',
-                            showConfirmButton: false,
-                            timer: 1500
-                        });
-
-                        department_table.row($(obj).parents('tr'))
-                            .remove()
-                            .draw();
-                    } else {
-                        hideOverlay();
-                        Swal.fire({
-                            type: 'error',
-                            text: resp.message,
-                            title: '错误',
-                            showConfirmButton: false,
-                            timer: 3000
-                        });
-                    }
-                },
-                error: function (e) {
-                    Swal.fire({
-                        type: 'error',
-                        text: 'Internal Error ' + e.status + ' - ' + e.responseJSON.message,
-                        title: '错误',
-                        showConfirmButton: false,
-                        timer: 3000
-                    });
-                }
+function editDepartment(id, obj) {
+    var name = $(obj).data('name');
+    $("#department_name_edit").val(name);
+    $("#editModal").modal('show');
+    $("#saveBtn").attr("data-id",id);
+    $("#saveBtn").data("id",id);
+}
+function saveDepartment(obj) {
+    var id = $(obj).data('id');
+    var name = $("#department_name_edit").val();
+    showOverlay();
+    $.ajax({
+        url: '/admin/doctor/department/edit',
+        data: "id=" + id+'&name='+name,
+        cache: false,
+        dataType: 'json',
+        processData: false,
+        type: 'POST',
+        success: function (resp) {
+            hideOverlay();
+            if (resp.code == '0') {
+                Swal.fire({
+                    type: 'success',
+                    text: '',
+                    title: '修改成功',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                $("#immi_"+id+' td').first().html(name);
+            } else {
+                hideOverlay();
+                Swal.fire({
+                    type: 'error',
+                    text: resp.message,
+                    title: '错误',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            }
+        },
+        error: function (e) {
+            Swal.fire({
+                type: 'error',
+                text: 'Internal Error ' + e.status + ' - ' + e.responseJSON.message,
+                title: '错误',
+                showConfirmButton: false,
+                timer: 3000
             });
         }
     });
@@ -141,7 +133,7 @@ $(function () {
             {
                 "aTargets":[1],
                 "mRender":function(data,type,full) {
-                    return '<button class="btn btn-sm btn-danger m-l-5" onclick="deleteDepartment(\'' + data+ '\', this)"><i class="ti-trash"></i>删除</button>';
+                    return '<button class="btn btn-sm btn-success m-l-5" data-id="'+full.id+'" data-name="'+full.name+'" onclick="editDepartment(\'' + data+ '\', this)"><i class="ti-pencil"></i>修改</button>';
                 }
             },
             {"className": "text-center", "targets": "_all"}

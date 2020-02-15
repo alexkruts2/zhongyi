@@ -33,17 +33,17 @@
                                 <select class="form-control" name='department' id="department" data-parsley-required>
                                     <option value="0">--请选择科室--</option>
                                     @foreach ($departments as $department)
-                                        <option value="{{$department->id}}"  {{$department->id==$recipe->recipe_part_id?'selected':''}}>{{$department->name}}</option>
+                                        <option value="{{$department->id}}"  {{$department->id==$recipe->department->id?'selected':''}}>{{$department->name}}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group mt-3 row">
-                            <label for="disease_name" class="col-2 col-form-label text-right">病名</label>
-                            <div class="col-10">
-                                <input class="form-control" type="text" value="{{$recipe->disease_name}}" name="disease_name" id="disease_name" data-parsley-required>
-                            </div>
-                        </div>
+{{--                        <div class="form-group mt-3 row">--}}
+{{--                            <label for="disease_name" class="col-2 col-form-label text-right">病名</label>--}}
+{{--                            <div class="col-10">--}}
+{{--                                <input class="form-control" type="text" value="{{$recipe->disease_name}}" name="disease_name" id="disease_name" data-parsley-required>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                         <div id="diseaseSection">
                             @foreach ($conditions as $key=>$condition)
                                 <div class="row">

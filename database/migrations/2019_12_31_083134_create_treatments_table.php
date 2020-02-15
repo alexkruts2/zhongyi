@@ -30,6 +30,8 @@ class CreateTreatmentsTable extends Migration
             $table->dateTime('treat_end')->nullable();
             $table->string('disease_name')->nullable();
             $table->double('price')->nullable();
+            $table->double('doctor_profit')->nullable();
+            $table->double('hospital_profit')->nullable();
             $table->string('original_recipe')->nullable();
             $table->timestamps();
         });

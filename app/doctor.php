@@ -11,7 +11,7 @@ class doctor extends Authenticatable
     use Notifiable;
 
     protected $fillable = [
-        'hospital_name',
+        'hospital_id',
         'name',
         'phone',
         'department_id',
@@ -20,9 +20,13 @@ class doctor extends Authenticatable
         'to',
         'visiting_place',
         'password',
-        'authority'
+        'authority',
+        'doctor_ratio'
     ];
     protected $guard = 'doctor';
+    public function hospital(){
+        $this->belongsTo(hospital::class);
+    }
 
     public function department(){
         return $this->belongsTo(department::class);

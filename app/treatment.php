@@ -22,6 +22,8 @@ class treatment extends Model
         'record_video',
         'disease_name',
         'price',
+        'doctor_profit',
+        'hospital_profit',
         'original_recipe'
     ];
 

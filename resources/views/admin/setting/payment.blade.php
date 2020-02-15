@@ -12,12 +12,12 @@
 @section('content')
     <div class="row page-titles">
         <div class="col-md-12">
-            <h4 class="text-white">医生管理</h4>
+            <h4 class="text-white">系统设置</h4>
         </div>
         <div class="col-md-6">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/admin">首页</a></li>
-                <li class="breadcrumb-item active">医生管理</li>
+                <li class="breadcrumb-item active">付费设置</li>
             </ol>
         </div>
     </div>

@@ -13,16 +13,16 @@
 
     <div class="row page-titles">
         <div class="col-md-12">
-            <h4 class="text-white">药房管理</h4>
+            <h4 class="text-white">系统设置</h4>
         </div>
         <div class="col-md-6">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/admin">首页</a></li>
-                <li class="breadcrumb-item active">药房管理</li>
+                <li class="breadcrumb-item active">医院管理</li>
             </ol>
         </div>
         <div class="col-md-6 text-right">
-            <button type="button" class="btn btn-info" onclick="window.location.href = '/doctor/recipe/create'" >添加</button>
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">添加</button>
         </div>
     </div>
 
@@ -31,11 +31,10 @@
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table id="recipe" class="display nowrap table table-striped table-bordered">
+                        <table id="recipe_part" class="display nowrap table table-striped table-bordered">
                             <thead>
                             <tr>
-                                <th class="text-center">药方分类</th>
-                                <th class="text-center">药方名称</th>
+                                <th class="text-center">分类</th>
                                 <th class="text-center">操作</th>
                             </tr>
                             </thead>
@@ -48,6 +47,50 @@
         </div>
     </div>
 
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-2 text-right" style="line-height: 38px;">医院名</div>
+                        <div class="col-10">
+                            <input class="form-control" id="hospital_name" name="hospital_name" type="text" required="" placeholder="请输入医院名">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" onclick="createHospital()"><i class="ti-save"></i> 保存</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div id="editModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-2 text-right" style="line-height: 38px;">科室名</div>
+                        <div class="col-10">
+                            <input class="form-control" id="department_name_edit" type="text" required="" placeholder="请输入科室名">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" id="saveBtn" data-id="0" onclick="saveHospital(this)"><i class="ti-save"></i> 保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 @endsection
 
@@ -69,7 +112,7 @@
     <script src="{{ asset('static/plugin/sticky-kit-master/dist/sticky-kit.min.js')}}"></script>
     <script src="{{ asset('static/plugin/popper/popper.min.js')}}"></script>
     <script src="{{ asset('static/plugin/bootstrap/dist/js/bootstrap.min.js')}}"></script>
-    <script src="{{ asset('static/admin/recipe.js') }}"></script>
+    <script src="{{ asset('static/admin/hospital.js') }}"></script>
     <script src="{{ asset('static/plugin/sweetalert2/sweetalert2.js') }}"></script>
 
 @endsection

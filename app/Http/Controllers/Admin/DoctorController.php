@@ -2,11 +2,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\contrary;
+use App\department;
 use App\doctor;
+use App\hospital;
 use App\Http\Controllers\Controller;
 use App\Imports\ContraryImport;
 use App\Imports\MedicineImport;
 use App\medicine;
+use App\patient;
 use App\question;
 use App\recipe;
 use App\Rules\MatchOldPassword;
@@ -792,5 +795,90 @@ class DoctorController extends Controller{
             GROUP BY doctor_id';
         $result = \DB::select($sql);
         return success($result);
+    }
+    public function incomeHospital(){
+        $hospitals = hospital::select('*')
+            ->orderBy('name')->get();
+        $departments = department::select('*')
+            ->orderBy('name')->get();
+        return view('admin.income.hospital')->with([
+           "hospitals" => $hospitals,
+           "departments" => $departments
+        ]);
+    }
+    public function getHospitalProfit(Request $request){
+        $hospital_id = $request->get('hospital');
+        $department_id = $request->get("department");
+        $from = $request->get('from');
+        $to =  $request->get('to');
+
+        $columns = $request->get('columns');
+        $order = $request->get('order');
+        $orderColumnIndex = $order[0]['column'];
+        $orderColumn = $columns[$orderColumnIndex]['data'];
+        $orderDirection = $order[0]['dir'];
+        $search = $request->get('search');
+        $searchValue = $search['value'];
+        switch ($orderColumn) {
+            case 'patient_name':
+                $orderColumn = "patients.`name`";
+                break;
+            case 'ID_Number':
+                $orderColumn = "patients.`ID_Number`";
+                break;
+            case 'department_name':
+                $orderColumn = "departments.`name`";
+                break;
+            case 'doctor_name':
+                $orderColumn = "doctors.`name`";
+                break;
+            case 'price':
+                $orderColumn = "treatments.`price`";
+                break;
+            case 'treat_start':
+                $orderColumn = "treatments.`treat_start`";
+                break;
+            default:
+                $orderColumn = "treatments.`treat_start`";
+        }
+
+
+        $sql = "SELECT  treatments.`id`,treatments.`price`,patients.`name` AS patient_name,patients.`ID_Number`,
+                    departments.`name` AS department_name,doctors.`name` AS doctor_name,treatments.`treat_start`  FROM treatments 
+                 LEFT JOIN doctors ON treatments.`doctor_id`=doctors.`id`
+                 LEFT JOIN patients ON treatments.`patient_id` = patients.id
+                 LEFT JOIN departments ON doctors.`department_id` = departments.`id`
+                WHERE (state='AFTER_TREATING_PAY' OR state='CLOSE') AND ";
+
+        if(!empty($hospital_id))
+            $sql .="doctors.`hospital_id`=".$hospital_id." AND ";
+        if(!empty($department_id))
+            $sql .="doctors.`department_id`=".$department_id." AND ";
+        if(!empty($from))
+            $sql .="treatments.`treat_start`>'".$from.":00' AND ";
+        if(!empty($to))
+            $sql .="treatments.`treat_end`<'".$to.":00' AND ";
+        $sql .=" 1=1 ";
+        $sql .= " order by ".$orderColumn." ".$orderDirection;
+
+        $datas = \DB::select($sql);
+
+        $result = array(
+            "aaData"=>$datas,
+            "iTotalRecords"=>count($datas),
+            "iTotalDisplayRecords"=>count($datas),
+        );
+        echo json_encode($result);
+    }
+    public function incomeDoctor(){
+        $hospitals = hospital::select('*')
+            ->orderBy('name')->get();
+        $departments = department::select('*')
+            ->orderBy('name')->get();
+        return view('admin.income.doctor')->with([
+            "hospitals" => $hospitals,
+            "departments" => $departments
+        ]);
+
     }
 }
