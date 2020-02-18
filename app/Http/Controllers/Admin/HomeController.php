@@ -134,9 +134,9 @@ class HomeController extends Controller
             'from' => 'required',
             'to' => 'required'
         ]);
+        $doctor = doctor::where('name',$request->get('name'))->first();
 
         if(empty($request->get('id'))){
-            $doctor = doctor::where('name',$request->get('name'))->first();
             if(!empty($doctor)){
                 return error('医生姓名已经存在');
             }
@@ -157,6 +157,10 @@ class HomeController extends Controller
                 'authority' => "[\"问诊\"]"
             ]);
         }else{
+            if(!empty($doctor)){
+                if($doctor->id!=$request->get('id') && $doctor->name==$request->get('name'))
+                    return error('医生姓名已经存在');
+            }
             $result = doctor::updateOrCreate([
                 "id"=>$request->get("id")
             ],[
