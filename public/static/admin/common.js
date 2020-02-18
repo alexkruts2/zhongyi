@@ -84,7 +84,9 @@ $(function(){
         })
     });
 
-    $("#department").trigger("change");
+    var department_id = $("#department").val();
+    if(department_id==''||department_id==null||department_id==undefined)
+        $("#department").trigger("change");
 });
 function removeMedicine(obj) {
     var id = $(obj).data("index");

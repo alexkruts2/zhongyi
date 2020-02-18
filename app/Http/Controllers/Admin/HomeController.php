@@ -535,7 +535,13 @@ class HomeController extends Controller
         $department_id = $question->doctor->department->id;
         $doctors = doctor::select('*')->where('department_id',$department_id)->orderBy('name')->get();
 
-        return view('admin.qa.edit')->with(['question'=>$question,'departments'=>$departments,'department_id'=>$department_id,'doctors'=>$doctors]);
+        return view('admin.qa.edit')->with([
+            'question'=>$question,
+            'departments'=>$departments,
+            'department_id'=>$department_id,
+            'doctors'=>$doctors,
+            'doctor_id' => $question->doctor_id
+        ]);
     }
     public function editQAData(Request $request){
         validate($request->all(), [

@@ -166,7 +166,7 @@ $(function () {
             {
                 "aTargets":[2],
                 "mRender":function(data,type,full) {
-                    return '<button class="btn btn-sm btn-success m-l-5" onclick="location.href=\'/doctor/recipe/edit/'+data+'\'"><i class="ti-trash"></i>修改</button>'+
+                    return '<button class="btn btn-sm btn-success m-l-5" onclick="location.href=\'/doctor/recipe/edit/'+data+'\'"><i class="ti-pencil"></i>修改</button>'+
                         '<button class="btn btn-sm btn-danger m-l-5" onclick="deleteRecipe(\'' + data+ '\', this)"><i class="ti-trash"></i>删除</button>';
                 }
             },
