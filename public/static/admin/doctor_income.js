@@ -1,93 +1,69 @@
-var chartData =
-    {
-        "type":"bar",
-        "data":{"labels":["2019-1","2019-2","2019-2","2019-2","2019-2","2019-2","2019-2","2019-2","2019-2","2019-2"],
-            "datasets":[{
-                "label":"My First Dataset",
-                "data":[65,59,80,81,56,55,40,40,40,40],
-                "fill":true,
-                "borderWidth":1}
-            ]},
-        "options":{
-            "scales":{"yAxes":[{"ticks":{"beginAtZero":true}}]},
-            onClick: handleClick
-        }
-    };
-var chart;
+var doctor_profit_table;
 
+function initHospital(){
+    if($("#from").length)
+        $('#from').bootstrapMaterialDatePicker({ format: 'YYYY-MM-DD   HH:mm' });
+    if($("#to").length)
+        $('#to').bootstrapMaterialDatePicker({ format: 'YYYY-MM-DD   HH:mm' });
+}
 $(function(){
-    drawDoctor();
+    initHospital();
 });
-function drawDoctor(){
-    if(chart)
-        chart.destroy();
-        url = '/admin/income/getDoctorAll';
-    showOverlay();
-    $.ajax({
-        url: url,
-        cache: false,
-        dataType: 'json',
-        processData: false,
-        type: 'GET',
-        success: function (resp) {
-            hideOverlay();
-            if (resp.code == '0') {
-                var label = [],datas = [];
-                for(var i=0; i < resp.data.length;i++){
-                    label.push(resp.data[i].name);
-                    datas.push(resp.data[i].sum);
-                }
-                chartData.data.datasets[0].label = '医生收入';
-                chartData.data.labels = label;
-                chartData.data.datasets[0].data = datas;
-
-                chart = new Chart(document.getElementById("chart2"),chartData);
-
-            } else {
-                Swal.fire({
-                    type: 'error',
-                    text: resp.message,
-                    title: '错误',
-                    showConfirmButton: false,
-                    timer: 3000
-                });
-            }
+function drawDoctorProfitTable() {
+    if(doctor_profit_table)
+        doctor_profit_table.destroy();
+    doctor_profit_table = $('#tbl_doctor_profit').DataTable({
+        "processing":true,
+        'fnCreatedRow': function (nRow, aData, iDataIndex) {
+            $(nRow).attr('id', 'immi_' + aData.id); // or whatever you choose to set as the id
         },
-        error: function (e) {
-            hideOverlay();
-            Swal.fire({
-                type: 'error',
-                text: 'Internal Error ' + e.status + ' - ' + e.responseJSON.message,
-                title: '错误',
-                showConfirmButton: false,
-                timer: 3000
-            });
+        "serverSide":true,
+        "order": [[0, "desc"]],
+        "paging":   false,
+        "aLengthMenu":[10,20,50],
+        "ajax":{
+            "type":"POST",
+            "url": '/admin/income/getDoctorProfit',
+            "data":{
+                hospital:$("#hospital").val(),
+                department:$("#department").val(),
+                from:$("#from").val(),
+                to:$("#to").val()
+            },
+            "dataType":"json"
+        },
+        columns: [
+            {data: null},
+            {data: 'patient_name'},
+            {data: 'ID_Number'},
+            {data: 'department_name'},
+            {data: 'doctor_name'},
+            {data: 'price'},
+            {data:'treat_start'}
+        ],
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Chinese.json"
+        },
+        "aoColumnDefs": [
+            {
+                "searchable": false,
+                "orderable": false,
+                "targets": 0
+            },
+            {"className": "text-center", "targets": "_all"}
+        ],
+        "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+            $("td:nth-child(1)", nRow).html(iDisplayIndex + 1);
+            return nRow;
+        },
+        fnDrawCallback:function(settings){
+            console.log(settings.aoData);
+            var sum = 0.0;
+            for(var i = 0 ; i<settings.aoData.length;i++){
+                sum += 1.0*settings.aoData[i]._aData.price;
+            }
+            $("#totalSum").html(sum);
+            console.log(sum);
         }
     });
-}
-function handleClick(c,i) {
-    e = i[0];
-    console.log(e._index)
-    var x_value = this.data.labels[e._index];
-    var y_value = this.data.datasets[0].data[e._index];
-    console.log(x_value);
-    console.log(y_value);
-
-
-    var form = document.createElement("form");
-    var element1 = document.createElement("input");
-
-    form.method = "GET";
-    form.action = "/admin/income/all";
-
-    element1.value=x_value;
-    element1.name="doctor_name";
-    form.appendChild(element1);
-
-
-    document.body.appendChild(form);
-
-    form.submit();
-
-
 }

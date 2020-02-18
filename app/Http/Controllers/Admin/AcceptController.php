@@ -31,7 +31,10 @@ class AcceptController extends Controller
     }
     public function getDoctorsInDepartment(Request $request){
         $department_id = $request->get('department_id');
-        $datas = doctor::select('*')->where('department_id',$department_id)->orderBy('name')->get();
+        if(empty($department_id))
+            $datas = doctor::select('*')->orderBy('name')->get();
+        else
+            $datas = doctor::select('*')->where('department_id',$department_id)->orderBy('name')->get();
         return success($datas);
     }
     public function createPatient(Request $request){
@@ -107,6 +110,12 @@ class AcceptController extends Controller
             ->orWhere('phone_number','like','%'.$searchValue.'%')
             ->join('patients', 'treatments.patient_id', '=', 'patients.id')
             ->orderBy($orderColumn, $orderDirection)->skip($start)->take($length)->get();
+        $availableDatas = treatment::select('treatments.*')->where('guahao','like','%'.$searchValue.'%')
+            ->orWhere('disease_name','like','%'.$searchValue.'%')
+            ->orWhere('ID_Number','like','%'.$searchValue.'%')
+            ->orWhere('phone_number','like','%'.$searchValue.'%')
+            ->join('patients', 'treatments.patient_id', '=', 'patients.id')
+            ->get();
         $guahaoData = array();
         foreach($datas as $data) {
             $obj["id"] = $data->id;
@@ -121,7 +130,7 @@ class AcceptController extends Controller
         $result = array(
             "aaData"=>$guahaoData,
             "iTotalRecords"=>count($datas),
-            "iTotalDisplayRecords"=>count($datas),
+            "iTotalDisplayRecords"=>count($availableDatas),
         );
         return json_encode($result);
     }
@@ -207,9 +216,17 @@ class AcceptController extends Controller
         $id = $request->get('id');
         $state = $request->get('state');
         $treatment = treatment::where('id',$id)->first();
+        $accept_price = setting::where('name','ACCEPT_PRICE')->first()->value;
+        $doctor_ratio = $treatment->doctor->doctor_ratio;
+        $hospital_profit = $accept_price*(100-$doctor_ratio)/100.0;
+        $doctor_profit = $accept_price*$doctor_ratio/100.0;
         $treatment->update([
-            'state' => $state
+            'state' => $state,
+            'price' => $accept_price,
+            'hospital_profit' => $hospital_profit,
+            'doctor_profit' => $doctor_profit
         ]);
+
         return success($treatment);
     }
     public function paymentCreate(){
@@ -229,6 +246,7 @@ class AcceptController extends Controller
         $treatment = treatment::where('guahao',$guahao)->first();
         if(empty($treatment))
             return error('无效的挂号。');
+        $accept_price = setting::where('name','ACCEPT_PRICE')->first()->value;
 
         $state = $treatment->state;
         if($state==config('constant.treat_state.before_treating_pay')){
@@ -237,7 +255,7 @@ class AcceptController extends Controller
                 "guahao" => $guahao,
                 "patient_name" => $treatment->patient->name,
                 "recipe" => recipe::where('id',$treatment->original_recipe)->first()->prescription_name,
-                "price" => $treatment->price
+                "price" => $treatment->price - $accept_price
             );
             return success($result);
         }else
@@ -251,7 +269,7 @@ class AcceptController extends Controller
         $treatment = treatment::where('id',$id)->first();
         $price = $treatment->price;
         $ratio = $treatment->doctor->doctor_ratio;
-        $doctor_profit = $price*$ratio/100.0;
+        $doctor_profit = $price*$ratio/100.0 + config();
         $hospital_profit = $price - $doctor_profit;
         $treatment->update([
             'hospital_profit' => $hospital_profit,
@@ -279,6 +297,7 @@ class AcceptController extends Controller
 
         $datas = treatment::select('treatments.*')->where('treatments.state',config('constant.treat_state.before_treating_pay'))
             ->orderBy($orderColumn, $orderDirection)->skip($start)->take($length)->get();
+        $availableDatas =treatment::select('treatments.*')->where('treatments.state',config('constant.treat_state.before_treating_pay'))->get();
         $arrayDatas = [];
         foreach($datas as $data){
             $temp['id'] = $data->id;
@@ -289,7 +308,7 @@ class AcceptController extends Controller
             $temp['doctor_name'] = $data->doctor->name;
             array_push($arrayDatas,$temp);
         }
-        $totalCount = count($datas);
+        $totalCount = count($availableDatas);
         $result = array(
             "aaData"=>$arrayDatas,
             "iTotalRecords"=>count($datas),
@@ -297,7 +316,6 @@ class AcceptController extends Controller
         );
 
         return json_encode($result);
-
     }
 }
 

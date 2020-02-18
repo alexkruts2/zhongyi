@@ -43,6 +43,15 @@
                             </div>
                         </div>
                     </form>
+                    <div class="form-group mt-3 row">
+                        <label for="example-text-input" class="col-md-2 col-form-label text-right">接受费</label>
+                        <div class="col-md-6">
+                            <input class="form-control" type="number" name='accept_price' id="accept_price" placeholder="接受费" value="{{$accept_price}}"/>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-success" onclick="saveAccept();"><i class="ti-save"></i> 保存</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

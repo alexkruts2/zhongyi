@@ -21,7 +21,8 @@ class doctor extends Authenticatable
         'visiting_place',
         'password',
         'authority',
-        'doctor_ratio'
+        'doctor_ratio',
+        'state'
     ];
     protected $guard = 'doctor';
     public function hospital(){

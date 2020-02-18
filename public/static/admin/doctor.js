@@ -148,7 +148,8 @@ $(function () {
                 'orderable':false,
                 "mRender":function(data,type,full) {
                     return '<button class="btn btn-sm btn-primary m-l-5" onclick="viewDoctor(\'' + data+ '\', this)"><i class="ti-eye"></i>查看</button>'+
-                     '<button class="btn btn-sm btn-success m-l-5" onclick="editDoctor(\'' + data+ '\', this)"><i class="ti-pencil-alt"></i>修改</button>';
+                     '<button class="btn btn-sm btn-success m-l-5" onclick="editDoctor(\'' + data+ '\', this)"><i class="ti-pencil-alt"></i>修改</button>'+
+                        '<button class="btn btn-sm btn-danger m-l-5" onclick="deleteDoctor(\'' + data+ '\', this)"><i class="ti-trash"></i>删除</button>';
                 }
             },
             {"className": "text-center", "targets": "_all"}

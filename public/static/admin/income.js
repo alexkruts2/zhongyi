@@ -28,7 +28,6 @@ function initHospital(){
         $('#from').bootstrapMaterialDatePicker({ format: 'YYYY-MM-DD   HH:mm' });
     if($("#to").length)
         $('#to').bootstrapMaterialDatePicker({ format: 'YYYY-MM-DD   HH:mm' });
-
 }
 function drawAll(period){
     if(chart)
@@ -216,7 +215,7 @@ function drawHospitalTable() {
             console.log(settings.aoData);
             var sum = 0.0;
             for(var i = 0 ; i<settings.aoData.length;i++){
-                sum +=settings.aoData[i]._aData.price;
+                sum += 1.0*settings.aoData[i]._aData.price;
             }
             $("#totalSum").html(sum);
             console.log(sum);

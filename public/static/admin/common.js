@@ -83,7 +83,9 @@ $(function(){
 
         })
     });
-})
+
+    $("#department").trigger("change");
+});
 function removeMedicine(obj) {
     var id = $(obj).data("index");
     $("#medicine option[value='" + id + "']").attr("disabled",false);

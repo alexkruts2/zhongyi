@@ -2,6 +2,8 @@
 Route::group(['prefix' => 'admin'], function () {
     Route::group(['middleware' => 'admin'], function() {
         Route::get('/setting','Admin\HomeController@setting')->name('admin.setting');
+        Route::get('/accept/price','Admin\HomeController@setAcceptPrice')->name('admin.accept.price');
+
         Route::post('/setting','Admin\HomeController@saveQRImage');
         Route::get('/hospital','Admin\HomeController@hospitalView')->name('admin.hospital');
         Route::get('/hospital/getList','Admin\HomeController@getHospitalList');
@@ -36,6 +38,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::group(['prefix' => 'income'], function () {
             Route::get('/hospital', 'Admin\DoctorController@incomeHospital')->name('doctor.income.hospital');
             Route::post('/getHospitalProfit', 'Admin\DoctorController@getHospitalProfit')->name('doctor.income.getHospitalProfit');
+            Route::post('/getDoctorProfit', 'Admin\DoctorController@getDoctorProfit')->name('doctor.income.getDoctorProfit');
             Route::get('/doctor', 'Admin\DoctorController@incomeDoctor')->name('doctor.income.doctor');
 
             Route::get('/all', 'Admin\DoctorController@incomeAll')->name('doctor.income.all');

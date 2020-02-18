@@ -31,7 +31,7 @@
                             <label for="example-text-input" class="col-2 col-form-label text-right">科室</label>
                             <div class="col-10">
                                 <select class="form-control" name='department' id="department" data-parsley-required>
-                                    <option value="0">--请选择科室--</option>
+                                    <option value="0">--全部科室--</option>
                                     @foreach ($departments as $department)
                                         <option value="{{$department->id}}"  {{$department->id==$recipe->department->id?'selected':''}}>{{$department->name}}</option>
                                     @endforeach

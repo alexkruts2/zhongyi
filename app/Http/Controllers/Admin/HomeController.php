@@ -56,6 +56,8 @@ class HomeController extends Controller
         $orderDirection = $order[0]['dir'];
         $datas = department::select('*')->where('name','like','%'.$searchValue.'%')
             ->orderBy($orderColumn, $orderDirection)->skip($start)->take($length)->get();
+        $availableDatas = department::select('*')->where('name','like','%'.$searchValue.'%')->get();
+
         $departmentData = array();
         foreach($datas as $data) {
             $obj["created_at"] = date_format($data->created_at,'Y-m-d H:m:s');
@@ -67,7 +69,7 @@ class HomeController extends Controller
         $result = array(
             "aaData"=>$departmentData,
             "iTotalRecords"=>count($datas),
-            "iTotalDisplayRecords"=>count($datas),
+            "iTotalDisplayRecords"=>count($availableDatas),
         );
         return json_encode($result);
     }
@@ -146,6 +148,8 @@ class HomeController extends Controller
                 "to"=>$request->get("to"),
                 "visiting_place"=>$request->get("visiting_place"),
                 "password"=>bcrypt($request->get("password")),
+                "state" => "NORMAL",
+                'doctor_ratio' => $request->get('doctor_ratio'),
                 'authority' => "[\"问诊\"]"
             ]);
         }else{
@@ -159,6 +163,7 @@ class HomeController extends Controller
                 "introduction"=>$request->get("introduction"),
                 "from"=>$request->get("from"),
                 "to"=>$request->get("to"),
+                'doctor_ratio' => $request->get('doctor_ratio'),
                 "visiting_place"=>$request->get("visiting_place"),
             ]);
         }
@@ -187,11 +192,14 @@ class HomeController extends Controller
 
         $department = $columns[4]['search']['value'];
         if(empty($department)){
-            $datas = doctor::select('*')->where('name','like','%'.$searchValue.'%')
+            $datas = doctor::select('*')->where('name','like','%'.$searchValue.'%')->where('state','NORMAL')
                 ->orderBy($orderColumn, $orderDirection)->skip($start)->take($length)->get();
+            $availableDoctors = doctor::select('*')->where('name','like','%'.$searchValue.'%')->where('state','NORMAL')->get();
         }else{
-            $datas = doctor::select('*')->where('name','like','%'.$searchValue.'%')->where('department_id',$department)
+            $datas = doctor::select('*')->where('name','like','%'.$searchValue.'%')->where('department_id',$department)->where('state','NORMAL')
                 ->orderBy($orderColumn, $orderDirection)->skip($start)->take($length)->get();
+            $availableDoctors = doctor::select('*')->where('name','like','%'.$searchValue.'%')->where('department_id',$department)->where('state','NORMAL')->get();
+
         }
 
         $doctorData = array();
@@ -201,10 +209,11 @@ class HomeController extends Controller
             array_push($doctorData,$data);
         }
 
+
         $result = array(
             "aaData"=>$doctorData,
             "iTotalRecords"=>count($datas),
-            "iTotalDisplayRecords"=>count($datas),
+            "iTotalDisplayRecords"=>count($availableDoctors),
         );
         return json_encode($result);
     }
@@ -220,7 +229,9 @@ class HomeController extends Controller
         if (is_null($doctor)) {
             return error('找不到该数据');
         }
-        $doctor->delete();
+        $doctor->update([
+            'state' => 'DELETED'
+        ]);
         return success();
     }
 
@@ -241,8 +252,13 @@ class HomeController extends Controller
     public function setting(){
         $weixin_url = setting::select('value')->where('name',config('asset.weixin_pay'))->get()[0]->value;
         $zhifubao_url = setting::select('value')->where('name',config('asset.zhifubao_pay'))->get()[0]->value;
+        $accept_price = setting::select('value')->where('name',config('asset.ACCEPT_PRICE'))->get()[0]->value;
 
-        return view('admin.setting.payment')->with(['weixin_url'=>$weixin_url,'zhifubao_url'=>$zhifubao_url]);
+        return view('admin.setting.payment')->with([
+            'weixin_url' => $weixin_url,
+            'zhifubao_url' => $zhifubao_url,
+            'accept_price' => $accept_price
+        ]);
     }
     public function saveQRImage(Request $request){
         $weixin_image = $request->hasFile('weixin_image') ? $request->file('weixin_image') : $request->input('weixin_image');
@@ -346,6 +362,7 @@ class HomeController extends Controller
 
         $datas = recipe::select('*')->where('disease_name','like','%'.$searchValue.'%')
             ->orderBy($orderColumn, $orderDirection)->skip($start)->take($length)->get();
+        $availableDatas = recipe::select('*')->where('disease_name','like','%'.$searchValue.'%')->get();
         $departmentData = array();
         foreach($datas as $data) {
             $obj["created_at"] = date_format($data->created_at,'Y-m-d H:m:s');
@@ -359,7 +376,7 @@ class HomeController extends Controller
         $result = array(
             "aaData"=>$departmentData,
             "iTotalRecords"=>count($datas),
-            "iTotalDisplayRecords"=>count($datas),
+            "iTotalDisplayRecords"=>count($availableDatas),
         );
         return json_encode($result);
     }
@@ -491,6 +508,7 @@ class HomeController extends Controller
 
         $datas = question::select('*')->where('title','like','%'.$searchValue.'%')
             ->orderBy($orderColumn, $orderDirection)->skip($start)->take($length)->get();
+        $availableDatas = question::select('*')->where('title','like','%'.$searchValue.'%')->get();
         $qaData = array();
         foreach($datas as $data) {
             $obj["created_at"] = date_format($data->created_at,'Y-m-d H:m:s');
@@ -505,7 +523,7 @@ class HomeController extends Controller
         $result = array(
             "aaData"=>$qaData,
             "iTotalRecords"=>count($datas),
-            "iTotalDisplayRecords"=>count($datas),
+            "iTotalDisplayRecords"=>count($availableDatas),
         );
         return json_encode($result);
     }
@@ -583,6 +601,7 @@ class HomeController extends Controller
 
         $datas = doctor::select('*')->where('name','like','%'.$searchValue.'%')
             ->orderBy($orderColumn, $orderDirection)->skip($start)->take($length)->get();
+        $availableDatas = doctor::select('*')->where('name','like','%'.$searchValue.'%')->get();
 
         $doctorData = array();
         foreach($datas as $data) {
@@ -593,7 +612,7 @@ class HomeController extends Controller
         $result = array(
             "aaData"=>$doctorData,
             "iTotalRecords"=>count($datas),
-            "iTotalDisplayRecords"=>count($datas),
+            "iTotalDisplayRecords"=>count($availableDatas)
         );
         return json_encode($result);
     }
@@ -628,6 +647,8 @@ class HomeController extends Controller
         $orderDirection = $order[0]['dir'];
         $datas = hospital::select('*')->where('name','like','%'.$searchValue.'%')
             ->orderBy($orderColumn, $orderDirection)->skip($start)->take($length)->get();
+        $availableDatas = hospital::select('*')->where('name','like','%'.$searchValue.'%')->get();
+
         $departmentData = array();
         foreach($datas as $data) {
             $obj["created_at"] = date_format($data->created_at,'Y-m-d H:m:s');
@@ -639,7 +660,7 @@ class HomeController extends Controller
         $result = array(
             "aaData"=>$departmentData,
             "iTotalRecords"=>count($datas),
-            "iTotalDisplayRecords"=>count($datas),
+            "iTotalDisplayRecords"=>count($availableDatas),
         );
         return json_encode($result);
     }
@@ -664,6 +685,17 @@ class HomeController extends Controller
         ]);
         return success($hospital);
 
+    }
+    public function setAcceptPrice(Request $request){
+        validate($request->all(), [
+            'accept_price'=>'required'
+        ]);
+        $accept_price = $request->get('accept_price');
+        $setting = setting::where('name','ACCEPT_PRICE')->first();
+        $result = $setting->update([
+            'value' => $accept_price
+        ]);
+        return success();
     }
 
 

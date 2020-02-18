@@ -93,6 +93,18 @@
                                 <input class="form-control" type="text" value="{{$doctor[0]->visiting_place}}" name='visiting_place' id="visiting_place" placeholder="出诊地点" data-parsley-required/>
                             </div>
                         </div>
+
+                        <div class="form-group mt-3 row">
+                            <label for="example-text-input" class="col-2 col-form-label text-right">分成比例</label>
+                            <div class="col-10">
+                                <div class="slidecontainer">
+                                    <input type="range" min="1" max="100" value="{{$doctor[0]->doctor_ratio}}" class="slider" id="myRange">
+                                    <p>医生: <span id="doctor_value"></span>&nbsp;医院:<span id="hospital_value"></span></p>
+                                </div>
+                                <input type="hidden" value="" name='doctor_ratio' id="doctor_ratio" value="{{$doctor[0]->doctor_ratio}}"/>
+                            </div>
+                        </div>
+
                         <div class="row">
                             <div class="col-md-12 text-center">
                                 <button type="submit" class="btn btn-success"><i class="ti-save"></i> 保存</button>

@@ -11,5 +11,6 @@ return [
     'file_path' => '/uploads/files/',
     'weixin_pay'=> 'WEIXIN_PAY',
     'zhifubao_pay'=> 'ZHIFUBAO_PAY',
-    'avatar_path' => '/uploads/avatars/'
+    'avatar_path' => '/uploads/avatars/',
+    'ACCEPT_PRICE'=>'ACCEPT_PRICE'
 ];

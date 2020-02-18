@@ -13,6 +13,7 @@ use App\patient;
 use App\question;
 use App\recipe;
 use App\Rules\MatchOldPassword;
+use App\setting;
 use App\treatment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -90,12 +91,12 @@ class DoctorController extends Controller{
 
         $datas = medicine::select('*')->where('name','like','%'.$searchValue.'%')
             ->orderBy($orderColumn, $orderDirection)->skip($start)->take($length)->get();
-
+        $availableDatas = medicine::select('*')->where('name','like','%'.$searchValue.'%')->get();
 
         $result = array(
             "aaData"=>$datas,
             "iTotalRecords"=>count($datas),
-            "iTotalDisplayRecords"=>count($datas),
+            "iTotalDisplayRecords"=>count($availableDatas),
         );
         return json_encode($result);
     }
@@ -186,11 +187,11 @@ class DoctorController extends Controller{
         $datas = contrary::select('*')->where('name','like','%'.$searchValue.'%')
             ->orderBy($orderColumn, $orderDirection)->skip($start)->take($length)->get();
 
-
+        $availableDatas = contrary::select('*')->where('name','like','%'.$searchValue.'%')->get();
         $result = array(
             "aaData"=>$datas,
             "iTotalRecords"=>count($datas),
-            "iTotalDisplayRecords"=>count($datas),
+            "iTotalDisplayRecords"=>count($availableDatas),
         );
         return json_encode($result);
     }
@@ -237,14 +238,21 @@ class DoctorController extends Controller{
         if($orderColumn=='patient_name')
             $orderColumn = 'patients.name';
 
-        if(empty($doctor_id))//admin
+        if(empty($doctor_id)){//admin
             $datas = treatment::select('treatments.*')->where('state',config('constant.treat_state.waiting_treatment'))
                 ->join('patients', 'treatments.patient_id', '=', 'patients.id')
                 ->orderBy('treatments.created_at', 'desc')->orderBy($orderColumn, $orderDirection)->skip($start)->take($length)->get();
-        else//doctor
-            $datas = treatment::select('treatments.*')->where('doctor_id',$doctor_id)->where('state',config('constant.treat_state.waiting_treatment'))
+            $availableDatas = treatment::select('treatments.*')->where('state',config('constant.treat_state.waiting_treatment'))
+                ->join('patients', 'treatments.patient_id', '=', 'patients.id')
+                ->get();
+        }else {//doctor
+                $datas = treatment::select('treatments.*')->where('doctor_id', $doctor_id)->where('state', config('constant.treat_state.waiting_treatment'))
                 ->join('patients', 'treatments.patient_id', '=', 'patients.id')
                 ->orderBy('treatments.created_at', 'desc')->orderBy($orderColumn, $orderDirection)->skip($start)->take($length)->get();
+                $availableDatas =treatment::select('treatments.*')->where('doctor_id', $doctor_id)->where('state', config('constant.treat_state.waiting_treatment'))
+                    ->join('patients', 'treatments.patient_id', '=', 'patients.id')
+                    ->get();
+        }
         $guahaoDatas = [];
         foreach($datas as $data){
             $temp = array();
@@ -256,7 +264,7 @@ class DoctorController extends Controller{
             array_push($guahaoDatas,$temp);
         }
 
-        $totalCount = count($guahaoDatas);
+        $totalCount = count($availableDatas);
 
         $result = array(
             "aaData"=>$guahaoDatas,
@@ -297,6 +305,9 @@ class DoctorController extends Controller{
         $datas = treatment::select('treatments.*')->where('treatments.patient_id',$patient_id)->where('state','!=',config('constant.treat_state.waiting_treatment'))
             ->join('patients', 'treatments.patient_id', '=', 'patients.id')
             ->orderBy('treat_start', $orderDirection)->skip($start)->take($length)->get();
+        $availableDatas =treatment::select('treatments.*')->where('treatments.patient_id',$patient_id)->where('state','!=',config('constant.treat_state.waiting_treatment'))
+            ->join('patients', 'treatments.patient_id', '=', 'patients.id')
+            ->get();
         $guahaoDatas = [];
         $i = 1;
         $prev_patient_name = '';
@@ -337,7 +348,7 @@ class DoctorController extends Controller{
         $result = array(
             "aaData"=>$guahaoDatas,
             "iTotalRecords"=>count($guahaoDatas),
-            "iTotalDisplayRecords"=>count($guahaoDatas),
+            "iTotalDisplayRecords"=>count($availableDatas),
         );
         return json_encode($result);
     }
@@ -438,6 +449,8 @@ class DoctorController extends Controller{
         }
         $treat_end = date("Y-m-d H:i:s");
         $treatment = treatment::where('guahao',$guahao)->first();
+        $accept_price = setting::where('name','ACCEPT_PRICE')->first()->value;
+
         $treatment->update([
             'question_id'=>$question_id,
             'record_video' => $video_url,
@@ -446,7 +459,7 @@ class DoctorController extends Controller{
             'original_recipe' => $recipe_id,
             'treat_end' => $treat_end,
             'state' => config('constant.treat_state.before_treating_pay'),
-            'price' => $total_price,
+            'price' => $total_price + $accept_price*1.0,
             'disease_name' => $disease_name,
             'recipe' => json_encode($medicines)
         ]);
@@ -511,6 +524,13 @@ class DoctorController extends Controller{
             ->where('state','!=',config('constant.treat_state.accept'))
             ->join('patients', 'treatments.patient_id', '=', 'patients.id')
             ->orderBy('treat_start', 'desc')->orderBy($orderColumn, $orderDirection)->skip($start)->take($length)->get();
+        $availableDatas = treatment::select('*')
+            ->where('patients.name','like','%'.$searchValue.'%')
+            ->where('state','!=',config('constant.treat_state.waiting_treatment'))
+            ->where('state','!=',config('constant.treat_state.accept'))
+            ->join('patients', 'treatments.patient_id', '=', 'patients.id')
+            ->get();
+
         $guahaoDatas = [];
         $i = 1;
         $prev_patient_name = '';
@@ -548,7 +568,7 @@ class DoctorController extends Controller{
         $result = array(
             "aaData"=>$guahaoDatas,
             "iTotalRecords"=>count($guahaoDatas),
-            "iTotalDisplayRecords"=>count($guahaoDatas),
+            "iTotalDisplayRecords"=>count($availableDatas),
         );
         return json_encode($result);
     }
@@ -633,6 +653,14 @@ class DoctorController extends Controller{
             })
             ->join('patients', 'treatments.patient_id', '=', 'patients.id')
             ->orderBy('treat_start', 'desc')->orderBy($orderColumn, $orderDirection)->skip($start)->take($length)->get();
+        $availableDatas = treatment::select('treatments.*')
+            ->where('guahao','like','%'.$searchValue.'%')
+            ->where(function($query){
+                $query->where('state',config('constant.treat_state.after_treating_pay'));
+                $query->orWhere('state',config('constant.treat_state.close'));
+            })
+            ->join('patients', 'treatments.patient_id', '=', 'patients.id')
+            ->get();
         $guahaoDatas = [];
         $i = 1;
         $prev_patient_name = '';
@@ -670,7 +698,7 @@ class DoctorController extends Controller{
         $result = array(
             "aaData"=>$guahaoDatas,
             "iTotalRecords"=>count($guahaoDatas),
-            "iTotalDisplayRecords"=>count($guahaoDatas),
+            "iTotalDisplayRecords"=>count($availableDatas),
         );
         return json_encode($result);
     }
@@ -708,12 +736,12 @@ class DoctorController extends Controller{
 
         if(!empty($doctor_name)){
             $result = \DB::select('SELECT MONTHNAME(treat_start) AS `month`,YEAR(treat_start) AS `year`, SUM(price) AS `sum`
-                                    FROM treatments LEFT JOIN doctors ON treatments.`doctor_id`=doctors.`id` where (state=\'AFTER_TREATING_PAY\' or state=\'CLOSE\') and doctors.name=\''.$doctor_name.'\'
+                                    FROM treatments LEFT JOIN doctors ON treatments.`doctor_id`=doctors.`id` where (treatments.state=\'AFTER_TREATING_PAY\' or treatments.state=\'CLOSE\') and doctors.name=\''.$doctor_name.'\'
                                     GROUP BY YEAR(treat_start), MONTH(treat_start)
                                     ');
         }else{
             $result = \DB::select('SELECT MONTHNAME(treat_start) AS `month`,YEAR(treat_start) AS `year`, SUM(price) AS `sum`
-                                    FROM treatments where (state=\'AFTER_TREATING_PAY\' or state=\'CLOSE\')
+                                    FROM treatments where (treatments.state=\'AFTER_TREATING_PAY\' or treatments.state=\'CLOSE\')
                                     GROUP BY YEAR(treat_start), MONTH(treat_start)');
         }
         return success($result);
@@ -725,13 +753,13 @@ class DoctorController extends Controller{
         if(!empty($doctor_name)) {
             $result = \DB::select('SELECT DAY(treat_start) AS `day`, SUM(price) AS `sum`
                                 FROM treatments LEFT JOIN doctors ON treatments.`doctor_id`=doctors.`id`
-                                WHERE MONTH(treat_start)>' . ($month - 1) . ' AND MONTH(treat_start)<' . ($month + 1) . ' AND (state=\'AFTER_TREATING_PAY\' or state=\'CLOSE\') and doctors.name=\'' . $doctor_name . '\'
+                                WHERE MONTH(treat_start)>' . ($month - 1) . ' AND MONTH(treat_start)<' . ($month + 1) . ' AND (treatments.state=\'AFTER_TREATING_PAY\' or treatments.state=\'CLOSE\') and doctors.name=\'' . $doctor_name . '\'
                                 GROUP BY DAY(treat_start)
                           ');
         }else{
             $result = \DB::select('SELECT DAY(treat_start) AS `day`, SUM(price) AS `sum`
                                 FROM treatments 
-                                WHERE MONTH(treat_start)>' . ($month - 1) . ' AND MONTH(treat_start)<' . ($month + 1) . ' AND (state=\'AFTER_TREATING_PAY\' or state=\'CLOSE\') 
+                                WHERE MONTH(treat_start)>' . ($month - 1) . ' AND MONTH(treat_start)<' . ($month + 1) . ' AND (treatments.state=\'AFTER_TREATING_PAY\' or treatments.state=\'CLOSE\') 
                                 GROUP BY DAY(treat_start)
                           ');
         }
@@ -746,13 +774,13 @@ class DoctorController extends Controller{
         if(!empty($doctor_name)) {
             $result = \DB::select('SELECT DAY(treat_start) AS `day`, SUM(price) AS `sum`
                                 FROM treatments LEFT JOIN doctors ON treatments.`doctor_id`=doctors.`id`
-                                WHERE (treat_start)>\'' . $mon_value . '\' AND (treat_start)<\'' . $sat_value . '\' AND (state=\'AFTER_TREATING_PAY\' or state=\'CLOSE\') and doctors.name=\'' . $doctor_name . '\'
+                                WHERE (treat_start)>\'' . $mon_value . '\' AND (treat_start)<\'' . $sat_value . '\' AND (treatments.state=\'AFTER_TREATING_PAY\' or treatments.state=\'CLOSE\') and doctors.name=\'' . $doctor_name . '\'
                                 GROUP BY DAY(treat_start)
                           ');
         }else{
             $result = \DB::select('SELECT DAY(treat_start) AS `day`, SUM(price) AS `sum`
                                 FROM treatments 
-                                WHERE (treat_start)>\'' . $mon_value . '\' AND (treat_start)<\'' . $sat_value . '\' AND (state=\'AFTER_TREATING_PAY\' or state=\'CLOSE\')
+                                WHERE (treat_start)>\'' . $mon_value . '\' AND (treat_start)<\'' . $sat_value . '\' AND (treatments.state=\'AFTER_TREATING_PAY\' or treatments.state=\'CLOSE\')
                                 GROUP BY DAY(treat_start)
                           ');
         }
@@ -770,14 +798,14 @@ class DoctorController extends Controller{
             $result = \DB::select('
             SELECT HOUR(treat_start) AS `hour`, SUM(price) AS `sum`
             FROM treatments LEFT JOIN doctors ON treatments.`doctor_id`=doctors.`id`
-            WHERE DAY(treat_start)> \'' . $yesterday . '\' AND DAY(treat_start)< \'' . $tomorrow . '\' AND (state=\'AFTER_TREATING_PAY\' or state=\'CLOSE\') and doctors.name=\'' . $doctor_name . '\'
+            WHERE DAY(treat_start)> \'' . $yesterday . '\' AND DAY(treat_start)< \'' . $tomorrow . '\' AND (treatments.state=\'AFTER_TREATING_PAY\' or treatments.state=\'CLOSE\') and doctors.name=\'' . $doctor_name . '\'
             GROUP BY HOUR(treat_start)
         ');
         }else{
             $result = \DB::select('
             SELECT HOUR(treat_start) AS `hour`, SUM(price) AS `sum`
             FROM treatments 
-            WHERE DAY(treat_start)> \'' . $yesterday . '\' AND DAY(treat_start)< \'' . $tomorrow . '\' AND (state=\'AFTER_TREATING_PAY\' or state=\'CLOSE\')
+            WHERE DAY(treat_start)> \'' . $yesterday . '\' AND DAY(treat_start)< \'' . $tomorrow . '\' AND (treatments.state=\'AFTER_TREATING_PAY\' or treatments.state=\'CLOSE\')
             GROUP BY HOUR(treat_start)
         ');
         }
@@ -785,13 +813,21 @@ class DoctorController extends Controller{
     }
 
     public function doctorAll(){
-        return view('admin.income.doctor');
+        $hospitals = hospital::select('*')
+            ->orderBy('name')->get();
+        $departments = department::select('*')
+            ->orderBy('name')->get();
+
+        return view('admin.income.doctor')->with([
+            "hospitals" => $hospitals,
+            "departments" => $departments
+        ]);
     }
     public function getDoctorAll(){
         $month = date('m');
         $sql = 'SELECT SUM(price) AS `sum`,doctors.`name`
             FROM treatments LEFT JOIN doctors ON treatments.`doctor_id`=doctors.`id`
-            WHERE MONTH(treat_start)>'.($month-1).' AND MONTH(treat_start)<'.($month+1).' AND (state=\'AFTER_TREATING_PAY\' or state=\'CLOSE\')
+            WHERE MONTH(treat_start)>'.($month-1).' AND MONTH(treat_start)<'.($month+1).' AND (treatments.state=\'AFTER_TREATING_PAY\' or treatments.state=\'CLOSE\')
             GROUP BY doctor_id';
         $result = \DB::select($sql);
         return success($result);
@@ -833,7 +869,7 @@ class DoctorController extends Controller{
                 $orderColumn = "doctors.`name`";
                 break;
             case 'price':
-                $orderColumn = "treatments.`price`";
+                $orderColumn = "treatments.`hospital_profit`";
                 break;
             case 'treat_start':
                 $orderColumn = "treatments.`treat_start`";
@@ -843,12 +879,12 @@ class DoctorController extends Controller{
         }
 
 
-        $sql = "SELECT  treatments.`id`,treatments.`price`,patients.`name` AS patient_name,patients.`ID_Number`,
+        $sql = "SELECT  treatments.`id`,treatments.`hospital_profit` as price,patients.`name` AS patient_name,patients.`ID_Number`,
                     departments.`name` AS department_name,doctors.`name` AS doctor_name,treatments.`treat_start`  FROM treatments 
                  LEFT JOIN doctors ON treatments.`doctor_id`=doctors.`id`
                  LEFT JOIN patients ON treatments.`patient_id` = patients.id
                  LEFT JOIN departments ON doctors.`department_id` = departments.`id`
-                WHERE (state='AFTER_TREATING_PAY' OR state='CLOSE') AND ";
+                WHERE (treatments.state!='ACCEPT' and treatments.hospital_profit is not null) AND ";
 
         if(!empty($hospital_id))
             $sql .="doctors.`hospital_id`=".$hospital_id." AND ";
@@ -858,6 +894,8 @@ class DoctorController extends Controller{
             $sql .="treatments.`treat_start`>'".$from.":00' AND ";
         if(!empty($to))
             $sql .="treatments.`treat_end`<'".$to.":00' AND ";
+        if(!empty($searchValue))
+            $sql .=" patients.name like '%".$searchValue."%' AND ";
         $sql .=" 1=1 ";
         $sql .= " order by ".$orderColumn." ".$orderDirection;
 
@@ -870,6 +908,9 @@ class DoctorController extends Controller{
         );
         echo json_encode($result);
     }
+
+
+
     public function incomeDoctor(){
         $hospitals = hospital::select('*')
             ->orderBy('name')->get();
@@ -879,6 +920,82 @@ class DoctorController extends Controller{
             "hospitals" => $hospitals,
             "departments" => $departments
         ]);
+    }
+    public function getDoctorProfit(Request $request){
+        $hospital_id = $request->get('hospital');
+        $department_id = $request->get("department");
+        $doctor_id = $request->get('doctor_id');
+        $phone_number = $request->get('phone_number');
+        $doctor_code = $request->get('doctor_code');
+        $from = $request->get('from');
+        $to =  $request->get('to');
+
+        $columns = $request->get('columns');
+        $order = $request->get('order');
+        $orderColumnIndex = $order[0]['column'];
+        $orderColumn = $columns[$orderColumnIndex]['data'];
+        $orderDirection = $order[0]['dir'];
+        $search = $request->get('search');
+        $searchValue = $search['value'];
+        switch ($orderColumn) {
+            case 'patient_name':
+                $orderColumn = "patients.`name`";
+                break;
+            case 'ID_Number':
+                $orderColumn = "patients.`ID_Number`";
+                break;
+            case 'department_name':
+                $orderColumn = "departments.`name`";
+                break;
+            case 'doctor_name':
+                $orderColumn = "doctors.`name`";
+                break;
+            case 'price':
+                $orderColumn = "treatments.`doctor_profit`";
+                break;
+            case 'treat_start':
+                $orderColumn = "treatments.`treat_start`";
+                break;
+            default:
+                $orderColumn = "treatments.`treat_start`";
+        }
+
+        $sql = "SELECT  treatments.`id`,treatments.`doctor_profit` as price,patients.`name` AS patient_name,patients.`ID_Number`,
+                    departments.`name` AS department_name,doctors.`name` AS doctor_name,treatments.`treat_start`  FROM treatments 
+                 LEFT JOIN doctors ON treatments.`doctor_id`=doctors.`id`
+                 LEFT JOIN patients ON treatments.`patient_id` = patients.id
+                 LEFT JOIN departments ON doctors.`department_id` = departments.`id`
+                WHERE (treatments.state!='ACCEPT' and treatments.doctor_profit is not null) AND ";
+
+        if(!empty($hospital_id))
+            $sql .="doctors.`hospital_id`=".$hospital_id." AND ";
+        if(!empty($department_id))
+            $sql .="doctors.`department_id`=".$department_id." AND ";
+        if(!empty($from))
+            $sql .="treatments.`treat_start`>'".$from.":00' AND ";
+        if(!empty($to))
+            $sql .="treatments.`treat_end`<'".$to.":00' AND ";
+
+        if(!empty($doctor_id))
+            $sql .="treatments.`doctor_id`='".$doctor_id."' AND ";
+        if(!empty($phone_number))
+            $sql .="doctors.`phone`='".$phone_number."' AND ";
+        if(!empty($doctor_code))
+            $sql .="treatments.`doctor_id` = '".$doctor_code."' AND ";
+
+        if(!empty($searchValue))
+            $sql .=" patients.name like '%".$searchValue."%' AND ";
+        $sql .=" 1=1 ";
+        $sql .= " order by ".$orderColumn." ".$orderDirection;
+
+        $datas = \DB::select($sql);
+
+        $result = array(
+            "aaData"=>$datas,
+            "iTotalRecords"=>count($datas),
+            "iTotalDisplayRecords"=>count($datas),
+        );
+        echo json_encode($result);
 
     }
 }

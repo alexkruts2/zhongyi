@@ -135,3 +135,43 @@ $(document).ready(function() {
     }
 
 });
+function saveAccept() {
+    var accept_price = $("#accept_price").val();
+    $.ajax({
+        url: '/admin/accept/price',
+        data: "accept_price=" + accept_price,
+        cache: false,
+        dataType: 'json',
+        processData: false,
+        type: 'GET',
+        success: function (resp) {
+            hideOverlay();
+            if (resp.code == '0') {
+                Swal.fire({
+                    type: 'info',
+                    title: '成功',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            } else {
+                Swal.fire({
+                    type: 'error',
+                    text: resp.message,
+                    title: '错误',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            }
+        },
+        error: function (e) {
+            hideOverlay();
+            Swal.fire({
+                type: 'error',
+                text: 'Internal Error ' + e.status + ' - ' + e.responseJSON.message,
+                title: '错误',
+                showConfirmButton: false,
+                timer: 3000
+            });
+        }
+    });
+}

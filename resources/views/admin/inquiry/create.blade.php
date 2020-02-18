@@ -59,7 +59,6 @@
                             <div class="col-md-10 form-inline">
                                 <label for="history_number" >&nbsp;&nbsp;&nbsp;标题&nbsp;&nbsp; </label>
                                 <select class="select2 m-b-10" name="question_title" id="question_title" data-placeholder="请选择"data-parsley-required style="width:71.3%;">
-                                    <option value="">请选择</option>
                                     @foreach(\App\question::all() as $question)
                                         <option value="{{$question->id}}" >{{$question->title}}</option>
                                     @endforeach

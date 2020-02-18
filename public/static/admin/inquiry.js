@@ -70,8 +70,7 @@ function drawGuahaoTable() {
             {"className": "text-center", "targets": "_all"}
         ],
         "drawCallback":function(settings){
-                $( "#tbl_guahao tbody tr:first-child" ).trigger('click');
-
+            $( "#tbl_guahao tbody tr:first-child" ).trigger('click');
         }
 
         });
@@ -231,6 +230,7 @@ $(function () {
     });
 
     scrollSidebarTop();
+
 });
 
 function createInquiry() {
@@ -324,7 +324,7 @@ function startVideoCamera(){
     });
     player.on('ready',function () {
         console.log('player is ready');
-        $(".vjs-record.vjs-control").trigger('click');
+      //  $(".vjs-record-button").trigger('click');
     });
     player.play();
 }

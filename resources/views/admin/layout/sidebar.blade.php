@@ -17,7 +17,7 @@
                         </li>
                         <li class="menu {{(strpos(request()->path(),'admin/setting')!==false||strpos(request()->path(),'admin/hospital')!==false ) ?'active':'' }}">
                             <a href="javascript:void(0)">系统设置<i class="fa fa-angle-left float-right"></i></a>
-                            <ul class="sub-menu" style="display:{{(strpos(request()->path(),'admin/setting')!==false) ?'block':'none' }}">
+                            <ul class="sub-menu" style="display:{{(strpos(request()->path(),'admin/setting')!==false||strpos(request()->path(),'admin/hospital')!==false ) ?'block':'none' }}">
                                 <li class="{{request()->path() == 'admin/setting' ? 'active' : ''}}"><a class="{{strpos(request()->path() ,'admin/setting')!==false ? 'active' : ''}}" href="/admin/setting">付费设置</a></li>
                                 <li class="{{request()->path() == 'admin/hospital' ? 'active' : ''}}"><a class="{{strpos(request()->path() ,'admin/hospital')!==false ? 'active' : ''}}" href="/admin/hospital">医院管理</a></li>
                             </ul>

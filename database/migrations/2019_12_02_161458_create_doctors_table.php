@@ -26,6 +26,7 @@ class CreateDoctorsTable extends Migration
             $table->string('password',128);
             $table->string('authority',128);
             $table->integer('doctor_ratio');
+            $table->string('state',32);
             $table->timestamps();
         });
     }
