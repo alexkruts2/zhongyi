@@ -198,7 +198,7 @@ $('#doctor-form').submit(function (e) {
     }
     showOverlay();
     var forms = new FormData($(this)[0]);
-    $(this).find(':submit').attr('disabled','disabled');
+    // $(this).find(':submit').attr('disabled','disabled');
     $.ajax({
         url: '/admin/doctor/create',
         data: forms,

@@ -57,7 +57,7 @@
                     <div class="form-group mt-3 row">
                         <label for="example-text-input" class="col-2 col-form-label text-right">医生</label>
                         <div class="col-10">
-                            <input class="form-control" type="text" value="" name='doctor_name' id="doctor_name">
+                            <input class="form-control" type="text" value="" name='doctor_name' id="doctor_name" disabled>
                         </div>
                     </div>
                         <input type="hidden" value="" id="doctor_id"/>

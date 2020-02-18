@@ -136,6 +136,10 @@ class HomeController extends Controller
         ]);
 
         if(empty($request->get('id'))){
+            $doctor = doctor::where('name',$request->get('name'))->first();
+            if(!empty($doctor)){
+                return error('医生姓名已经存在');
+            }
             $result = doctor::updateOrCreate([
                 "id"=>$request->get("id")
             ],[
