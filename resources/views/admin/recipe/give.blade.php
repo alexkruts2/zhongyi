@@ -32,7 +32,7 @@
                         <div class="col-md-6">
                             <input class="form-control" type="number" name='guahao' id="guahao" placeholder="挂号" />
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-4">
                             <button type="button" class="btn btn-success" onclick="getGuahaoData();"><i class="ti-check-box"></i> 查验</button>
                             <button type="button" class="btn btn-info" onclick="giveMedicine();" disabled id="giveMedicine"><i class="ti-wand"></i> 发药</button>
 
