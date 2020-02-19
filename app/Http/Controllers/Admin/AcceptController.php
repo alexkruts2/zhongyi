@@ -269,7 +269,7 @@ class AcceptController extends Controller
         $treatment = treatment::where('id',$id)->first();
         $price = $treatment->price;
         $ratio = $treatment->doctor->doctor_ratio;
-        $doctor_profit = $price*$ratio/100.0 + config();
+        $doctor_profit = $price*$ratio/100.0;
         $hospital_profit = $price - $doctor_profit;
         $treatment->update([
             'hospital_profit' => $hospital_profit,

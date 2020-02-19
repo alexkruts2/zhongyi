@@ -112,10 +112,10 @@
                                     <button type="button" class="btn btn-success" onclick="snapshot();"><i class="ti-camera"></i> 快照</button>
                                 </div>
                                 <input class="form-control" type="hidden" name="photo" id="photo"/>
-                                <div id="snapshot"></div>
+                                <div class="mt-3" id="snapshot"></div>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row mt-3">
                             <div class="col-md-12 text-center">
                                 <button type="submit" class="btn btn-info"><i class="ti-save"></i> 保存</button>
                             </div>

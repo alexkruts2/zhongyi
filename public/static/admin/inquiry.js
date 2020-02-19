@@ -508,6 +508,7 @@ $('#question-form').submit(function (e) {
             type: 'error',
             title: '您尚未录制视频。'
         });
+        return ;
     }
     var disease_name = $("#disease_name").val();
     if(disease_name==''||disease_name==undefined||disease_name==null){
