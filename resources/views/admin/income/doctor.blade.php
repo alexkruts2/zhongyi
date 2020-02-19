@@ -36,7 +36,7 @@
                                     </select>
                                 </div>
                                 <div class="col-md-3">
-                                    <select class="form-control" name='department' id="department" data-parsley-required>
+                                    <select class="form-control" name='department_income' id="department_income" data-parsley-required>
                                         <option value="">--全部科室--</option>
                                         @foreach ($departments as $department)
                                             <option value="{{$department->id}}">{{$department->name}}</option>
@@ -57,10 +57,10 @@
                                     <input type="text" id="doctor_code" name="doctor_code" class="form-control" placeholder="医生编码" >
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="text" id="from" class="form-control" placeholder="年 - 月 - 日  时 : 分">
+                                    <input type="text" id="from" class="form-control" placeholder="年 - 月 - 日  时 : 分(从）">
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="text" id="to" class="form-control" placeholder="年 - 月 - 日  时 : 分">
+                                    <input type="text" id="to" class="form-control" placeholder="年 - 月 - 日  时 : 分（到）">
                                 </div>
 
                                 <div class="col-md-3 text-center">
@@ -107,6 +107,7 @@
     @section('scripts')
         <!--morris JavaScript -->
             <script src="{{ asset('static/plugin/moment/moment.js') }}"></script>
+            <script src="{{ asset('static/plugin/moment/moment-with-locales.js') }}"></script>
             <script src="{{ asset('static/plugin/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js') }}"></script>
             <script src="{{asset('static/plugin/datatables/datatables.min.js')}}"></script>
             <script src="{{ asset('static/admin/doctor_income.js') }}"></script>

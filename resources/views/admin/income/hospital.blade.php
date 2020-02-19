@@ -44,10 +44,10 @@
                                     </select>
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="text" id="from" class="form-control" placeholder="年 - 月 - 日  时 : 分">
+                                    <input type="text" id="from" class="form-control" placeholder="年 - 月 - 日  时 : 分（从）">
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="text" id="to" class="form-control" placeholder="年 - 月 - 日  时 : 分">
+                                    <input type="text" id="to" class="form-control" placeholder="年 - 月 - 日  时 : 分（到）">
                                 </div>
                                 <div class="col-md-1">
                                     <button class="btn-md btn btn-success" type="button" onclick="drawHospitalTable();">提交</button>
@@ -91,6 +91,7 @@
 @section('scripts')
     <!--morris JavaScript -->
     <script src="{{ asset('static/plugin/moment/moment.js') }}"></script>
+    <script src="{{ asset('static/plugin/moment/moment-with-locales.js') }}"></script>
     <script src="{{ asset('static/plugin/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js') }}"></script>
         <script src="{{asset('static/plugin/datatables/datatables.min.js')}}"></script>
 

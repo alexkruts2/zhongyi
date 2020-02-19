@@ -2,12 +2,45 @@ var doctor_profit_table;
 
 function initHospital(){
     if($("#from").length)
-        $('#from').bootstrapMaterialDatePicker({ format: 'YYYY-MM-DD   HH:mm' });
+        $('#from').bootstrapMaterialDatePicker({
+            format: 'YYYY-MM-DD   HH:mm' ,
+            okText:"确认",
+            cancelText:"取消",
+            lang : 'zh_CN'
+        });
     if($("#to").length)
-        $('#to').bootstrapMaterialDatePicker({ format: 'YYYY-MM-DD   HH:mm' });
+        $('#to').bootstrapMaterialDatePicker({
+            format: 'YYYY-MM-DD   HH:mm' ,
+            okText:"确认",
+            cancelText:"取消",
+            lang : 'zh_CN'
+        });
 }
 $(function(){
     initHospital();
+    getDoctors('','');
+    $("#department_income").on("change",function(){
+        var department_id = $(this).val();
+        var hospital_id = $("#hospital").val();
+        getDoctors(department_id,hospital_id);
+    });
+    $("#hospital").on("change",function(){
+        var department_id = $(this).val();
+        var hospital_id = $("#hospital").val();
+        getDoctors(department_id,hospital_id);
+    })
+    $("#doctor_id").on("change",function(){
+        // var phone = $(this).data('phone');
+        // var doctor_code = $(this).data('doctorid');
+
+        var doctor_id = $(this).val();
+        var selected = $(this).find('option:selected');
+        var phone = selected.data('phone');
+        var doctorid = selected.data('doctorid');
+
+        $("#phone_number").val(phone);
+        $("#doctor_code").val(doctorid);
+    })
 });
 function drawDoctorProfitTable() {
     if(doctor_profit_table)
@@ -66,4 +99,46 @@ function drawDoctorProfitTable() {
             console.log(sum);
         }
     });
+}
+
+function getDoctors(department_id,hospital_id){
+    showOverlay();
+    $.ajax({
+        url:'/doctor/getDoctors',
+        type:'GET',
+        data: "department_id=" + department_id,
+        cache: false,
+        dataType: 'json',
+        processData: false,
+        success: function (resp) {
+            hideOverlay();
+            if (resp.code == '0') {
+                var doctors = resp.data;
+                var html = '<option value="">全部医生</option>';
+                for(var i = 0 ; i < doctors.length; i++){
+                    if(hospital_id==doctors[i].hospital_id||hospital_id=='')
+                        html +='<option value="' + doctors[i].id+'" data-phone="'+doctors[i].phone+'" data-doctorid="'+doctors[i].id+'">' + doctors[i].name + '</option>';
+                }
+                $('#doctor_id').html(html);
+            } else {
+                Swal.fire({
+                    type: 'error',
+                    text: resp.message,
+                    title: '错误',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            }
+        },
+        error: function (e) {
+            hideOverlay();
+            Swal.fire({
+                type: 'error',
+                text: 'Internal Error ' + e.status + ' - ' + e.responseJSON.message,
+                title: '错误',
+                showConfirmButton: false,
+                timer: 3000
+            });
+        }
+    })
 }

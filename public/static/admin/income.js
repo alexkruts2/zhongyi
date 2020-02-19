@@ -25,9 +25,19 @@ $(function(){
 });
 function initHospital(){
     if($("#from").length)
-        $('#from').bootstrapMaterialDatePicker({ format: 'YYYY-MM-DD   HH:mm' });
+        $('#from').bootstrapMaterialDatePicker({
+            format: 'YYYY-MM-DD   HH:mm' ,
+            okText:"确认",
+            cancelText:"取消",
+            lang : 'zh_CN'
+        });
     if($("#to").length)
-        $('#to').bootstrapMaterialDatePicker({ format: 'YYYY-MM-DD   HH:mm' });
+        $('#to').bootstrapMaterialDatePicker({
+            format: 'YYYY-MM-DD   HH:mm' ,
+            okText:"确认",
+            cancelText:"取消",
+            lang : 'zh_CN'
+        });
 }
 function drawAll(period){
     if(chart)
