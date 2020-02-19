@@ -785,7 +785,8 @@ if (!function_exists('checkAuthority')) {
     {
             $doctor = \App\doctor::where('id', $doctor_id)->first();
             $authority = json_decode($doctor->authority);
-
+            if(substr($url,0,8)==='/uploads')
+                return true;
             if(substr($url,0,6)==='/admin')
                 return false;
             if (substr($url, 0, 14) === '/doctor/recipe') {

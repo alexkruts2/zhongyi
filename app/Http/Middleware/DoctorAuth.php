@@ -18,10 +18,7 @@ class DoctorAuth
     public function handle($request, Closure $next)
     {
 //        return $next($request);
-        echo auth()->guard('doctor')->id();
-        echo "OJK";
             if(!empty(auth()->guard('doctor')->id())){
-                echo "OOOKKK";
                 if (is_null(doctor::find(auth()->guard('doctor')->id()))) {
                     return redirect()->route('login');
                 }else{

@@ -116,7 +116,7 @@
                             @endwhile
                         </div>
                         <div class="form-group mt-3 row">
-                            <label for="example-text-input" class="col-8 offset-1 col-form-label">病名 : {{$historyData->disease_name}}</label>
+                            <label for="example-text-input" class="col-8 offset-1 col-form-label">病名 : <b>{{$historyData->disease_name}}</b></label>
                         </div>
 
                         <div class="form-group mt-3 row">
@@ -149,7 +149,7 @@
                             @endwhile
                         </div>
                         <div class="form-group mt-3 row">
-                            <label class="col-5 offset-1">总价: <span id="total_price_span" >{{$historyData->price}}</span>元</label>
+                            <label class="col-5 offset-1">总价: <b id="total_price_span" >{{$historyData->price}}</b>元</label>
                         </div>
 
                     @endforeach
