@@ -59,7 +59,7 @@ function  generateMedicineHtml(medicines) {
             '\t<div class="col-3">\n' +
             '\t\t<input class="form-control" type="text" value="'+medicines[i].weight+'" readonly>\n' +
             '\t</div>\n' +
-            '\t<div class="col-3 text-center">\n' +
+            '\t<div class="col-3">\n' +
             '\t\t<label id="price_'+medicines[i].medicine_id+'" style="line-height: 38px;">'+medicines[i].price+' 元/10g</label>\n' +
             '\t</div>\n' +
             '</div>'
