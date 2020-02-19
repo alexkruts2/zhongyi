@@ -614,9 +614,9 @@ class HomeController extends Controller
         if($orderColumn=='department')
             $orderColumn = 'department_id';
 
-        $datas = doctor::select('*')->where('name','like','%'.$searchValue.'%')
+        $datas = doctor::select('*')->where('name','like','%'.$searchValue.'%')->where('state','NORMAL')
             ->orderBy($orderColumn, $orderDirection)->skip($start)->take($length)->get();
-        $availableDatas = doctor::select('*')->where('name','like','%'.$searchValue.'%')->get();
+        $availableDatas = doctor::select('*')->where('name','like','%'.$searchValue.'%')->where('state','NORMAL')->get();
 
         $doctorData = array();
         foreach($datas as $data) {

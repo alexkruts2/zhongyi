@@ -32,9 +32,9 @@ class AcceptController extends Controller
     public function getDoctorsInDepartment(Request $request){
         $department_id = $request->get('department_id');
         if(empty($department_id))
-            $datas = doctor::select('*')->orderBy('name')->get();
+            $datas = doctor::select('*')->where('state','NORMAL')->orderBy('name')->get();
         else
-            $datas = doctor::select('*')->where('department_id',$department_id)->orderBy('name')->get();
+            $datas = doctor::select('*')->where('department_id',$department_id)->where('state','NORMAL')->orderBy('name')->get();
         return success($datas);
     }
     public function createPatient(Request $request){
