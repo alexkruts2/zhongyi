@@ -88,6 +88,11 @@ Route::group(['prefix' => 'doctor'], function () {
             Route::get('/getPart','Admin\HomeController@getRecipePart')->name('doctor.recipe.getPart');
             Route::post('/part/delete','Admin\HomeController@deleteRecipePart');
             Route::post('/part/create','Admin\HomeController@createRecipePart');
+
+            Route::get('/give','Admin\HomeController@giveMedicineView')->name('doctor.recipe.give');
+            Route::post('/checkGuahao','Admin\HomeController@checkGuahao')->name('doctor.recipe.checkGuahao');
+            Route::post('/giveMedicine','Admin\HomeController@giveMedicine')->name('doctor.recipe.giveMedicine');
+
         });
 
         Route::group(['prefix' => 'qa'], function (){

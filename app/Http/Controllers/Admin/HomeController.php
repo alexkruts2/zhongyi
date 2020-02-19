@@ -12,6 +12,7 @@ use App\medicine;
 use App\question;
 use App\recipe;
 use App\setting;
+use App\treatment;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -708,6 +709,39 @@ class HomeController extends Controller
         $setting = setting::where('name','ACCEPT_PRICE')->first();
         $result = $setting->update([
             'value' => $accept_price
+        ]);
+        return success();
+    }
+
+    public function giveMedicineView(){
+        return view('admin.recipe.give');
+    }
+    public function checkGuahao(Request $request){
+        validate($request->all(), [
+            'guahao'=>'required'
+        ]);
+        $guahao = $request->get('guahao');
+        $treatData = treatment::where('guahao',$guahao)->first();
+        if(empty($treatData))
+            return error('无效挂号');
+        $state = $treatData->state;
+        if($state!=config('constant.treat_state.after_treating_pay'))
+            return error('无效挂号');
+        return success($treatData);
+    }
+    public function giveMedicine(Request $request){
+        validate($request->all(), [
+            'guahao'=>'required'
+        ]);
+        $guahao = $request->get('guahao');
+        $treatData = treatment::where('guahao',$guahao)->first();
+        if(empty($treatData))
+            return error('无效挂号');
+        $state = $treatData->state;
+        if($state!=config('constant.treat_state.after_treating_pay'))
+            return error('无效挂号');
+        $treatData->update([
+           'state' => config('constant.treat_state.close')
         ]);
         return success();
     }

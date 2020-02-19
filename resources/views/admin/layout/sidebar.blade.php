@@ -43,6 +43,7 @@
                             <ul class="sub-menu" style="display:{{(strpos(request()->path(),'doctor/recipe')!==false) ?'block':'none' }}">
                                 <li class="{{request()->path() == 'doctor/recipe/create' ? 'active' : ''}}"><a class="{{strpos(request()->path() ,'doctor/recipe/create')!==false ? 'active' : ''}}" href="/doctor/recipe/create">新药方</a></li>
                                 <li class="{{request()->path() == 'doctor/recipe/view' ? 'active' : ''}}"><a class="{{strpos(request()->path() ,'doctor/recipe/view')!==false ? 'active' : ''}}" href="/doctor/recipe/view">查看药方</a></li>
+                                <li class="{{request()->path() == 'doctor/recipe/give' ? 'active' : ''}}"><a class="{{strpos(request()->path() ,'doctor/recipe/give')!==false ? 'active' : ''}}" href="/doctor/recipe/give">发药</a></li>
                             </ul>
                         </li>
                     @endif
