@@ -18,7 +18,7 @@
         <div class="col-md-6">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/admin">首页</a></li>
-                <li class="breadcrumb-item active">药方管理</li>
+                <li class="breadcrumb-item active">新药方</li>
             </ol>
         </div>
     </div>

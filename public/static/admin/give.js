@@ -5,7 +5,7 @@ function getGuahaoData(){
         Swal.fire({
             type: 'error',
             title: '错误',
-            text: '请输入医院名'
+            text: '请输入挂号'
         });
         return;
     }
@@ -71,7 +71,7 @@ function giveMedicine () {
         Swal.fire({
             type: 'error',
             title: '错误',
-            text: '请输入医院名'
+            text: '请输入挂号'
         });
         return;
     }
