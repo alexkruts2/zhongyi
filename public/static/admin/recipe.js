@@ -246,3 +246,9 @@ $('#recipe-form').submit(function (e) {
         }
     });
 });
+function uploadRecipes() {
+    $("input[name='file_1']").trigger('click');
+}
+$("input[name='file_1']").change(function() {
+    $("#excel-form").submit();
+});

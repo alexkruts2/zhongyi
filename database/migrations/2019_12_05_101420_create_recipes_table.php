@@ -21,7 +21,8 @@ class CreateRecipesTable extends Migration
             $table->text('other_condition')->nullable();
             $table->text('medicine');
             $table->string('prescription_name');
-
+            $table->text('eating_method');
+            $table->text('ban');
             $table->timestamps();
         });
     }

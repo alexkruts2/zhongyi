@@ -12,7 +12,9 @@ class recipe extends Model
         'condition',
         'other_condition',
         'medicine',
-        'prescription_name'
+        'prescription_name',
+        'eating_method',
+        'ban'
     ];
     public function department(){
         return $this->belongsTo(department::class);

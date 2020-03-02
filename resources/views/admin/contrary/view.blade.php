@@ -26,7 +26,7 @@
         </div>
     </div>
     <form action="/doctor/medicine/contrary/upload" method="POST" enctype="multipart/form-data" style="position:absolute;top:1000px;" id="excel-form">
-        <input name="file_1" type="file">
+        <input name="file_1" type="file"  accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" >
     </form>
 
     <div class="row">

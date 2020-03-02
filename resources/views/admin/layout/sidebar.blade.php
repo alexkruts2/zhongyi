@@ -73,10 +73,11 @@
                         </li>
                     @endif
                     @if(!empty(auth()->guard('admin')->id()) || checkAuthority(auth()->guard('doctor')->id(),'/doctor/medicine'))
-                        <li class="menu {{(strpos(request()->path(),'doctor/medicine/view')!==false ||strpos(request()->path(),'doctor/medicine/contrary/view')!==false||strpos(request()->path(),'doctor/medicine/yield')!==false  ) ?'active':'' }}">
+                        <li class="menu {{(strpos(request()->path(),'doctor/medicine/view')!==false ||strpos(request()->path(),'doctor/medicine/contrary/view')!==false||strpos(request()->path(),'doctor/medicine/contrary/editPrice')!==false||strpos(request()->path(),'doctor/medicine/yield')!==false  ) ?'active':'' }}">
                             <a href="javascript:void(0)">药材管理<i class="fa fa-angle-left float-right"></i></a>
-                            <ul class="sub-menu" style="display:{{(strpos(request()->path(),'doctor/medicine/view')!==false || request()->path()=='doctor/medicine/contrary/view'|| strpos(request()->path(),'doctor/medicine/yield')!==false) ?'block':'none' }}">
+                            <ul class="sub-menu" style="display:{{(strpos(request()->path(),'doctor/medicine/view')!==false || request()->path()=='doctor/medicine/contrary/view'||request()->path()=='doctor/medicine/editPrice'|| strpos(request()->path(),'doctor/medicine/yield')!==false) ?'block':'none' }}">
                                 <li class="{{request()->path() == '/doctor/medicine/view' ? 'active' : ''}}"><a class="{{request()->path() == 'doctor/medicine/view' ? 'active' : ''}}" href="/doctor/medicine/view">查看药材</a></li>
+                                <li class="{{request()->path() == '/doctor/medicine/editPrice' ? 'active' : ''}}"><a class="{{request()->path() == 'doctor/medicine/editPrice' ? 'active' : ''}}" href="/doctor/medicine/editPrice">编辑药价</a></li>
                                 <li class="{{request()->path() == 'doctor/medicine/contrary/view' ? 'active' : ''}}"><a class="{{request()->path() == 'doctor/medicine/contrary/view' ? 'active' : ''}}" href="/doctor/medicine/contrary/view">查看排斥药材</a></li>
                                 <li class="{{request()->path() == '/doctor/medicine/yield/view' ? 'active' : ''}}"><a class="{{request()->path() == 'doctor/medicine/yield/view' ? 'active' : ''}}" href="/doctor/medicine/yield/view">查看发药</a></li>
 

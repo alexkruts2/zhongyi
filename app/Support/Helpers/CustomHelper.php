@@ -845,5 +845,36 @@ if (!function_exists('getStateWord')) {
             return $result;
         }
     }
+    if (!function_exists('getMedicineDatas')) {
+        function getMedicineDatas($strMedicine){
+            if(empty($strMedicine))
+                return [];
+            $split_strings = preg_split('/[\ \n\,]+/', $strMedicine);
+            $recipe = [];
+            foreach($split_strings as  $split_string){
+                if (preg_match('/（(.*?)）/', $split_string, $match) == 1) {
+                    $option = $match[1];
+                    $item = preg_replace('/（(.*?)）/','',$split_string);
+                    $reg = '/((0|[1-9]\d*)(\.\d+)?)|(零|一|二|三|四|五|六|七|八|九|十)(百|十|零)?(一|二|三|四|五|六|七|八|九)?(百|十|零)?(一|二|三|四|五|六|七|八|九)?/';
+
+                    if (preg_match($reg, $item, $matches)){
+                        $weight = $matches[0];
+                        $medicines = explode($weight,$item);
+                        $medicin = $medicines[0];
+                        $unit = $medicines[1];
+                        $temp = array(
+                            'prescription_name' => $medicin,
+                            'unit' => $unit,
+                            'weight' => $weight,
+                            'option' => $option
+                        );
+                        array_push($recipe,$temp);
+                    }
+                }
+            }
+            return $recipe;
+        }
+    }
+
 
 }

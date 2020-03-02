@@ -26,7 +26,7 @@
         </div>
     </div>
     <form action="/doctor/medicine/uploadMedicine" method="POST" enctype="multipart/form-data" style="position:absolute;top:1000px;" id="excel-form">
-        <input name="file_1" type="file">
+        <input name="file_1" type="file"  accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" >
     </form>
 
     <div class="row">
@@ -40,7 +40,7 @@
                                 <th class="text-center">药材名称</th>
                                 <th class="text-center">用处</th>
                                 <th class="text-center">数量（g）</th>
-                                <th class="text-center">价格（￥/500g）</th>
+                                <th class="text-center">价格（￥/10g）</th>
                                 <th class="text-center">最少使用量（g)</th>
                                 <th class="text-center">最多使用量(g)</th>
                                 <th class="text-center">操作</th>
@@ -85,7 +85,7 @@
                             </div>
                         </div>
                         <div class="form-group mt-3 row">
-                            <label for="example-text-input" class="col-4 col-form-label text-right">价格(￥/500g)</label>
+                            <label for="example-text-input" class="col-4 col-form-label text-right">价格(￥/10g)</label>
                             <div class="col-8">
                                 <input class="form-control" type="text"  name='price' id="price" value=""/>
                             </div>

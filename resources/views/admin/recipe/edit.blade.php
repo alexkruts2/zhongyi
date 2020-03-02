@@ -33,17 +33,15 @@
                                 <select class="form-control" name='department' id="department" data-parsley-required>
                                     <option value="0">--全部科室--</option>
                                     @foreach ($departments as $department)
-                                        <option value="{{$department->id}}"  {{$department->id==$recipe->department->id?'selected':''}}>{{$department->name}}</option>
+                                        @if(!empty($recipe->department))
+                                            <option value="{{$department->id}}"  {{$department->id==$recipe->department->id?'selected':''}}>{{$department->name}}</option>
+                                        @else
+                                            <option value="{{$department->id}}">{{$department->name}}</option>
+                                        @endif
                                     @endforeach
                                 </select>
                             </div>
                         </div>
-{{--                        <div class="form-group mt-3 row">--}}
-{{--                            <label for="disease_name" class="col-2 col-form-label text-right">病名</label>--}}
-{{--                            <div class="col-10">--}}
-{{--                                <input class="form-control" type="text" value="{{$recipe->disease_name}}" name="disease_name" id="disease_name" data-parsley-required>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
                         <div id="diseaseSection">
                             @foreach ($conditions as $key=>$condition)
                                 <div class="row">
@@ -60,9 +58,23 @@
                         <div class="form-group mt-3 row">
                             <label for="example-text-input" class="col-2 col-form-label text-right">其他病症</label>
                             <div class="col-10">
-                                <textarea class="form-control" type="text" value="" name='other_condition' id="other_recipe" placeholder="按摩，抓药" data-parsley-required>{{$recipe->other_condition}}</textarea>
+                                <textarea class="form-control" type="text" name='other_condition' id="other_recipe" placeholder="按摩，抓药" data-parsley-required>{{$recipe->other_condition}}</textarea>
                             </div>
                         </div>
+
+                        <div class="form-group mt-3 row">
+                            <label for="example-text-input" class="col-2 col-form-label text-right">煎服法</label>
+                            <div class="col-10">
+                                <textarea class="form-control" type="text" name='eating_method' id="eating_method" placeholder="上五昧，㕮咀三味" >{{$recipe->eating_method}}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group mt-3 row">
+                            <label for="example-text-input" class="col-2 col-form-label text-right">禁忌</label>
+                            <div class="col-10">
+                                <textarea class="form-control" type="text" name='ban' id="ban" placeholder="脉紧、无汗">{{$recipe->ban}}</textarea>
+                            </div>
+                        </div>
+
                         <hr>
 
                         <div class="row">
@@ -86,8 +98,14 @@
                                         <input class="form-control" type="text" value="{{$recipe_medicine->max_weight}}" name="max_weight[]" id="max_weight_{{$recipe_medicine->medicine_id}}"/>
                                     </div>
                                     <div class="col-3 text-center">
-                                        <label id="price_{{$recipe_medicine->medicine_id}}" style="line-height:38px">{{$recipe_medicine->price}} 元/10g</label>
-                                        <input type="hidden" name="price[]" value="{{$recipe_medicine->price}}"/>
+                                        @if(array_key_exists('price',$recipe_medicine))
+                                            <label id="price_{{$recipe_medicine->medicine_id}}" style="line-height:38px">{{$recipe_medicine->price}} 元/10g</label>
+                                            <input type="hidden" name="price[]" value="{{$recipe_medicine->price}}"/>
+                                        @else
+                                            <label id="price_{{$recipe_medicine->medicine_id}}" style="line-height:38px"> -1 元/10g</label>
+                                            <input type="hidden" name="price[]" value="-1"/>
+                                        @endif
+
                                     </div>
                                 </div>
 

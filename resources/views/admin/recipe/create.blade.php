@@ -39,12 +39,13 @@
                                 </select>
                             </div>
                         </div>
-{{--                        <div class="form-group mt-3 row">--}}
-{{--                            <label for="disease_name" class="col-2 col-form-label text-right">病名</label>--}}
-{{--                            <div class="col-10">--}}
-{{--                                <input class="form-control" type="text" value="" name="disease_name" id="disease_name" data-parsley-required>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
+                        <div class="form-group mt-3 row">
+                            <label for="prescription_name" class="col-2 col-form-label text-right">药方名</label>
+                            <div class="col-10">
+                                <input class="form-control" type="text" value="" name="prescription_name" id="prescription_name" data-parsley-required>
+                            </div>
+                        </div>
+
                         <div id="diseaseSection">
                             <div class="row">
                                 <label class="col-2 col-form-label text-right">
@@ -62,7 +63,19 @@
                         <div class="form-group mt-3 row">
                             <label for="example-text-input" class="col-2 col-form-label text-right">其他病症</label>
                             <div class="col-10">
-                                <textarea class="form-control" type="text" value="" name='other_condition' id="other_recipe" placeholder="按摩，抓药" data-parsley-required></textarea>
+                                <textarea class="form-control" type="text" value="" name='other_condition' id="other_recipe" placeholder="按摩，抓药" ></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group mt-3 row">
+                            <label for="example-text-input" class="col-2 col-form-label text-right">煎服法</label>
+                            <div class="col-10">
+                                <textarea class="form-control" type="text" value="" name='eating_method' id="eating_method" placeholder="上五昧，㕮咀三味" ></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group mt-3 row">
+                            <label for="example-text-input" class="col-2 col-form-label text-right">禁忌</label>
+                            <div class="col-10">
+                                <textarea class="form-control" type="text" value="" name='ban' id="ban" placeholder="脉紧、无汗"></textarea>
                             </div>
                         </div>
                         <hr>
@@ -73,12 +86,6 @@
                             </div>
                         </div>
                         <div id="medicineSection" class="mt-3">
-                        </div>
-                        <div class="form-group mt-3 row">
-                            <label for="prescription_name" class="col-2 col-form-label text-right">药方名</label>
-                            <div class="col-10">
-                                <input class="form-control" type="text" value="" name="prescription_name" id="prescription_name" data-parsley-required>
-                            </div>
                         </div>
 
                         <div class="row">

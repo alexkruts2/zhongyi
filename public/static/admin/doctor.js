@@ -122,7 +122,7 @@ $(function () {
             '',
             '',
             {data: 'department_name',orderable:false},
-            {data: 'hospital_name'},
+            {data: 'hospital_name',orderable:false},
             {data:'id'}
         ],
         "language": {

@@ -28,6 +28,77 @@ class DoctorController extends Controller{
     public function viewMedicine(){
         return view('admin.medicine.view');
     }
+    public function uploadRecipes(Request $request){
+        $recipes = Excel::toArray(new MedicineImport,$request->file('file_1'));
+        $totalNumber = count($recipes[0]);
+        $insertNumber = 0;
+        $updatedNumber = 0;
+        $failureNumber = 0;
+
+        foreach($recipes[0] as $row){
+            if($row[1]=='方名'){
+                $totalNumber--;
+                continue;
+            }
+            if(empty($row[0])||empty($row[2])||empty($row[3])){
+                $failureNumber++;
+                continue;
+            }
+
+            $strMedicine = $row[2];
+
+            $medicines = getMedicineDatas($strMedicine);
+
+            $dbMedicines = array();
+            foreach($medicines as $each){
+                if(!empty($each)){
+                    $medicine_name = $each['prescription_name'];
+                    $medicine = medicine::where('name', $medicine_name)->first();
+                    if(empty($medicine)){
+                        $medicine = medicine::create([
+                            "name" => $medicine_name
+                        ]);
+                    }
+                    $item = array(
+                        'medicine_id' => $medicine->id,
+                        "medicine" => $medicine_name,
+                        "min_weight" => $each['weight'],
+                        "max_weight" => $each['weight'],
+                    );
+                    array_push($dbMedicines,$item);
+                }
+            }
+
+            $recipe = recipe::where('prescription_name',$row[0])->first();
+            if(!empty($recipe)){
+                $updatedNumber++;
+                $recipe->update([
+                    'prescription_name'     => $row[0],
+                    'other_condition'  => $row[1],
+                    'eating_method'     => $row[3],
+                    'medicine' => json_encode($dbMedicines),
+                    'ban'     => $row[4],
+                ]);
+            }else{
+                $insertNumber++;
+                recipe::create([
+                    'prescription_name'     => $row[0],
+                    'other_condition'  => $row[1],
+                    'eating_method'     => $row[3],
+                    'medicine' => json_encode($dbMedicines),
+                    'ban'     => $row[4],
+                ]);
+            }
+        }
+
+        $result = array(
+            "insert_number" => $insertNumber,
+            "update_number" => $updatedNumber,
+            'fail_number' => $failureNumber,
+            'total_number' => $totalNumber
+        );
+        return success($result);
+    }
 
     public function uploadMedicine(Request $request){
         $medicines = Excel::toArray(new MedicineImport,$request->file('file_1'));
@@ -996,6 +1067,25 @@ class DoctorController extends Controller{
             "iTotalDisplayRecords"=>count($datas),
         );
         echo json_encode($result);
+    }
 
+    public function editPriceView(){
+        $medicines = medicine::where('price','<',1)->orderBy('price')->get();
+        return view('admin.medicine.editPrice')->with([
+            'medicines' => $medicines
+        ]);
+    }
+    public function savePrice(Request $request){
+        $params = $request->all();
+        foreach($params as $key=>$value){
+            if(substr( $key, 0, 6 ) === "price_"){
+                $id = str_replace('price_','',$key);
+                $medicine = medicine::where('id',$id)->first();
+                $medicine->update([
+                    'price'=> $value
+                ]);
+            }
+        }
+        return success("OK");
     }
 }

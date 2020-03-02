@@ -84,6 +84,8 @@ Route::group(['prefix' => 'doctor'], function () {
             Route::post('/delete','Admin\HomeController@deleteRecipe')->name('doctor.recipe.delete');
             Route::get('/edit/{id}','Admin\HomeController@editRecipe')->name('doctor.recipe.edit');
 
+            Route::post('/uploadRecipes', 'Admin\DoctorController@uploadRecipes')->name('doctor.medicine.uploadMedicine');
+
             Route::get('/part','Admin\HomeController@viewRecipePart')->name('doctor.recipe.part');
             Route::get('/getPart','Admin\HomeController@getRecipePart')->name('doctor.recipe.getPart');
             Route::post('/part/delete','Admin\HomeController@deleteRecipePart');
@@ -111,6 +113,10 @@ Route::group(['prefix' => 'doctor'], function () {
             Route::post('/get', 'Admin\DoctorController@getMidicineDatas')->name('doctor.medicine.get');
             Route::post('/edit', 'Admin\DoctorController@editMidicineData')->name('doctor.medicine.edit');
             Route::post('/delete', 'Admin\DoctorController@deleteMidicineData')->name('doctor.medicine.delete');
+
+            Route::get('/editPrice', 'Admin\DoctorController@editPriceView')->name('doctor.medicine.editPrice');
+            Route::post('/savePrice', 'Admin\DoctorController@savePrice')->name('doctor.medicine.savePrice');
+
 
             Route::group(['prefix' => 'contrary'], function () {
                 Route::get('/view', 'Admin\DoctorController@viewContrary')->name('doctor.medicine.contrary.view');

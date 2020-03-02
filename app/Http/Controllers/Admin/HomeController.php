@@ -295,9 +295,7 @@ class HomeController extends Controller
     }
     public function viewRecipePart(){
         return view('admin.recipe.part');
-
     }
-
 
     public function createRecipeView(Request $request){
         $datas = department::select('*')
@@ -319,6 +317,8 @@ class HomeController extends Controller
         $max_weights = $request->get("max_weight");
         $prices = $request->get("price");
         $prescription_name = $request->get('prescription_name');
+        $eating_method = $request->get('eating_method');
+        $ban = $request->get('ban');
 
         $str_conditions = implode(', ', $conditions);
         $medicines = array();
@@ -328,10 +328,10 @@ class HomeController extends Controller
             $price = $prices[$key];
             $medicine = medicine::where('name',$medicine_name)->first();
             $item = array(
-                'medicine_id'=>$medicine->id,
-                "medicine"=>$medicine_name,
-                "min_weight"=>$min_weight,
-                "max_weight"=>$max_weight,
+                'medicine_id' => $medicine->id,
+                "medicine" => $medicine_name,
+                "min_weight" => $min_weight,
+                "max_weight" => $max_weight,
                 "price"=>$price
             );
             array_push($medicines,$item);
@@ -342,6 +342,8 @@ class HomeController extends Controller
             'condition'=>$str_conditions,
             'other_condition'=>$other_condition,
             'medicine'=>json_encode($medicines),
+            "eating_method" => $eating_method,
+            "ban" => $ban,
             'prescription_name'=>$prescription_name
         ]);
         return success([
@@ -369,7 +371,7 @@ class HomeController extends Controller
 
         $orderColumn = $orderColumn=='department'?'department_id':$orderColumn;
 
-        $datas = recipe::select('*')->where('disease_name','like','%'.$searchValue.'%')
+        $datas = recipe::select('*')->WhereNull('disease_name')->OrWhere('disease_name','like','%'.$searchValue.'%')
             ->orderBy($orderColumn, $orderDirection)->skip($start)->take($length)->get();
         $availableDatas = recipe::select('*')->where('disease_name','like','%'.$searchValue.'%')->get();
         $departmentData = array();
@@ -377,7 +379,7 @@ class HomeController extends Controller
             $obj["created_at"] = date_format($data->created_at,'Y-m-d H:m:s');
             $obj["disease_name"] = is_null($data->disease_name) ? '' : $data->disease_name;
             $obj["prescription_name"] = is_null($data->prescription_name) ? '' : $data->prescription_name;
-            $obj["department"] = is_null($data->department_id) ? '' : $data->department->name;
+            $obj["department"] = is_null($data->department_id) || $data->department_id < 1 ? '' : $data->department->name;
             $obj["id"] = $data->id;
             array_push($departmentData,$obj);
         }
@@ -436,6 +438,10 @@ class HomeController extends Controller
         $prices = $request->get("price");
         $prescription_name = $request->get('prescription_name');
 
+        $eating_method = $request->get('eating_method');
+        $ban = $request->get('ban');
+
+
         $str_conditions = implode(', ', $conditions);
         $medicines = array();
         foreach($medicine_names as $key=>$medicine_name){
@@ -459,7 +465,9 @@ class HomeController extends Controller
             'condition'=>$str_conditions,
             'other_condition'=>$other_condition,
             'medicine'=>json_encode($medicines),
-            'prescription_name'=>$prescription_name
+            'prescription_name'=>$prescription_name,
+            'eating_method' => $eating_method,
+            'ban' => $ban
         ]);
         return success([
             'id'=>$recipe->id
