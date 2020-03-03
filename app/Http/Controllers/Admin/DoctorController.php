@@ -539,6 +539,7 @@ class DoctorController extends Controller{
         }
 
         $houfang = $request->get('houfang');
+        $doctor_question = $request->get('doctor_question');
 
         $annotations = [];
         if(!empty($annotation_keys)){
@@ -593,7 +594,8 @@ class DoctorController extends Controller{
             'lizheng' => $strlizheng,
             'biaoli' => $strbiaoli,
             'mai' => $strmai,
-            'houfang' => $houfang
+            'houfang' => $houfang,
+            'doctor_question' =>$doctor_question
         ]);
         return success($treatment);
     }
