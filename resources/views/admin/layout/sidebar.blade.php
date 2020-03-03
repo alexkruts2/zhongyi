@@ -79,7 +79,7 @@
                                 <li class="{{request()->path() == '/doctor/medicine/view' ? 'active' : ''}}"><a class="{{request()->path() == 'doctor/medicine/view' ? 'active' : ''}}" href="/doctor/medicine/view">查看药材</a></li>
                                 <li class="{{request()->path() == '/doctor/medicine/editPrice' ? 'active' : ''}}"><a class="{{request()->path() == 'doctor/medicine/editPrice' ? 'active' : ''}}" href="/doctor/medicine/editPrice">编辑药价</a></li>
                                 <li class="{{request()->path() == 'doctor/medicine/contrary/view' ? 'active' : ''}}"><a class="{{request()->path() == 'doctor/medicine/contrary/view' ? 'active' : ''}}" href="/doctor/medicine/contrary/view">查看排斥药材</a></li>
-                                <li class="{{request()->path() == '/doctor/medicine/yield/view' ? 'active' : ''}}"><a class="{{request()->path() == 'doctor/medicine/yield/view' ? 'active' : ''}}" href="/doctor/medicine/yield/view">查看发药</a></li>
+{{--                                <li class="{{request()->path() == '/doctor/medicine/yield/view' ? 'active' : ''}}"><a class="{{request()->path() == 'doctor/medicine/yield/view' ? 'active' : ''}}" href="/doctor/medicine/yield/view">查看发药</a></li>--}}
 
                             </ul>
                         </li>
