@@ -590,7 +590,7 @@ class DoctorController extends Controller{
             'price' => $total_price + $accept_price*1.0,
             'disease_name' => $disease_name,
             'recipe' => json_encode($medicines),
-            'baiozheng' => $strbiaozheng,
+            'biaozheng' => $strbiaozheng,
             'lizheng' => $strlizheng,
             'biaoli' => $strbiaoli,
             'mai' => $strmai,
