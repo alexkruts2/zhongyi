@@ -1170,7 +1170,7 @@ class DoctorController extends Controller{
 
         if(!empty($contrary)){
             $strContrary = $contrary->contrary;
-            $medicines = medicine::whereIn('name',explod(',',$strContrary))->get();
+            $medicines = medicine::whereIn('name',explode(',',$strContrary))->get();
             foreach($medicines as $each)
                 array_push($result,$each->id);
         }
