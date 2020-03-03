@@ -94,6 +94,26 @@
                                 </button>
                             </label>
                         </div>
+                        <div id = "annotationSection" class="collapse">
+                            @php
+                                $i = 0
+                            @endphp
+                            @while (isset($historyData->annotations[$i]))
+                                <div class="form-group mt-3 row">
+                                    <div class="col-2 ">
+                                    </div>
+                                    <div class="col-3">
+                                        <input class="form-control" type="text" readonly value="{{$historyData->annotations[$i]->key}}">
+                                    </div>
+                                    <div class="col-3">
+                                        <input class="form-control" type="text" readonly value="{{$historyData->annotations[$i]->value}}">
+                                    </div>
+                                </div>
+                                @php
+                                    $i++
+                                @endphp
+                            @endwhile
+                        </div>
 
                         <div class="form-group mt-3 row">
                             <label for="example-text-input" class="col-8 offset-1 col-form-label">表症 : <b>{{$historyData->biaozheng}}</b></label>
@@ -120,26 +140,6 @@
                             </label>
                         </div>
 
-                        <div id = "annotationSection" class="collapse">
-                            @php
-                                $i = 0
-                            @endphp
-                            @while (isset($historyData->annotations[$i]))
-                                <div class="form-group mt-3 row">
-                                    <div class="col-2 ">
-                                    </div>
-                                    <div class="col-3">
-                                        <input class="form-control" type="text" readonly value="{{$historyData->annotations[$i]->key}}">
-                                    </div>
-                                    <div class="col-3">
-                                        <input class="form-control" type="text" readonly value="{{$historyData->annotations[$i]->value}}">
-                                    </div>
-                                </div>
-                                @php
-                                    $i++
-                                @endphp
-                            @endwhile
-                        </div>
                         <div class="form-group mt-3 row">
                             <label for="example-text-input" class="col-8 offset-1 col-form-label">病名 : <b>{{$historyData->disease_name}}</b></label>
                         </div>
