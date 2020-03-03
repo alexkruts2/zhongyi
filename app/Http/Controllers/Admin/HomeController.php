@@ -344,7 +344,8 @@ class HomeController extends Controller
             'medicine'=>json_encode($medicines),
             "eating_method" => $eating_method,
             "ban" => $ban,
-            'prescription_name'=>$prescription_name
+            'prescription_name'=>$prescription_name,
+            'flag' => 'NORMAL'
         ]);
         return success([
             'id'=>$recipe->id
@@ -371,9 +372,16 @@ class HomeController extends Controller
 
         $orderColumn = $orderColumn=='department'?'department_id':$orderColumn;
 
-        $datas = recipe::select('*')->WhereNull('disease_name')->OrWhere('disease_name','like','%'.$searchValue.'%')
-            ->orderBy($orderColumn, $orderDirection)->skip($start)->take($length)->get();
-        $availableDatas = recipe::select('*')->where('disease_name','like','%'.$searchValue.'%')->get();
+        if(empty($searchValue)){
+            $datas = recipe::select('*')->where('flag','!=','DELETED')
+                ->orderBy($orderColumn, $orderDirection)->skip($start)->take($length)->get();
+            $availableDatas = recipe::select('*')->where('flag','!=','DELETED')->get();
+        }else{
+            $datas = recipe::select('*')->OrWhere('disease_name','like','%'.$searchValue.'%')->where('flag','!=','DELETED')
+                ->orderBy($orderColumn, $orderDirection)->skip($start)->take($length)->get();
+            $availableDatas = recipe::select('*')->where('disease_name','like','%'.$searchValue.'%')->where('flag','!=','DELETED')->get();
+        }
+
         $departmentData = array();
         foreach($datas as $data) {
             $obj["created_at"] = date_format($data->created_at,'Y-m-d H:m:s');
@@ -400,7 +408,10 @@ class HomeController extends Controller
             return error('找不到该数据');
         }
 
-        $recipe->delete();
+//        $recipe->delete();
+        $recipe->update([
+           'flag' =>'DELETED'
+        ]);
         return success();
     }
     public function editRecipe($id){
@@ -467,12 +478,12 @@ class HomeController extends Controller
             'medicine'=>json_encode($medicines),
             'prescription_name'=>$prescription_name,
             'eating_method' => $eating_method,
-            'ban' => $ban
+            'ban' => $ban,
+            'flag' => 'NORMAL'
         ]);
         return success([
             'id'=>$recipe->id
         ]);
-
     }
 
     public function createQAView(){

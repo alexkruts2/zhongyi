@@ -36,7 +36,7 @@ class DoctorController extends Controller{
         $failureNumber = 0;
 
         foreach($recipes[0] as $row){
-            if($row[1]=='方名'){
+            if($row[0]=='方名'){
                 $totalNumber--;
                 continue;
             }
@@ -87,6 +87,7 @@ class DoctorController extends Controller{
                     'eating_method'     => $row[3],
                     'medicine' => json_encode($dbMedicines),
                     'ban'     => $row[4],
+                    'flag' => 'NORMAL'
                 ]);
             }
         }
@@ -485,6 +486,31 @@ class DoctorController extends Controller{
         $total_price = $request->get('total_price');
         $disease_name = $request->get('disease_name');
 
+        $strbiaozheng = '';
+        $biaozheng = $request->get('biaozheng');
+        if(!empty($biaozheng)){
+            $strbiaozheng = implode (", ", $biaozheng);
+        }
+        $lizheng = $request->get('lizheng');
+        $strlizheng = '';
+        if(!empty($lizheng)){
+            $strlizheng = implode (", ", $lizheng);
+        }
+
+        $biaoli = $request->get('biaoli');
+        $strbiaoli = '';
+        if(!empty($biaoli)){
+            $strbiaoli = implode (", ", $biaoli);
+        }
+
+        $mai = $request->get('mai');
+        $strmai = '';
+        if(!empty($mai)){
+            $strmai = implode (", ", $mai);
+        }
+
+        $houfang = $request->get('houfang');
+
         $annotations = [];
         if(!empty($annotation_keys)){
             foreach($annotation_keys as $key=>$annotation_key){
@@ -522,6 +548,7 @@ class DoctorController extends Controller{
         $treatment = treatment::where('guahao',$guahao)->first();
         $accept_price = setting::where('name','ACCEPT_PRICE')->first()->value;
 
+
         $treatment->update([
             'question_id'=>$question_id,
             'record_video' => $video_url,
@@ -532,7 +559,12 @@ class DoctorController extends Controller{
             'state' => config('constant.treat_state.before_treating_pay'),
             'price' => $total_price + $accept_price*1.0,
             'disease_name' => $disease_name,
-            'recipe' => json_encode($medicines)
+            'recipe' => json_encode($medicines),
+            'baiozheng' => $strbiaozheng,
+            'lizheng' => $strlizheng,
+            'biaoli' => $strbiaoli,
+            'mai' => $strmai,
+            'houfang' => $houfang
         ]);
         return success($treatment);
     }
@@ -551,19 +583,18 @@ class DoctorController extends Controller{
         return success();
     }
     public function detailTreatment($treat_id){
-        $histories = treatment::where('id',$treat_id)->get();
+        $history = treatment::where('id',$treat_id)->first();
         $historyData = [];
-        foreach($histories as $history){
-            $temp = $history;
-            $temp->doctor_name = $history->doctor->name;
-            $temp->patient_name = $history->patient->name;
-            $temp->questions = json_decode($history->question);
-            $temp->annotations = json_decode($history->comment);
-            $temp->medicines = json_decode($history->recipe);
-            $recipe = recipe::where("id",$history->original_recipe)->first();
-            $temp->recipe_name = empty($recipe)?'':$recipe->prescription_name;
-            array_push($historyData,$temp);
-        }
+        $temp = $history;
+        $temp->doctor_name = $history->doctor->name;
+        $temp->patient_name = $history->patient->name;
+        $temp->questions = json_decode($history->question);
+        $temp->annotations = json_decode($history->comment);
+        $temp->medicines = json_decode($history->recipe);
+        $recipe = recipe::where("id",$history->original_recipe)->first();
+        $temp->recipe_name = empty($recipe)?'':$recipe->prescription_name;
+        array_push($historyData,$temp);
+//        echo json_encode($historyData);
         return view('admin.inquiry.detail')->with([
             'histories' => $historyData,
         ]);

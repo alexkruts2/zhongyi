@@ -24,7 +24,13 @@ class treatment extends Model
         'price',
         'doctor_profit',
         'hospital_profit',
-        'original_recipe'
+        'original_recipe',
+        'biaozheng',
+        'lizheng',
+        'biaoli',
+        'mai',
+        'doctor_question',
+        'houfang'
     ];
 
     public function patient(){

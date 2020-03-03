@@ -23,6 +23,7 @@ class CreateRecipesTable extends Migration
             $table->string('prescription_name');
             $table->text('eating_method');
             $table->text('ban');
+            $table->string('flag',16);
             $table->timestamps();
         });
     }

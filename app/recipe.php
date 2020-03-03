@@ -14,7 +14,8 @@ class recipe extends Model
         'medicine',
         'prescription_name',
         'eating_method',
-        'ban'
+        'ban',
+        'flag'
     ];
     public function department(){
         return $this->belongsTo(department::class);

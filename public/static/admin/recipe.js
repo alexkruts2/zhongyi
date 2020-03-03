@@ -138,42 +138,7 @@ function deleteRecipe(id, obj) {
     });
 }
 $(function () {
-
-    if($("#recipe").length)
-        recipe_table = $('#recipe').DataTable({
-        "processing":true,
-        'fnCreatedRow': function (nRow, aData, iDataIndex) {
-            $(nRow).attr('id', 'immi_' + aData.id); // or whatever you choose to set as the id
-        },
-        "serverSide":true,
-        "order": [[0, "desc"]],
-        "pageLength":10,
-        "aLengthMenu":[10,20,50],
-        "ajax":{
-            "type":"GET",
-            "url": '/doctor/recipe/getDatas',
-            "dataType":"json"
-        },
-        columns: [
-            {data: 'department'},
-            {data: 'prescription_name'},
-            {data: 'id'}
-        ],
-        "language": {
-            "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Chinese.json"
-        },
-        "aoColumnDefs": [
-            {
-                "aTargets":[2],
-                "mRender":function(data,type,full) {
-                    return '<button class="btn btn-sm btn-success m-l-5" onclick="location.href=\'/doctor/recipe/edit/'+data+'\'"><i class="ti-pencil"></i>修改</button>'+
-                        '<button class="btn btn-sm btn-danger m-l-5" onclick="deleteRecipe(\'' + data+ '\', this)"><i class="ti-trash"></i>删除</button>';
-                }
-            },
-            {"className": "text-center", "targets": "_all"}
-        ]
-    });
-
+    drawTable();
 });
 $('#recipe-form').submit(function (e) {
     e.preventDefault();
@@ -252,3 +217,90 @@ function uploadRecipes() {
 $("input[name='file_1']").change(function() {
     $("#excel-form").submit();
 });
+$("#excel-form").submit(function(e){
+    e.preventDefault();
+    var file = $("input[name='file_1']").val();
+    if(file==''||file==null||file==undefined)
+        return false;
+    showOverlay();
+    var forms = new FormData($(this)[0]);
+    $.ajax({
+        url: '/doctor/recipe/uploadRecipes',
+        data: forms,
+        type: 'POST',
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function (resp) {
+            hideOverlay();
+            if (resp.code == 0) {
+                $("#myModal").modal('hide');
+                recipe_table.destroy();
+                drawTable();
+                hideOverlay();
+                $("input[name='file_1']").val('');
+                Swal.fire({
+                    type: 'success',
+                    html: '总数:'+resp.data.total_number+',  插入数:'+resp.data.insert_number+',<br>更新数:'+resp.data.update_number+',  失败数:'+resp.data.fail_number,
+                    title: '成功导入',
+                });
+
+            } else {
+                hideOverlay();
+                Swal.fire({
+                    type: 'error',
+                    text: resp.message,
+                    title: '错误',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            }
+        },
+        error: function (e) {
+            hideOverlay();
+            Swal.fire({
+                type: 'error',
+                text: 'Internal Error ' + e.status + ' - ' + e.responseJSON.message,
+                title: '错误',
+                showConfirmButton: false,
+                timer: 3000
+            });
+        }
+    });
+});
+function drawTable() {
+    if($("#recipe").length)
+        recipe_table = $('#recipe').DataTable({
+            "processing":true,
+            'fnCreatedRow': function (nRow, aData, iDataIndex) {
+                $(nRow).attr('id', 'immi_' + aData.id); // or whatever you choose to set as the id
+            },
+            "serverSide":true,
+            "order": [[0, "desc"]],
+            "pageLength":10,
+            "aLengthMenu":[10,20,50],
+            "ajax":{
+                "type":"GET",
+                "url": '/doctor/recipe/getDatas',
+                "dataType":"json"
+            },
+            columns: [
+                {data: 'department'},
+                {data: 'prescription_name'},
+                {data: 'id'}
+            ],
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Chinese.json"
+            },
+            "aoColumnDefs": [
+                {
+                    "aTargets":[2],
+                    "mRender":function(data,type,full) {
+                        return '<button class="btn btn-sm btn-success m-l-5" onclick="location.href=\'/doctor/recipe/edit/'+data+'\'"><i class="ti-pencil"></i>修改</button>'+
+                            '<button class="btn btn-sm btn-danger m-l-5" onclick="deleteRecipe(\'' + data+ '\', this)"><i class="ti-trash"></i>删除</button>';
+                    }
+                },
+                {"className": "text-center", "targets": "_all"}
+            ]
+        });
+}

@@ -33,6 +33,12 @@ class CreateTreatmentsTable extends Migration
             $table->double('doctor_profit')->nullable();
             $table->double('hospital_profit')->nullable();
             $table->string('original_recipe')->nullable();
+            $table->string('biaozheng',256);
+            $table->string('lizheng',256);
+            $table->string('biaoli',256);
+            $table->string('mai',256);
+            $table->text('doctor_question');
+            $table->string('houfang',8);
             $table->timestamps();
         });
     }

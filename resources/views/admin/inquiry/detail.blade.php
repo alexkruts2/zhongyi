@@ -95,6 +95,31 @@
                             </label>
                         </div>
 
+                        <div class="form-group mt-3 row">
+                            <label for="example-text-input" class="col-8 offset-1 col-form-label">表症 : <b>{{$historyData->biaozheng}}</b></label>
+                        </div>
+                        <div class="form-group mt-3 row">
+                            <label for="example-text-input" class="col-8 offset-1 col-form-label">里症 : <b>{{$historyData->lizheng}}</b></label>
+                        </div>
+                        <div class="form-group mt-3 row">
+                            <label for="example-text-input" class="col-8 offset-1 col-form-label">半表半里 : <b>{{$historyData->biaoli}}</b></label>
+                        </div>
+                        <div class="form-group mt-3 row">
+                            <label for="example-text-input" class="col-8 offset-1 col-form-label">脉症 : <b>{{$historyData->mai}}</b></label>
+                        </div>
+                        <div class="form-group mt-3 row">
+                            <label for="example-text-input" class="col-8 offset-1 col-form-label">医生嘱托 : <b>{{$historyData->doctor_question}}</b></label>
+                        </div>
+                        <div class="form-group mt-3 row">
+                            <label for="example-text-input" class="col-8 offset-1 col-form-label">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" {{$historyData->houfang=='1'?'checked':''}}>
+                                    <label class="custom-control-label" for="houfang">是否合方</label>
+                                </div>
+
+                            </label>
+                        </div>
+
                         <div id = "annotationSection" class="collapse">
                             @php
                                 $i = 0
@@ -151,7 +176,6 @@
                         <div class="form-group mt-3 row">
                             <label class="col-5 offset-1">总价: <b id="total_price_span" >{{$historyData->price}}</b>元</label>
                         </div>
-
                     @endforeach
 
                 </div>

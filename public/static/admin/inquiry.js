@@ -202,6 +202,12 @@ $(function () {
         for(var i=0; i<medicines.length;i++){
             addMedicine(medicines[i]);
         }
+        var other_condition = $("#recipe option:selected").data("othercondition");
+        var eating_method = $("#recipe option:selected").data("eating_method");
+        var ban = $("#recipe option:selected").data("ban");
+        $("#ban").val(ban);
+        $("#eating_method").val(eating_method);
+        $("#other_condition").val(other_condition);
         calcPrice();
         changeMaxMinValue();
     });
@@ -371,7 +377,7 @@ function removeAnnotation(obj) {
 function drawRecipe(recipes){
     var html = '';
     for(var i=0; i < recipes.length; i++){
-        html +='<option value="'+recipes[i].id+'" data-medicine=\''+recipes[i].medicine+'\'>'+recipes[i].prescription_name+'</option>';
+        html +='<option value="'+recipes[i].id+'" data-medicine=\''+recipes[i].medicine+'\' data-otherCondition = \''+recipes[i].other_condition+'\' data-eating_method="'+recipes[i].eating_method+'" data-ban="'+recipes[i].ban+'" data- >'+recipes[i].prescription_name+'</option>';
     }
     $("#recipe").html(html);
 }
@@ -391,7 +397,7 @@ function addMedicine(medicine) {
         "    <div class=\"col-3\">\n" +
         "        <input class=\"form-control\" type=\"number\" value=\""+weight+"\" name=\"mass[]\" onchange='calcPrice()' max='"+max_weight+"' min='"+min_weight+"' id=\"weight"+selectedMedicine_id+"\">\n" +
         "    </div>\n" +
-        "<div class=\"col-3 text-left\">\n" +
+        "<div class=\"col-4 text-left\">\n" +
         "    <label id=\"price_"+selectedMedicine_id+"\" style=\"line-height: 38px;\">"+price+" 元/10g (最小："+min_weight+", 最大："+ max_weight+") </label><input type='hidden' name='price[]' value='"+price+"' /> \n" +
         "</div>\n"+
         "<input class=\"form-control\" type=\"hidden\" value=\""+max_weight+"\" name=\"max_weight[]\" id=\"max_weight_"+selectedMedicine_id+"\">\n" +
@@ -446,7 +452,7 @@ function addMedicineInModal() {
         "    <div class=\"col-3\">\n" +
         "        <input class=\"form-control\" type=\"number\" value=\"0\" onchange='calcPrice()' name=\"mass[]\" max='"+max_weight+"' min='"+min_weight+"' id=\"weight_"+selectedMedicine_id+"\">\n" +
         "    </div>\n" +
-        "<div class=\"col-3 text-left\">\n" +
+        "<div class=\"col-4 text-left\">\n" +
         "    <label id=\"price_"+selectedMedicine_id+"\" style=\"line-height: 38px;\">"+price+" 元/10g (最小："+min_weight+", 最大："+ max_weight+")</label><input type='hidden' name='price[]' value='"+price+"' /> \n" +
         "</div>\n"+
         "<input class=\"form-control\" type=\"hidden\" value=\""+max_weight+"\" name=\"max_weight[]\" id=\"max_weight_"+selectedMedicine_id+"\">\n" +
