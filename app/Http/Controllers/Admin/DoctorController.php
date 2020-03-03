@@ -54,18 +54,38 @@ class DoctorController extends Controller{
                 if(!empty($each)){
                     $medicine_name = $each['prescription_name'];
                     $medicine = medicine::where('name', $medicine_name)->first();
+                    $min_weight = $each['weight'];
+                    $max_weight = $each['weight'];
+
                     if(empty($medicine)){
                         $medicine = medicine::create([
                             "name" => $medicine_name,
                             'unit' => $each['unit'],
-                            'option' => $each['option']
+                            'option' => $each['option'],
+                            'flag' => 'NORMAL'
                         ]);
+                        $price = '-1';
+                        $unit = $each['unit'];
+
+                    }else{
+                        $medicine->update([
+                           'unit' => $each['unit'],
+                           'option' => $each['option'],
+                            'flag' => 'NORMAL'
+                        ]);
+                        $price = $medicine->price;
+                        $unit = $medicine->unit;
+//                        $min_weight = $medicine->min_weight;
+//                        $max_weight = $medicine->max_weight;
                     }
                     $item = array(
                         'medicine_id' => $medicine->id,
                         "medicine" => $medicine_name,
-                        "min_weight" => $each['weight'],
-                        "max_weight" => $each['weight'],
+                        "min_weight" => $min_weight,
+                        "max_weight" => $max_weight,
+                        "unit" => $unit,
+                        'option' => $each['option'],
+                        'price' => $price
                     );
                     array_push($dbMedicines,$item);
                 }
@@ -128,7 +148,9 @@ class DoctorController extends Controller{
                     'weight'     => $row[2],
                     'price'     => $row[3],
                     'min_weight'     => $row[4],
-                    'max_weight'     => $row[5]
+                    'max_weight'     => $row[5],
+                    'flag' => 'NORMAL'
+
                 ]);
             }else{
                 $insertNumber++;
@@ -138,7 +160,8 @@ class DoctorController extends Controller{
                     'weight' => $row[2],
                     'price' => $row[3],
                     'min_weight' => $row[4],
-                    'max_weight'     => $row[5]
+                    'max_weight'     => $row[5],
+                    'flag' => 'NORMAL'
                 ]);
             }
         }
@@ -164,9 +187,9 @@ class DoctorController extends Controller{
         $orderColumn = $columns[$orderColumnIndex]['data'];
         $orderDirection = $order[0]['dir'];
 
-        $datas = medicine::select('*')->where('name','like','%'.$searchValue.'%')
+        $datas = medicine::select('*')->where('name','like','%'.$searchValue.'%')->where('flag','NORMAL')
             ->orderBy($orderColumn, $orderDirection)->skip($start)->take($length)->get();
-        $availableDatas = medicine::select('*')->where('name','like','%'.$searchValue.'%')->get();
+        $availableDatas = medicine::select('*')->where('name','like','%'.$searchValue.'%')->where('flag','NORMAL')->get();
 
         $result = array(
             "aaData"=>$datas,
@@ -188,7 +211,8 @@ class DoctorController extends Controller{
            'price'=>$request->get('price'),
            'min_weight'=>$request->get('min_weight'),
            'max_weight'=>$request->get('max_weight'),
-            'unit' => $request->get('unit')
+            'unit' => $request->get('unit'),
+            'flag' => 'NORMAL'
         ]);
         return success($medicine);
     }
@@ -201,7 +225,9 @@ class DoctorController extends Controller{
         if (is_null($medicine)) {
             return error('找不到该数据');
         }
-        $medicine->delete();
+        $medicine->update([
+            'flag'=>'DELETED'
+        ]);
         return success();
     }
     public function viewContrary(){
@@ -435,7 +461,7 @@ class DoctorController extends Controller{
         $patient_id = $treatment->patient_id;
         $datas = treatment::select('*')->where('treatments.patient_id',$patient_id)->where('state','!=',config('constant.treat_state.waiting_treatment'))
             ->join('patients', 'treatments.patient_id', '=', 'patients.id')->get();
-        $medicines = medicine::select('*')->orderBy('name')->get();
+        $medicines = medicine::select('*')->where('flag','NORMAL')->orderBy('name')->get();
 
         return view('admin.inquiry.create')->with([
             'treatment'=>$treatment,
@@ -1105,7 +1131,7 @@ class DoctorController extends Controller{
     }
 
     public function editPriceView(){
-        $medicines = medicine::where('price','<',1)->where(function($query){
+        $medicines = medicine::where('price','<',1)->where('flag','NORMAL')->where(function($query){
             return $query->where('unit','公克')
                 ->orWhere('unit','两')
                 ->orWhereNull('unit');

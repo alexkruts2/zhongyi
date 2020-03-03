@@ -172,6 +172,10 @@ function editMedicine(id,obj) {
     $("#max_weight").val(medicine.max_weight);
     var unit = medicine.unit;
     $("#unit").val(unit)
+    if(unit!=null&&unit!=''&&unit!=undefined)
+        $('#unit').prop('disabled',true);
+    else
+        $('#unit').prop('disabled',false);
 }
 function deleteMedicine(id,obj) {
     Swal.fire({

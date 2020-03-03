@@ -38,21 +38,24 @@ function addMedicine() {
     var min_weight =  $("#medicine option:selected").data("min");
     var max_weight =  $("#medicine option:selected").data("max");
     var price = $("#medicine option:selected").data("price");
+    var unit = $("#medicine option:selected").data("unit");
+
+    var unitLable = unit==null||unit==''||unit==undefined||unit=='公克'?' 元/10g':unit=='两'?' 元/两':(', 单元:'+unit);
 
     var html="<div class=\"row\">\n" +
         "    <label class=\"col-2 col-form-label text-right\">\n" +
         "        <button type=\"button\" class=\"btn btn-default\" data-toggle=\"tooltip\" title=\"删除\" data-index=\""+selectedMedicine_id+"\" onclick=\"removeMedicine(this);\"><i class=\"fas fa-times\"></i> </button> &nbsp;"+selectedMedicine_name+"<input type='hidden' name='medicine_name[]' value='"+selectedMedicine_name+"' /></label>\n" +
         "    <div class=\"col-3\">\n" +
-        "        <input class=\"form-control\" type=\"number\" value=\""+min_weight+"\" name=\"min_weight[]\" max='"+max_weight+"' min='"+min_weight+"' id=\"min_weight_"+selectedMedicine_id+"\">\n" +
+        "        <input class=\"form-control\" type=\"number\" value=\""+min_weight+"\" name=\"min_weight[]\" id=\"min_weight_"+selectedMedicine_id+"\">\n" +
         "    </div>\n" +
         "<span style=\"\n" +
         "    padding-top: 8px;\n" +
         "\">~</span>"+
         "    <div class=\"col-3\">\n" +
-        "        <input class=\"form-control\" type=\"number\" value=\""+max_weight+"\" name=\"max_weight[]\" max='"+max_weight+"' min='"+min_weight+"'  id=\"max_weight_"+selectedMedicine_id+"\">\n" +
+        "        <input class=\"form-control\" type=\"number\" value=\""+max_weight+"\" name=\"max_weight[]\" id=\"max_weight_"+selectedMedicine_id+"\">\n" +
         "    </div>\n" +
         "<div class=\"col-3 text-center\">\n" +
-        "    <label id=\"price_"+selectedMedicine_id+"\" style=\"line-height: 38px;\">"+price+" 元/10g</label><input type='hidden' name='price[]' value='"+price+"' /> \n" +
+        "    <label id=\"price_"+selectedMedicine_id+"\" style=\"line-height: 38px;\">"+price+" " + unitLable +"</label><input type='hidden' name='price[]' value='"+price+"' /> \n" +
         "</div>\n"+
         "</div>\n"
     $("#medicineSection").append(html);

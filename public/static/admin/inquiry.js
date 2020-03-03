@@ -389,16 +389,22 @@ function addMedicine(medicine) {
     var min_weight =  medicine.min_weight;
     var max_weight =  medicine.max_weight;
     var weight = medicine.weight==undefined?0:medicine.weight;
+    if(medicine.weight==undefined&&medicine.min_weight==medicine.max_weight)
+        weight = medicine.max_weight;
     var price = medicine.price;
+    var unit = medicine.unit;
+
+    var unitLable = unit==null||unit==''||unit==undefined||unit=='公克'?' 元/10g':unit=='两'?' 元/两':(', 单元:'+unit);
 
     var html="<div class=\"row\">\n" +
         "    <label class=\"col-2 col-form-label text-right\">\n" +
         "        <button type=\"button\" class=\"btn btn-default\" data-toggle=\"tooltip\" title=\"删除\" data-index=\""+selectedMedicine_id+"\" onclick=\"removeMedicine(this);\"><i class=\"fas fa-times\"></i> </button> &nbsp;"+selectedMedicine_name+"<input type='hidden' name='medicine_name[]' value='"+selectedMedicine_name+"' /></label>\n" +
         "    <div class=\"col-3\">\n" +
-        "        <input class=\"form-control\" type=\"number\" value=\""+weight+"\" name=\"mass[]\" onchange='calcPrice()' max='"+max_weight+"' min='"+min_weight+"' id=\"weight"+selectedMedicine_id+"\">\n" +
+        "        <input class=\"form-control\" type=\"number\" value=\""+weight+"\" name=\"mass[]\" onchange='calcPrice()'  id=\"weight"+selectedMedicine_id+"\">\n" +
         "    </div>\n" +
         "<div class=\"col-4 text-left\">\n" +
-        "    <label id=\"price_"+selectedMedicine_id+"\" style=\"line-height: 38px;\">"+price+" 元/10g (最小："+min_weight+", 最大："+ max_weight+") </label><input type='hidden' name='price[]' value='"+price+"' /> \n" +
+        "    <label id=\"price_"+selectedMedicine_id+"\" style=\"line-height: 38px;\">"+price+" "+unitLable+" (最小："+min_weight+", 最大："+ max_weight+") </label><input type='hidden' name='price[]' value='"+price+"' /> \n" +
+        "<input type='hidden' name='unit[]' value='"+medicine.unit+"' "+
         "</div>\n"+
         "<input class=\"form-control\" type=\"hidden\" value=\""+max_weight+"\" name=\"max_weight[]\" id=\"max_weight_"+selectedMedicine_id+"\">\n" +
         "<input class=\"form-control\" type=\"hidden\" value=\""+min_weight+"\" name=\"min_weight[]\" id=\"min_weight_"+selectedMedicine_id+"\">\n" +
@@ -450,7 +456,7 @@ function addMedicineInModal() {
         "    <label class=\"col-2 col-form-label text-right\">\n" +
         "        <button type=\"button\" class=\"btn btn-default\" data-toggle=\"tooltip\" title=\"删除\" data-index=\""+selectedMedicine_id+"\" onclick=\"removeMedicine(this);\"><i class=\"fas fa-times\"></i> </button> &nbsp;"+selectedMedicine_name+"<input type='hidden' name='medicine_name[]' value='"+selectedMedicine_name+"' /></label>\n" +
         "    <div class=\"col-3\">\n" +
-        "        <input class=\"form-control\" type=\"number\" value=\"0\" onchange='calcPrice()' name=\"mass[]\" max='"+max_weight+"' min='"+min_weight+"' id=\"weight_"+selectedMedicine_id+"\">\n" +
+        "        <input class=\"form-control\" type=\"number\" value=\"0\" onchange='calcPrice()' name=\"mass[]\" id=\"weight_"+selectedMedicine_id+"\">\n" +
         "    </div>\n" +
         "<div class=\"col-4 text-left\">\n" +
         "    <label id=\"price_"+selectedMedicine_id+"\" style=\"line-height: 38px;\">"+price+" 元/10g (最小："+min_weight+", 最大："+ max_weight+")</label><input type='hidden' name='price[]' value='"+price+"' /> \n" +
@@ -466,16 +472,20 @@ function addMedicineInModal() {
 function calcPrice(){
     var weights = $("input[name*='mass']");
     var prices = $("input[name*='price']");
+    var units = $("input[name*='unit']");
     var totalPrice = 0;
     for(var i =0; i < weights.length; i++){
         if(weights[i].value!=null&&weights[i].value!=undefined&&weights[i].value!=''){
             if(prices[i]!=undefined&&prices[i]!=null&&prices[i]!=''){
-                totalPrice +=weights[i].value*prices[i].value;
-                console.log(weights[i].value,prices[i].value);
+                if(units[i].value=='公克')
+                    totalPrice +=weights[i].value*prices[i].value/10.0;
+                else if(units[i].value=='两')
+                    totalPrice +=weights[i].value*prices[i].value;
+                //console.log(weights[i].value,prices[i].value);
             }
         }
     }
-    totalPrice /= 10.0;
+    // totalPrice /= 10.0;
     $("#total_price").val(totalPrice);
     $("#total_price_span").html(totalPrice);
     console.log(totalPrice);

@@ -300,7 +300,7 @@ class HomeController extends Controller
     public function createRecipeView(Request $request){
         $datas = department::select('*')
             ->orderBy('name')->get();
-        $medicines = medicine::select('*')->orderBy('name')->get();
+        $medicines = medicine::select('*')->where('flag','NORMAL')->orderBy('name')->get();
         return view('admin.recipe.create')->with(['departments'=>$datas,'medicines'=>$medicines]);
     }
     public function createRecipe(Request $request){
@@ -332,6 +332,8 @@ class HomeController extends Controller
                 "medicine" => $medicine_name,
                 "min_weight" => $min_weight,
                 "max_weight" => $max_weight,
+                "unit" => $medicine->unit,
+                "option" => $medicine->option,
                 "price"=>$price
             );
             array_push($medicines,$item);
@@ -465,6 +467,8 @@ class HomeController extends Controller
                 "medicine"=>$medicine_name,
                 "min_weight"=>$min_weight,
                 "max_weight"=>$max_weight,
+                "unit" => $medicine->unit,
+                "option" => $medicine->option,
                 "price"=>$price
             );
             array_push($medicines,$item);

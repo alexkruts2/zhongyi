@@ -91,18 +91,18 @@
                                         <input type="hidden" name="medicine_name[]" value="{{$recipe_medicine->medicine}}" />
                                     </label>
                                     <div class="col-3">
-                                        <input class="form-control" type="text" value="{{$recipe_medicine->min_weight}}" name="min_weight[]" id="min_weight_{{$recipe_medicine->medicine_id}}"/>
+                                        <input class="form-control" type="number" value="{{$recipe_medicine->min_weight}}" name="min_weight[]" id="min_weight_{{$recipe_medicine->medicine_id}}"/>
                                     </div>
                                     <span style="paddint-top:8px">~</span>
                                     <div class="col-3">
-                                        <input class="form-control" type="text" value="{{$recipe_medicine->max_weight}}" name="max_weight[]" id="max_weight_{{$recipe_medicine->medicine_id}}"/>
+                                        <input class="form-control" type="number" value="{{$recipe_medicine->max_weight}}" name="max_weight[]" id="max_weight_{{$recipe_medicine->medicine_id}}"/>
                                     </div>
                                     <div class="col-3 text-center">
                                         @if(array_key_exists('price',$recipe_medicine))
-                                            <label id="price_{{$recipe_medicine->medicine_id}}" style="line-height:38px">{{$recipe_medicine->price}} 元/10g</label>
+                                            <label id="price_{{$recipe_medicine->medicine_id}}" style="line-height:38px">{{$recipe_medicine->price}} {{$recipe_medicine->unit=='两'?' 元/两':((empty($recipe_medicine->unit)||$recipe_medicine->unit=='公克')?' 元/10g':', 单元:'.$recipe_medicine->unit)}}</label>
                                             <input type="hidden" name="price[]" value="{{$recipe_medicine->price}}"/>
                                         @else
-                                            <label id="price_{{$recipe_medicine->medicine_id}}" style="line-height:38px"> -1 元/10g</label>
+                                            <label id="price_{{$recipe_medicine->medicine_id}}" style="line-height:38px"> -1 {{$recipe_medicine->unit=='两'?' 元/两':((empty($recipe_medicine->unit)||$recipe_medicine->unit=='公克')?' 元/10g':', 单元:'.$recipe_medicine->unit)}}</label>
                                             <input type="hidden" name="price[]" value="-1"/>
                                         @endif
 

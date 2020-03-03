@@ -36,7 +36,7 @@
                             <div class="col-md-3">
                                 <input type="number" class="form-control" name="price_{{$medicine->id}}" id="price_{{$medicine->id}}" value="{{$medicine->price}}" data-parsley-type="digits" min="0"/>
                             </div>
-                            <label class="col-md-3 col-form-label">{{empty($medicine->unit)||$medicine->unit=='公克'?'￥/10g':'￥/两'}}</label>
+                            <label class="col-md-3 col-form-label">{{$medicine->unit=='两'?'￥/两':'￥/10g'}}</label>
                         </div>
                     @endforeach
                         <div class="row mt-3">
