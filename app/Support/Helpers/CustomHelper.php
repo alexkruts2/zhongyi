@@ -924,4 +924,26 @@ if (!function_exists('checkNatInt')) {
         return $func_c2i($str);
     }
 }
+if (!function_exists('updateRecipesByMedicinePrice')) {
+    function updateRecipesByMedicinePrice($medicine_id,$price){
+        $recipes = \App\recipe::all();
+        foreach($recipes as $recipe){
+            $str_medicine = $recipe->medicine;
+            $medicines = json_decode($str_medicine);
+            $medicine_array = [];
+            $found = false;
+            foreach($medicines as $medicine){
+                if($medicine->medicine_id==$medicine_id){
+                    $found = true;
+                    $medicine->price = $price;
+                }
+                array_push($medicine_array,$medicine);
+            }
+            if($found)
+                \App\recipe::where('id',$recipe->id)->first()->update([
+                   'medicine' => json_encode($medicine_array)
+                ]);
+        }
+    }
+}
 

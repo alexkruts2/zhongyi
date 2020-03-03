@@ -103,10 +103,10 @@ function inputIDNumber() {
         });
         return;
     }
-    if(IDNumber.length!=18){
+    if(!(IDNumber.length==18||IDNumber.length==21)){
         Swal.fire({
             type: 'warning',
-            title: '身份证号码错误。长度必须为18。'
+            title: '身份证号码错误。长度必须为18或21。'
         });
 
         return;

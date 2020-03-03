@@ -51,7 +51,7 @@
                         <li class="menu {{(strpos(request()->path(),'doctor/qa')!==false ) ?'active':'' }}">
                             <a href="javascript:void(0)">问诊单管理<i class="fa fa-angle-left float-right"></i></a>
                             <ul class="sub-menu" style="display:{{(strpos(request()->path(),'doctor/qa')!==false) ?'block':'none' }}">
-                                <li class="{{request()->path() == 'doctor/qa/create' ? 'active' : ''}}"><a class="{{strpos(request()->path() ,'doctor/qa/create')!==false ? 'active' : ''}}" href="/doctor/qa/create">新问诊</a></li>
+                                <li class="{{request()->path() == 'doctor/qa/create' ? 'active' : ''}}"><a class="{{strpos(request()->path() ,'doctor/qa/create')!==false ? 'active' : ''}}" href="/doctor/qa/create">新问诊单</a></li>
                                 <li class="{{request()->path() == 'doctor/qa/view' ? 'active' : ''}}"><a class="{{strpos(request()->path() ,'doctor/qa/view')!==false ? 'active' : ''}}" href="/doctor/qa/view">查看问诊单</a></li>
                             </ul>
                         </li>

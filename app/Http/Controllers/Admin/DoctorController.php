@@ -75,8 +75,6 @@ class DoctorController extends Controller{
                         ]);
                         $price = $medicine->price;
                         $unit = $medicine->unit;
-//                        $min_weight = $medicine->min_weight;
-//                        $max_weight = $medicine->max_weight;
                     }
                     $item = array(
                         'medicine_id' => $medicine->id,
@@ -214,6 +212,7 @@ class DoctorController extends Controller{
             'unit' => $request->get('unit'),
             'flag' => 'NORMAL'
         ]);
+        updateRecipesByMedicinePrice($id,$request->get('price'));
         return success($medicine);
     }
     public function deleteMidicineData(Request $request){
@@ -1149,6 +1148,7 @@ class DoctorController extends Controller{
                 $medicine->update([
                     'price'=> $value
                 ]);
+                updateRecipesByMedicinePrice($medicine->id,$value);
             }
         }
         return success("OK");
