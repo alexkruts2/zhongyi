@@ -836,45 +836,92 @@ if (!function_exists('getStateWord')) {
                 return '';
         }
     }
-    if (!function_exists('getMonthData')) {
-        function getMonthData(){
-            $result = DB::select('SELECT MONTHNAME(treat_start) AS `month`,YEAR(treat_start) AS `year`, SUM(price) AS `sum`
-                                    FROM treatments
-                                    GROUP BY YEAR(treat_start), MONTH(treat_start)
-                                    ');
-            return $result;
-        }
+}
+if (!function_exists('getMonthData')) {
+    function getMonthData(){
+        $result = DB::select('SELECT MONTHNAME(treat_start) AS `month`,YEAR(treat_start) AS `year`, SUM(price) AS `sum`
+                                FROM treatments
+                                GROUP BY YEAR(treat_start), MONTH(treat_start)
+                                ');
+        return $result;
     }
-    if (!function_exists('getMedicineDatas')) {
-        function getMedicineDatas($strMedicine){
-            if(empty($strMedicine))
-                return [];
-            $split_strings = preg_split('/[\ \n\,]+/', $strMedicine);
-            $recipe = [];
-            foreach($split_strings as  $split_string){
-                if (preg_match('/（(.*?)）/', $split_string, $match) == 1) {
-                    $option = $match[1];
-                    $item = preg_replace('/（(.*?)）/','',$split_string);
-                    $reg = '/((0|[1-9]\d*)(\.\d+)?)|(零|一|二|三|四|五|六|七|八|九|十)(百|十|零)?(一|二|三|四|五|六|七|八|九)?(百|十|零)?(一|二|三|四|五|六|七|八|九)?/';
+}
+if (!function_exists('getMedicineDatas')) {
+    function getMedicineDatas($strMedicine){
+        if(empty($strMedicine))
+            return [];
+        $split_strings = preg_split('/[\ \n\,]+/', $strMedicine);
+        $recipe = [];
+        foreach($split_strings as  $split_string){
+            if (preg_match('/（(.*?)）/', $split_string, $match) == 1) {
+                $option = $match[1];
+                $item = preg_replace('/（(.*?)）/','',$split_string);
+                $reg = '/((0|[1-9]\d*)(\.\d+)?)|(零|一|二|三|四|五|六|七|八|九|十)(百|十|零)?(一|二|三|四|五|六|七|八|九)?(百|十|零)?(一|二|三|四|五|六|七|八|九)?/';
 
-                    if (preg_match($reg, $item, $matches)){
-                        $weight = $matches[0];
-                        $medicines = explode($weight,$item);
-                        $medicin = $medicines[0];
-                        $unit = $medicines[1];
-                        $temp = array(
-                            'prescription_name' => $medicin,
-                            'unit' => $unit,
-                            'weight' => $weight,
-                            'option' => $option
-                        );
-                        array_push($recipe,$temp);
-                    }
+                if (preg_match($reg, $item, $matches)){
+                    $weight = $matches[0];
+                    $medicines = explode($weight,$item);
+                    $medicin = $medicines[0];
+                    $unit = $medicines[1];
+                    $temp = array(
+                        'prescription_name' => $medicin,
+                        'unit' => $unit,
+                        'weight' => checkNatInt($weight),
+                        'option' => $option
+                    );
+                    array_push($recipe,$temp);
                 }
             }
-            return $recipe;
         }
+        return $recipe;
     }
-
-
 }
+
+if (!function_exists('checkString')) {
+    function checkString($var, $check = '', $default = '') {
+        if(!is_string($var)){
+            if(is_numeric($var)) {
+                $var = (string)$var;
+            }else{
+                return $default;
+            }
+        }
+        if ($check) {
+            return (preg_match($check, $var, $ret) ? $ret[1] : $default);
+        }
+        return $var;
+    }
+}
+if (!function_exists('checkNatInt')) {
+    function checkNatInt($str)
+    {
+        $map = array('一' => '1', '二' => '2', '三' => '3', '四' => '4', '五' => '5', '六' => '6', '七' => '7', '八' => '8', '九' => '9',
+            '壹' => '1', '贰' => '2', '叁' => '3', '肆' => '4', '伍' => '5', '陆' => '6', '柒' => '7', '捌' => '8', '玖' => '9',
+            '零' => '0', '两' => '2',
+            '仟' => '千', '佰' => '百', '拾' => '十',
+            '万万' => '亿');
+        $str = str_replace(array_keys($map), array_values($map), $str);
+        $str = checkString($str, '/([\d亿万千百十]+)/u');
+        $func_c2i = function ($str, $plus = false) use (&$func_c2i) {
+            if (false === $plus) {
+                $plus = array('亿' => 100000000, '万' => 10000, '千' => 1000, '百' => 100, '十' => 10,);
+            }
+            $i = 0;
+            if ($plus)
+                foreach ($plus as $k => $v) {
+                    $i++;
+                    if (strpos($str, $k) !== false) {
+                        $ex = explode($k, $str, 2);
+                        $new_plus = array_slice($plus, $i, null, true);
+                        $l = $func_c2i($ex[0], $new_plus);
+                        $r = $func_c2i($ex[1], $new_plus);
+                        if ($l == 0) $l = 1;
+                        return $l * $v + $r;
+                    }
+                }
+            return (int)$str;
+        };
+        return $func_c2i($str);
+    }
+}
+

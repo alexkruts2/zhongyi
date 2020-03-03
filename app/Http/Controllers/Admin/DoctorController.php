@@ -78,6 +78,7 @@ class DoctorController extends Controller{
                     'eating_method'     => $row[3],
                     'medicine' => json_encode($dbMedicines),
                     'ban'     => $row[4],
+                    'flag' => 'NORMAL'
                 ]);
             }else{
                 $insertNumber++;

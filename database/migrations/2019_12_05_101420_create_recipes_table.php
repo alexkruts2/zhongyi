@@ -24,6 +24,8 @@ class CreateRecipesTable extends Migration
             $table->text('eating_method');
             $table->text('ban');
             $table->string('flag',16);
+            $table->string('unit',32)->nullable();
+            $table->string('option',128)->nullable();
             $table->timestamps();
         });
     }
