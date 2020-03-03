@@ -185,7 +185,6 @@ var monthLabel = {
     'December':'十二月'
 }
 function scrollSidebarTop(){
-
     if (navigator.userAgent.indexOf("Chrome") !== -1){
         $(".sidebar-menu").scrollTop($(".sidebar-menu").prop("scrollHeight")-700);
         $(".sidebar-menu").perfectScrollbar('update');
@@ -193,4 +192,40 @@ function scrollSidebarTop(){
         $(".sidebar-menu").scrollTop($(".sidebar-menu").prop("scrollHeight"));
         $(".sidebar-menu").perfectScrollbar('update');
     }
+}
+function getContraryIds(medicine_id,callback){
+    showOverlay();
+    $.ajax({
+        url: '/doctor/history/getContraryIds',
+        data: 'id='+medicine_id,
+        type: 'GET',
+        cache: false,
+        dataType: 'json',
+        processData: false,
+        success: function (resp) {
+            hideOverlay();
+            if (resp.code == 0) {
+                callback(resp.data);
+            } else {
+                Swal.fire({
+                    type: 'error',
+                    text: resp.message,
+                    title: '错误',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            }
+        },
+        error: function (e) {
+            hideOverlay();
+            Swal.fire({
+                type: 'error',
+                text: 'Internal Error ' + e.status + ' - ' + e.responseJSON.message,
+                title: '错误',
+                showConfirmButton: false,
+                timer: 3000
+            });
+        }
+    });
+
 }

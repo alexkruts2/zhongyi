@@ -412,6 +412,12 @@ function addMedicine(medicine) {
     $("#medicineSection").append(html);
     $("#medicine option[value='"+selectedMedicine_id+"']").attr("disabled","disabled");
     $("#medicine").prop("selectedIndex",-1);
+    getContraryIds(selectedMedicine_id,function(contraryIds){
+        for(var i=0; i < contraryIds.length; i++){
+            $("#medicine option[value='"+contraryIds[i]+"']").attr("disabled","disabled");
+        }
+    });
+
 }
 function drawSlide(questions) {
     var html = '';
@@ -468,6 +474,12 @@ function addMedicineInModal() {
     $("#medicine option:selected").attr("disabled","disabled");
     $("#medicine").prop("selectedIndex",-1);
     changeMaxMinValue();
+    getContraryIds(selectedMedicine_id,function(contraryIds){
+        for(var i=0; i < contraryIds.length; i++){
+            $("#medicine option[value='"+contraryIds[i]+"']").attr("disabled","disabled");
+        }
+    });
+
 }
 function calcPrice(){
     var weights = $("input[name*='mass']");

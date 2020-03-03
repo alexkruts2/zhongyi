@@ -1155,4 +1155,25 @@ class DoctorController extends Controller{
         }
         return success("OK");
     }
+
+    public function getContraryIds(Request $request){
+        validate($request->all(), [
+            'id'=>'required'
+        ]);
+        $medicine_id = $request->get('id');
+        $medicine = medicine::where('id',$medicine_id)->first();
+        if(empty($medicine)){
+            return error('参数错误。');
+        }
+        $contrary = contrary::where('name',$medicine->name)->first();
+        $result = [];
+
+        if(!empty($contrary)){
+            $strContrary = $contrary->contrary;
+            $medicines = medicine::whereIn('name',explod(',',$strContrary))->get();
+            foreach($medicines as $each)
+                array_push($result,$each->id);
+        }
+        return success($result);
+    }
 }

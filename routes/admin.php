@@ -149,6 +149,7 @@ Route::group(['prefix' => 'doctor'], function () {
             Route::post('/getAllData', 'Admin\DoctorController@getAllData')->name('doctor.history.all.data');
             Route::post('/getIndividualData', 'Admin\DoctorController@getIndividualData')->name('doctor.history.individual.data');
             Route::get('/detail/{treat_id}', 'Admin\DoctorController@detailTreatment')->name('doctor.inquiry.detailTreatment');
+            Route::get('/getContraryIds', 'Admin\DoctorController@getContraryIds')->name('doctor.medicine.getContraryIds');
         });
         Route::group(['prefix' => 'setting'], function () {
             Route::get('/change_password', 'Admin\DoctorController@change_password')->name('doctor.setting.change_password');

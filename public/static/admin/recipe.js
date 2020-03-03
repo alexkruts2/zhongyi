@@ -63,17 +63,9 @@ function addMedicine() {
     $("#medicine").prop("selectedIndex",-1);
 
 
-    getContraryMedicines(selectedMedicine_id,function(resp){
-        var strContraries = '';
-        for(var i = 0 ; i < resp.data.length; i++){
-            strContraries +=resp.data[i].contrary + ',';
-        }
-        strContraries = strContraries.replace(/(^,)|(,$)/g, "");
-        if(strContraries!='' && strContraries!=null && strContraries!=undefined){
-            arrContraries = strContraries.split(',');
-            for(var i=0; i < arrContraries.length; i++){
-                $("#medicine option:contains("+arrContraries[i]+")").attr("disabled","disabled");
-            }
+    getContraryIds(selectedMedicine_id,function(contraryIds){
+        for(var i=0; i < contraryIds.length; i++){
+            $("#medicine option[value='"+contraryIds[i]+"']").attr("disabled","disabled");
         }
     });
 
