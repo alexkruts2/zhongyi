@@ -21,6 +21,9 @@ class CreateMedicinesTable extends Migration
             $table->float('price');
             $table->integer('min_weight');
             $table->integer('max_weight');
+            $table->string('flag',16);
+            $table->string('unit',32)->nullable();
+            $table->string('option',128)->nullable();
             $table->timestamps();
         });
     }

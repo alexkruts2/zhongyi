@@ -27,6 +27,8 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
+                    <label class="col-md-5 text-right col-form-label"></label>
+
                     <form id="price-form" method="post" data-parsley-validate="" enctype="multipart/form-data">
                     @foreach($medicines as $medicine)
                         <div class="row mt-3">
@@ -34,6 +36,7 @@
                             <div class="col-md-3">
                                 <input type="number" class="form-control" name="price_{{$medicine->id}}" id="price_{{$medicine->id}}" value="{{$medicine->price}}" data-parsley-type="digits" min="0"/>
                             </div>
+                            <label class="col-md-3 col-form-label">{{empty($medicine->unit)||$medicine->unit=='公克'?'￥/10g':'￥/两'}}</label>
                         </div>
                     @endforeach
                         <div class="row mt-3">

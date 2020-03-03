@@ -133,6 +133,7 @@ function drawTable(){
             {data: 'price'},
             {data:'min_weight'},
             {data:'max_weight'},
+            {data:'unit'},
             {data:'id'}
         ],
         "language": {
@@ -147,7 +148,7 @@ function drawTable(){
                 }
             },
             {
-                "aTargets":[6],
+                "aTargets":[7],
                 'orderable':false,
                 "mRender":function(data,type,full) {
                     return '<button class="btn btn-sm btn-success m-l-5" data-medicine=\''+JSON.stringify(full)+'\' onclick="editMedicine(\'' + data+ '\', this)"><i class="ti-pencil-alt"></i>修改</button>'+
@@ -169,6 +170,8 @@ function editMedicine(id,obj) {
     $("#price").val(medicine.price);
     $("#min_weight").val(medicine.min_weight);
     $("#max_weight").val(medicine.max_weight);
+    var unit = medicine.unit;
+    $("#unit").val(unit)
 }
 function deleteMedicine(id,obj) {
     Swal.fire({

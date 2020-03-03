@@ -12,6 +12,9 @@ class medicine extends Model
         'weight',
         'price',
         'min_weight',
-        'max_weight'
+        'max_weight',
+        'unit',
+        'option',
+        'flag',
     ];
 }

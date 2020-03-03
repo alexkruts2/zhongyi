@@ -56,7 +56,9 @@ class DoctorController extends Controller{
                     $medicine = medicine::where('name', $medicine_name)->first();
                     if(empty($medicine)){
                         $medicine = medicine::create([
-                            "name" => $medicine_name
+                            "name" => $medicine_name,
+                            'unit' => $each['unit'],
+                            'option' => $each['option']
                         ]);
                     }
                     $item = array(
@@ -185,7 +187,8 @@ class DoctorController extends Controller{
            'weight'=>$request->get('weight'),
            'price'=>$request->get('price'),
            'min_weight'=>$request->get('min_weight'),
-           'max_weight'=>$request->get('max_weight')
+           'max_weight'=>$request->get('max_weight'),
+            'unit' => $request->get('unit')
         ]);
         return success($medicine);
     }
@@ -1102,7 +1105,11 @@ class DoctorController extends Controller{
     }
 
     public function editPriceView(){
-        $medicines = medicine::where('price','<',1)->orderBy('price')->get();
+        $medicines = medicine::where('price','<',1)->where(function($query){
+            return $query->where('unit','公克')
+                ->orWhere('unit','两')
+                ->orWhereNull('unit');
+        })->orderBy('price')->get();
         return view('admin.medicine.editPrice')->with([
             'medicines' => $medicines
         ]);

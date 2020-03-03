@@ -25,7 +25,7 @@
             <button type="button" class="btn btn-info" onclick="uploadMedicineExcel()"><i class=" fas fa-upload"></i></button>
         </div>
     </div>
-    <form action="/doctor/medicine/uploadMedicine" method="POST" enctype="multipart/form-data" style="position:absolute;top:1000px;" id="excel-form">
+    <form action="/doctor/medicine/uploadMedicine" method="POST" enctype="multipart/form-data" style="position:absolute;top:-10000px;" id="excel-form">
         <input name="file_1" type="file"  accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" >
     </form>
 
@@ -43,6 +43,7 @@
                                 <th class="text-center">价格（￥/10g）</th>
                                 <th class="text-center">最少使用量（g)</th>
                                 <th class="text-center">最多使用量(g)</th>
+                                <th class="text-center">单元</th>
                                 <th class="text-center">操作</th>
                             </tr>
                             </thead>
@@ -100,6 +101,18 @@
                             <label for="example-text-input" class="col-4 col-form-label text-right">最多使用量(g)</label>
                             <div class="col-8">
                                 <input class="form-control" type="text"  name='max_weight' id="max_weight" value=""/>
+                            </div>
+                        </div>
+                        <div class="form-group mt-3 row">
+                            <label for="example-text-input" class="col-4 col-form-label text-right">单元</label>
+                            <div class="col-8">
+                                <select id="unit" name="unit" class="form-control">
+                                    <option value="">--请选择单元--</option>
+                                    <option value="公克">公克</option>
+                                    <option value="两">两</option>
+                                    <option value="枚">枚</option>
+                                </select>
+
                             </div>
                         </div>
                 </div>
