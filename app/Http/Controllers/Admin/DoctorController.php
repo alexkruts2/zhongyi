@@ -56,11 +56,17 @@ class DoctorController extends Controller{
                     $medicine = medicine::where('name', $medicine_name)->first();
                     $min_weight = $each['weight'];
                     $max_weight = $each['weight'];
+                    $unit = $each['unit'];
+                    if($each['unit']==config('constant.unit.liang')){
+                        $min_weight *= 50;
+                        $max_weight *= 50;
+                        $unit = config('constant.unit.gram');
+                    }
 
                     if(empty($medicine)){
                         $medicine = medicine::create([
                             "name" => $medicine_name,
-                            'unit' => $each['unit'],
+                            'unit' => $unit,
                             'option' => $each['option'],
                             'flag' => 'NORMAL'
                         ]);
@@ -72,11 +78,6 @@ class DoctorController extends Controller{
                             'flag' => 'NORMAL'
                         ]);
                         $price = $medicine->price;
-                    }
-                    if($each['unit']==config('constant.unit.liang')){
-                        $min_weight *= 50;
-                        $max_weight *= 50;
-                        $unit = config('constant.unit.gram');
                     }
 
 //                    updateRecipesByMedicineUnit($medicine->id,$each['unit']);
