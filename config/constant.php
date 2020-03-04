@@ -10,5 +10,9 @@ return [
         "before_treating_pay" => "BEFORE_TREATING_PAY",
         "after_treating_pay" => "AFTER_TREATING_PAY",
         "close" => "CLOSE"
+    ],
+    "unit" =>[
+        "gram" => "公克",
+        "liang" => "两"
     ]
 ];

@@ -66,17 +66,20 @@ class DoctorController extends Controller{
                         ]);
                         $price = '-1';
                         $unit = $each['unit'];
-
                     }else{
                         $medicine->update([
-                           'unit' => $each['unit'],
-                           'option' => $each['option'],
+                            'option' => $each['option'],
                             'flag' => 'NORMAL'
                         ]);
                         $price = $medicine->price;
-                        $unit = $medicine->unit;
                     }
-                    updateRecipesByMedicineUnit($medicine->id,$each['unit']);
+                    if($each['unit']==config('constant.unit.liang')){
+                        $min_weight *= 50;
+                        $max_weight *= 50;
+                        $unit = config('constant.unit.gram');
+                    }
+
+//                    updateRecipesByMedicineUnit($medicine->id,$each['unit']);
                     $item = array(
                         'medicine_id' => $medicine->id,
                         "medicine" => $medicine_name,
