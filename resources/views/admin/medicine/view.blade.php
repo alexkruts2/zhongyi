@@ -39,10 +39,10 @@
                             <tr>
                                 <th class="text-center">药材名称</th>
                                 <th class="text-center">用处</th>
-                                <th class="text-center">数量（g）</th>
-                                <th class="text-center">价格（￥/10g）</th>
-                                <th class="text-center">最少使用量（g)</th>
-                                <th class="text-center">最多使用量(g)</th>
+                                <th class="text-center">数量（单元）</th>
+                                <th class="text-center">价格（￥/单元）</th>
+                                <th class="text-center">最少使用量</th>
+                                <th class="text-center">最多使用量</th>
                                 <th class="text-center">单元</th>
                                 <th class="text-center">操作</th>
                             </tr>

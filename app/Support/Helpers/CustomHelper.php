@@ -863,6 +863,9 @@ if (!function_exists('getMedicineDatas')) {
                     $medicines = explode($weight,$item);
                     $medicin = $medicines[0];
                     $unit = $medicines[1];
+                    if($unit=='g'||$unit=='gram')
+                        $unit = '公克';
+
                     $temp = array(
                         'prescription_name' => $medicin,
                         'unit' => $unit,
@@ -946,4 +949,28 @@ if (!function_exists('updateRecipesByMedicinePrice')) {
         }
     }
 }
+if (!function_exists('updateRecipesByMedicineUnit')) {
+    function updateRecipesByMedicineUnit($medicine_id, $unit)
+    {
+        $recipes = \App\recipe::all();
+        foreach($recipes as $recipe){
+            $str_medicine = $recipe->medicine;
+            $medicines = json_decode($str_medicine);
+            $medicine_array = [];
+            $found = false;
+            foreach($medicines as $medicine){
+                if($medicine->medicine_id==$medicine_id){
+                    $found = true;
+                    $medicine->unit = $unit;
+                }
+                array_push($medicine_array,$medicine);
+            }
+            if($found)
+                \App\recipe::where('id',$recipe->id)->first()->update([
+                    'medicine' => json_encode($medicine_array)
+                ]);
+        }
+    }
+}
+
 

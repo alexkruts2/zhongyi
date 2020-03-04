@@ -40,7 +40,7 @@ function addMedicine() {
     var price = $("#medicine option:selected").data("price");
     var unit = $("#medicine option:selected").data("unit");
 
-    var unitLable = unit==null||unit==''||unit==undefined||unit=='公克'?' 元/10g':unit=='两'?' 元/两':(', 单元:'+unit);
+    var unitLable = unit==null||unit==''||unit==undefined||unit=='公克'?' 元/10g':unit=='两'?' 元/两':('元/'+unit);
 
     var html="<div class=\"row\">\n" +
         "    <label class=\"col-2 col-form-label text-right\">\n" +

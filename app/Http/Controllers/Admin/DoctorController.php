@@ -76,6 +76,7 @@ class DoctorController extends Controller{
                         $price = $medicine->price;
                         $unit = $medicine->unit;
                     }
+                    updateRecipesByMedicineUnit($medicine->id,$each['unit']);
                     $item = array(
                         'medicine_id' => $medicine->id,
                         "medicine" => $medicine_name,

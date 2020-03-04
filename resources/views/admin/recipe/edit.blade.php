@@ -99,10 +99,10 @@
                                     </div>
                                     <div class="col-3 text-center">
                                         @if(array_key_exists('price',$recipe_medicine))
-                                            <label id="price_{{$recipe_medicine->medicine_id}}" style="line-height:38px">{{$recipe_medicine->price}} {{$recipe_medicine->unit=='两'?' 元/两':((empty($recipe_medicine->unit)||$recipe_medicine->unit=='公克')?' 元/10g':', 单元:'.$recipe_medicine->unit)}}</label>
+                                            <label id="price_{{$recipe_medicine->medicine_id}}" style="line-height:38px">{{$recipe_medicine->price}} {{$recipe_medicine->unit=='两'?' 元/两':((empty($recipe_medicine->unit)||$recipe_medicine->unit=='公克')?' 元/10g':'/'.$recipe_medicine->unit)}}</label>
                                             <input type="hidden" name="price[]" value="{{$recipe_medicine->price}}"/>
                                         @else
-                                            <label id="price_{{$recipe_medicine->medicine_id}}" style="line-height:38px"> -1 {{$recipe_medicine->unit=='两'?' 元/两':((empty($recipe_medicine->unit)||$recipe_medicine->unit=='公克')?' 元/10g':', 单元:'.$recipe_medicine->unit)}}</label>
+                                            <label id="price_{{$recipe_medicine->medicine_id}}" style="line-height:38px"> -1 {{$recipe_medicine->unit=='两'?' 元/两':((empty($recipe_medicine->unit)||$recipe_medicine->unit=='公克')?' 元/10g':' /'.$recipe_medicine->unit)}}</label>
                                             <input type="hidden" name="price[]" value="-1"/>
                                         @endif
 
