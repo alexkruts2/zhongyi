@@ -49,7 +49,7 @@
                         <div class="form-group mt-3 row">
                             <label for="example-text-input" class="col-2 col-form-label text-right">密码</label>
                             <div class="col-10">
-                                <input class="form-control" type="text" value="" name='password' id="password" placeholder="密码" data-parsley-required	>
+                                <input class="form-control" type="text" value="12345678" name='password' id="password" placeholder="密码" disabled data-parsley-required	>
                             </div>
                         </div>
                         <div class="form-group mt-3 row">
