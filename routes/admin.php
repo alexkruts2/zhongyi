@@ -25,6 +25,7 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/view','Admin\HomeController@viewDoctor')->name('admin.doctor.view');
             Route::post('/get','Admin\HomeController@getDoctors');
             Route::post('/delete','Admin\HomeController@deleteDoctor');
+            Route::post('/resetPassword','Admin\HomeController@resetDoctorPassword');
 
             Route::get('/edit/{id}','Admin\HomeController@editDoctor')->name('doctor.edit');
             Route::get('/detail/{id}','Admin\HomeController@detailDoctor')->name('doctor.edit');

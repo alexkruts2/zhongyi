@@ -148,6 +148,7 @@ $(function () {
                 'orderable':false,
                 "mRender":function(data,type,full) {
                     return '<button class="btn btn-sm btn-primary m-l-5" onclick="viewDoctor(\'' + data+ '\', this)"><i class="ti-eye"></i>查看</button>'+
+                        '<button class="btn btn-sm btn-info m-l-5" onclick="resetPassword(\'' + data+ '\', this)"><i class="ti-eye"></i>重设密码</button>'+
                      '<button class="btn btn-sm btn-success m-l-5" onclick="editDoctor(\'' + data+ '\', this)"><i class="ti-pencil-alt"></i>修改</button>'+
                         '<button class="btn btn-sm btn-danger m-l-5" onclick="deleteDoctor(\'' + data+ '\', this)"><i class="ti-trash"></i>删除</button>';
                 }
@@ -257,5 +258,48 @@ function initSlider(){
             $("#doctor_ratio").val(this.value);
         }
     }
+
+}
+
+function resetPassword(id,obj) {
+    showOverlay();
+    $.ajax({
+        url: '/admin/doctor/resetPassword',
+        data: "id=" + id,
+        cache: false,
+        dataType: 'json',
+        processData: false,
+        type: 'POST',
+        success: function (resp) {
+            hideOverlay();
+            if (resp.code == '0') {
+                Swal.fire({
+                    type: 'success',
+                    text: '',
+                    title: '重设密码成功',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            } else {
+                hideOverlay();
+                Swal.fire({
+                    type: 'error',
+                    text: resp.message,
+                    title: '错误',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            }
+        },
+        error: function (e) {
+            Swal.fire({
+                type: 'error',
+                text: 'Internal Error ' + e.status + ' - ' + e.responseJSON.message,
+                title: '错误',
+                showConfirmButton: false,
+                timer: 3000
+            });
+        }
+    });
 
 }

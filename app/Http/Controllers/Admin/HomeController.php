@@ -768,6 +768,18 @@ class HomeController extends Controller
         ]);
         return success();
     }
-
+    public function resetDoctorPassword(Request $request){
+        validate($request->all(), [
+            'id'=>'required'
+        ]);
+        $doctor = doctor::where('id',$request->get('id'))->first();
+        if(empty($doctor)){
+            return error('参数错误');
+        }
+        $doctor->update([
+            "password"=>bcrypt("12345678")
+        ]);
+        return success("OK");
+    }
 
 }
