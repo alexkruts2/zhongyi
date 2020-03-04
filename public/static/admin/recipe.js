@@ -289,6 +289,11 @@ function drawTable() {
             },
             "aoColumnDefs": [
                 {
+                    "aTargets":[0],
+                    "mRender":function(data,type,full) {
+                        return data==''||data==undefined||data==null?'未知':data;
+                    }
+                },{
                     "aTargets":[2],
                     "mRender":function(data,type,full) {
                         return '<button class="btn btn-sm btn-success m-l-5" onclick="location.href=\'/doctor/recipe/edit/'+data+'\'"><i class="ti-pencil"></i>修改</button>'+
