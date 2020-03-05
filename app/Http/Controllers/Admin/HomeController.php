@@ -511,13 +511,42 @@ class HomeController extends Controller
         $questions = $request->get('questions');
         $number = random_str('alphanum',6);
 
+
+        $strbiaozheng = '';
+        $biaozheng = $request->get('biaozheng');
+        if(!empty($biaozheng)){
+            $strbiaozheng = implode (", ", $biaozheng);
+        }
+        $lizheng = $request->get('lizheng');
+        $strlizheng = '';
+        if(!empty($lizheng)){
+            $strlizheng = implode (", ", $lizheng);
+        }
+
+        $biaoli = $request->get('biaoli');
+        $strbiaoli = '';
+        if(!empty($biaoli)){
+            $strbiaoli = implode (", ", $biaoli);
+        }
+
+        $mai = $request->get('maizheng');
+        $strmai = '';
+        if(!empty($mai)){
+            $strmai = implode (", ", $mai);
+        }
+
+
         $question = question::create([
            'doctor_id' => $doctor_id,
            'questions' => $questions,
            'recipes' => json_encode($recipes),
            'title' => $title,
            'number' => $number,
-           'disease_name' => $disease_name
+           'disease_name' => $disease_name,
+            'biaozheng' => $strbiaozheng,
+            'lizheng' => $strlizheng,
+            'biaoli' => $strbiaoli,
+            'maizheng' => $strmai
         ]);
         return success($question);
     }
@@ -572,7 +601,11 @@ class HomeController extends Controller
             'departments'=>$departments,
             'department_id'=>$department_id,
             'doctors'=>$doctors,
-            'doctor_id' => $question->doctor_id
+            'doctor_id' => $question->doctor_id,
+            'biaozheng' => $question->biaozheng,
+            'lizheng' => $question->lizheng,
+            'biaoli' => $question->biaoli,
+            'maizheng' => $question->maizheng
         ]);
     }
     public function editQAData(Request $request){

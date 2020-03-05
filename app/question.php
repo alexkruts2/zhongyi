@@ -12,7 +12,11 @@ class question extends Model
         'questions',
         'recipes',
         'title',
-        'disease_name'
+        'disease_name',
+        'biaozheng',
+        'lizheng',
+        'biaoli',
+        'maizheng'
     ];
     public function doctor(){
         return $this->belongsTo(doctor::class);

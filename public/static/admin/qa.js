@@ -3,6 +3,9 @@ var answerItemNumber = 0;
 var queries = [];
 var qa_table;
 
+var biaozhengList=['发热','汗出','恶风','鼻鸣干呕','头项强痛'],lizhengList = ['不呕','下之后','大烦渴不解','心下满微痛','吐逆'],
+    biaoliList = ['胸满','小便不利','小便难','小便数','心烦'], maizhengList = ['脉缓','脉浮缓','脉促','脉微缓','脉微'];
+var selectedBiaozheng = [],selectedLizheng=[],selectedBiaoli=selectedMaizheng =[];
 function openQAModal() {
     // Swal.fire({
     //         title: "1个输入框还是2个输入框？",
@@ -228,6 +231,11 @@ $(function(){
             }
         });
 
+    drawItems('biaozheng',biaozhengList,selectedBiaozheng);
+    drawItems('lizheng',lizhengList,selectedLizheng);
+    drawItems('biaoli',biaoliList,selectedBiaoli);
+    drawItems('maizheng',maizhengList,selectedMaizheng);
+    changeTrigger();
 });
 
 $('#question-form').submit(function (e) {
@@ -356,3 +364,223 @@ function deleteQA(id, obj) {
         }
     });
 }
+
+function appenItem(type) {
+    var item = $("#"+type+"Input").val();
+    if(item==''||item==undefined||item==null){
+        Swal.fire({
+            type: 'warning',
+            title: '请输入项目名。',
+            showConfirmButton: false,
+            timer: 3000
+        });
+        $("#"+type+"Input").focus();
+        return;
+    }
+    // var itemList;
+    switch (type) {
+        case 'biaozheng':
+            itemList = biaozhengList;
+            selectedList = selectedBiaozheng;
+            break;
+        case 'lizheng':
+            itemList = lizhengList;
+            selectedList = selectedLizheng;
+            break;
+        case 'biaoli':
+            itemList = biaoliList;
+            selectedList = selectedBiaoli;
+            break;
+        case 'maizheng':
+            itemList = maizhengList;
+            selectedList = selectedMaizheng;
+            break;
+        default:
+            itemList = biaozhengList;
+            selectedList = selectedBiaozheng;
+    }
+
+    if(itemList.includes(item)){
+        Swal.fire({
+            type: 'warning',
+            title: '存在的项目。',
+            showConfirmButton: false,
+            timer: 3000
+        });
+        $("#"+type+"Input").focus();
+        return;
+    }
+    items= item.split(',');
+    itemList = itemList.concat(items);
+    itemList = arrayUnique(itemList);
+    var itemList = itemList.filter(function (el) {
+        return el != null && el !='' && el != undefined;
+    });
+
+    drawItems(type,itemList,selectedList);
+    $("#"+type+"Input").val('');
+    switch (type) {
+        case 'biaozheng':
+            biaozhengList = itemList;
+            break;
+        case 'lizheng':
+            lizhengList = itemList;
+            break;
+        case 'biaoli':
+            biaoliList = itemList;
+            break;
+        case 'maizheng':
+            maizhengList = itemList;
+            break;
+        default:
+            biaozhengList = itemList;
+    }
+
+}
+function drawItems(type,itemList,selectedList) {
+    var html = '<div class="form-group mt-3 row">';
+    html+='<div class="col-sm-3">'
+    var remain = itemList.length % 4;
+    for(var i=0; i < itemList.length; i++){
+        var checked = selectedList.includes(itemList[i])?"checked":'';
+        html+='\t<div class="custom-control custom-checkbox">\n' +
+            '\t\t<input type="checkbox" class="custom-control-input" id="'+type+'_'+i+'" name="'+type+'[]" value="'+itemList[i]+'" '+ checked +'>\n' +
+            '\t\t<label class="custom-control-label" for="'+type+'_'+i+'">'+itemList[i]+'</label>\n' +
+            '\t</div>\n';
+        if((Math.floor(itemList.length/4) + remain>0?1:0) ==(i+1)||(2*Math.floor(itemList.length/4) + remain>1?1:0 ==(i+1))||(3*Math.floor(itemList.length/4)+ + remain>2?1:0)==(i+1))
+            html+='</div>\n' +
+                '<div class="col-sm-3">\n';
+    }
+    html+='</div>\n' +
+        '</div>';
+    $("#"+type+"Section").html(html);
+    changeTrigger();
+}
+function arrayUnique(array) {
+    var a = array.concat();
+    for(var i=0; i<a.length; ++i) {
+        for(var j=i+1; j<a.length; ++j) {
+            if(a[i] === a[j])
+                a.splice(j--, 1);
+        }
+    }
+
+    return a;
+}
+
+function changeTrigger() {
+    $( "input[type='checkbox']" ).on('change',function(e){
+        var elName = this.name;
+        var itemList;
+        switch (elName) {
+            case 'biaozheng[]':
+                itemList = selectedBiaozheng;
+                break;
+            case 'lizheng[]':
+                itemList = selectedLizheng;
+                break;
+            case 'biaoli[]':
+                itemList = selectedBiaoli;
+                break;
+            case 'maizheng[]':
+                itemList = selectedMaizheng;
+                break;
+            default:
+                itemList = selectedBiaozheng;
+        }
+        if(this.checked)
+            itemList.push(this.value);
+        else{
+            var index = itemList.indexOf(this.value);
+            if (index !== -1) itemList.splice(index, 1);
+        }
+
+        switch (elName) {
+            case 'biaozheng[]':
+                selectedBiaozheng = itemList;
+                break;
+            case 'lizheng[]':
+                selectedLizheng = itemList;
+                break;
+            case 'biaoli[]':
+                selectedBiaoli = itemList;
+                break;
+            case 'maizheng[]':
+                selectedMaizheng = itemList;
+                break;
+            default:
+                selectedBiaozheng = itemList;
+        }
+    })
+}
+function removeItem(type) {
+    switch (type) {
+        case 'biaozheng':
+            itemList = biaozhengList;
+            selectedList = selectedBiaozheng;
+            break;
+        case 'lizheng':
+            itemList = lizhengList;
+            selectedList = selectedLizheng;
+            break;
+        case 'biaoli':
+            itemList = biaoliList;
+            selectedList = selectedBiaoli;
+            break;
+        case 'maizheng':
+            itemList = maizhengList;
+            selectedList = selectedMaizheng;
+            break;
+        default:
+            itemList = biaozhengList;
+            selectedList = selectedBiaozheng;
+    }
+
+    itemList  = arr_diff(itemList,selectedList);
+    selectedList = [];
+    switch (type) {
+        case 'biaozheng':
+            biaozhengList = itemList;
+            selectedBiaozheng = [];
+            break;
+        case 'lizheng':
+            lizhengList = itemList;
+            selectedLizheng = [];
+            break;
+        case 'biaoli':
+            biaoliList = itemList;
+            selectedBiaoli = [];
+            break;
+        case 'maizheng':
+            maizhengList = itemList;
+            selectedMaizheng = [];
+            break;
+        default:
+            biaozhengList = itemList;
+            selectedBiaozheng = [];
+    }
+    drawItems(type,itemList,selectedList);
+}
+function arr_diff (a1, a2) {
+
+    var a = [], diff = [];
+
+    for (var i = 0; i < a1.length; i++) {
+        a[a1[i]] = true;
+    }
+
+    for (var i = 0; i < a2.length; i++) {
+        if (a[a2[i]]) {
+            delete a[a2[i]];
+        } else {
+            a[a2[i]] = true;
+        }
+    }
+
+    for (var k in a) {
+        diff.push(k);
+    }
+
+    return diff;
+}
+

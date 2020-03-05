@@ -21,6 +21,10 @@ class CreateQuestionsTable extends Migration
             $table->string('title');
             $table->string('disease_name');
             $table->string('number');
+            $table->text('biaozheng');
+            $table->text('lizheng');
+            $table->text('biaoli');
+            $table->text('maizheng');
             $table->timestamps();
         });
     }
