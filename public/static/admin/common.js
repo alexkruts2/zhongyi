@@ -1,3 +1,5 @@
+var selectedBiaozheng = [],selectedLizheng=[],selectedBiaoli=selectedMaizheng =[];
+
 function showOverlay(text='') {
     $.LoadingOverlay("show", {
         image: "",
@@ -229,3 +231,103 @@ function getContraryIds(medicine_id,callback){
     });
 
 }
+
+function drawItems(type,itemList,selectedList) {
+    var html = '<div class="form-group mt-3 row">';
+    html+='<div class="col-sm-3">'
+    var remain = itemList.length % 4;
+    for(var i=0; i < itemList.length; i++){
+        var checked = selectedList.includes(itemList[i])?"checked":'';
+        html+='\t<div class="custom-control custom-checkbox">\n' +
+            '\t\t<input type="checkbox" class="custom-control-input" id="'+type+'_'+i+'" name="'+type+'[]" value="'+itemList[i]+'" '+ checked +'>\n' +
+            '\t\t<label class="custom-control-label" for="'+type+'_'+i+'">'+itemList[i]+'</label>\n' +
+            '\t</div>\n';
+        if((Math.floor(itemList.length/4) + remain>0?1:0) ==(i+1)||(2*Math.floor(itemList.length/4) + remain>1?1:0 ==(i+1))||(3*Math.floor(itemList.length/4)+ + remain>2?1:0)==(i+1))
+            html+='</div>\n' +
+                '<div class="col-sm-3">\n';
+    }
+    html+='</div>\n' +
+        '</div>';
+    $("#"+type+"Section").html(html);
+    changeTrigger();
+}
+function arrayUnique(array) {
+    var a = array.concat();
+    for(var i=0; i<a.length; ++i) {
+        for(var j=i+1; j<a.length; ++j) {
+            if(a[i] === a[j])
+                a.splice(j--, 1);
+        }
+    }
+
+    return a;
+}
+
+function changeTrigger() {
+    $( "input[type='checkbox']" ).on('change',function(e){
+        var elName = this.name;
+        var itemList;
+        switch (elName) {
+            case 'biaozheng[]':
+                itemList = selectedBiaozheng;
+                break;
+            case 'lizheng[]':
+                itemList = selectedLizheng;
+                break;
+            case 'biaoli[]':
+                itemList = selectedBiaoli;
+                break;
+            case 'maizheng[]':
+                itemList = selectedMaizheng;
+                break;
+            default:
+                itemList = selectedBiaozheng;
+        }
+        if(this.checked)
+            itemList.push(this.value);
+        else{
+            var index = itemList.indexOf(this.value);
+            if (index !== -1) itemList.splice(index, 1);
+        }
+
+        switch (elName) {
+            case 'biaozheng[]':
+                selectedBiaozheng = itemList;
+                break;
+            case 'lizheng[]':
+                selectedLizheng = itemList;
+                break;
+            case 'biaoli[]':
+                selectedBiaoli = itemList;
+                break;
+            case 'maizheng[]':
+                selectedMaizheng = itemList;
+                break;
+            default:
+                selectedBiaozheng = itemList;
+        }
+    })
+}
+function arr_diff (a1, a2) {
+
+    var a = [], diff = [];
+
+    for (var i = 0; i < a1.length; i++) {
+        a[a1[i]] = true;
+    }
+
+    for (var i = 0; i < a2.length; i++) {
+        if (a[a2[i]]) {
+            delete a[a2[i]];
+        } else {
+            a[a2[i]] = true;
+        }
+    }
+
+    for (var k in a) {
+        diff.push(k);
+    }
+
+    return diff;
+}
+

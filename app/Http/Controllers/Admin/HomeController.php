@@ -512,28 +512,10 @@ class HomeController extends Controller
         $number = random_str('alphanum',6);
 
 
-        $strbiaozheng = '';
         $biaozheng = $request->get('biaozheng');
-        if(!empty($biaozheng)){
-            $strbiaozheng = implode (", ", $biaozheng);
-        }
         $lizheng = $request->get('lizheng');
-        $strlizheng = '';
-        if(!empty($lizheng)){
-            $strlizheng = implode (", ", $lizheng);
-        }
-
         $biaoli = $request->get('biaoli');
-        $strbiaoli = '';
-        if(!empty($biaoli)){
-            $strbiaoli = implode (", ", $biaoli);
-        }
-
         $mai = $request->get('maizheng');
-        $strmai = '';
-        if(!empty($mai)){
-            $strmai = implode (", ", $mai);
-        }
 
 
         $question = question::create([
@@ -543,10 +525,10 @@ class HomeController extends Controller
            'title' => $title,
            'number' => $number,
            'disease_name' => $disease_name,
-            'biaozheng' => $strbiaozheng,
-            'lizheng' => $strlizheng,
-            'biaoli' => $strbiaoli,
-            'maizheng' => $strmai
+            'biaozheng' => $biaozheng,
+            'lizheng' => $lizheng,
+            'biaoli' => $biaoli,
+            'maizheng' => $mai
         ]);
         return success($question);
     }
@@ -625,6 +607,11 @@ class HomeController extends Controller
         $disease_name = $request->get('disease_name');
         $questions = $request->get('questions');
         $number = $request->get('number');
+        $biaozheng = $request->get('biaozheng');
+        $lizheng = $request->get('lizheng');
+        $biaoli = $request->get('biaoli');
+        $mai = $request->get('maizheng');
+
         $question = question::where('id',$question_id)->first();
 
         $question->update([
@@ -633,7 +620,11 @@ class HomeController extends Controller
             'recipes' => json_encode($recipes),
             'title' => $title,
             'number' => $number,
-            'disease_name' => $disease_name
+            'disease_name' => $disease_name,
+            'biaozheng' => $biaozheng,
+            'lizheng' => $lizheng,
+            'biaoli' => $biaoli,
+            'maizheng' => $mai
         ]);
         return success($question);
     }

@@ -86,6 +86,33 @@
                                 </video>
                             </div>
                         </div>
+                        <div class="row bg-gray mt-3">
+                            <div style="font-size: 25px;" class="col-md-2 col-form-label text-left">
+                                表症
+                            </div>
+                        </div>
+                        <div id="biaozhengSection">
+                        </div>
+                        <div class="row bg-gray">
+                            <label for="example-text-input" style="font-size: 27px;" class="col-2 col-form-label text-left">里症
+                            </label>
+                        </div>
+                        <div class="mt-3" id="lizhengSection">
+                        </div>
+                        <div class="row bg-gray">
+                            <label for="example-text-input" style="font-size: 27px;" class="col-2 col-form-label text-left">半表半里
+                            </label>
+                        </div>
+                        <div class="mt-3" id="biaoliSection">
+                        </div>
+                        <div class="row bg-gray">
+                            <label for="example-text-input" style="font-size: 27px;" class="col-2 col-form-label text-left">脉症
+                            </label>
+                        </div>
+                        <div class="mt-3" id="maizhengSection">
+                        </div>
+
+
                         <div class="form-group mt-3 row">
                             <label for="example-text-input" class="col-5 offset-1 col-form-label">主诉
                                 <button data-toggle="collapse" class="btn btn-default" data-target="#annotationSection" aria-expanded="false">
@@ -113,19 +140,6 @@
                                     $i++
                                 @endphp
                             @endwhile
-                        </div>
-
-                        <div class="form-group mt-3 row">
-                            <label for="example-text-input" class="col-8 offset-1 col-form-label">表症 : <b>{{$historyData->biaozheng}}</b></label>
-                        </div>
-                        <div class="form-group mt-3 row">
-                            <label for="example-text-input" class="col-8 offset-1 col-form-label">里症 : <b>{{$historyData->lizheng}}</b></label>
-                        </div>
-                        <div class="form-group mt-3 row">
-                            <label for="example-text-input" class="col-8 offset-1 col-form-label">半表半里 : <b>{{$historyData->biaoli}}</b></label>
-                        </div>
-                        <div class="form-group mt-3 row">
-                            <label for="example-text-input" class="col-8 offset-1 col-form-label">脉症 : <b>{{$historyData->mai}}</b></label>
                         </div>
                         <div class="form-group mt-3 row">
                             <label for="example-text-input" class="col-8 offset-1 col-form-label">医生嘱托 : <b>{{$historyData->doctor_question}}</b></label>
@@ -206,6 +220,10 @@
         button[aria-expanded="false"] i:first-child,button[aria-expanded="true"] i:nth-child(2){
             display:block;
         }
+        .bg-gray{
+            background-color:#eee;
+        }
+
     </style>
 @endsection
 
@@ -213,4 +231,13 @@
     <script src="{{ asset('static/plugin/select2/dist/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('static/admin/inquiry_detail.js') }}"></script>
 
+    <script>
+        var biaozhengList="{{rtrim(ltrim($biaozheng,'['),']')}}".replace(/&quot;/g,'').split(','),lizhengList = "{{rtrim(ltrim($lizheng,'['),']')}}".replace(/&quot;/g,'').split(','),
+            biaoliList = "{{rtrim(ltrim($biaoli,'['),']')}}".replace(/&quot;/g,'').split(','), maizhengList = "{{rtrim(ltrim($maizheng,'['),']')}}".replace(/&quot;/g,'').split(',');
+           var selBiaozheng = "{{$historyData->biaozheng}}".split(','),
+            selLizheng = "{{$historyData->lizheng}}".split(','),
+            selBiaoli = "{{$historyData->biaoli}}".split(','),
+            selmaizheng = "{{$historyData->mai}}".split(',');
+
+    </script>
 @endsection

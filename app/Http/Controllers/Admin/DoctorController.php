@@ -523,24 +523,24 @@ class DoctorController extends Controller{
         $strbiaozheng = '';
         $biaozheng = $request->get('biaozheng');
         if(!empty($biaozheng)){
-            $strbiaozheng = implode (", ", $biaozheng);
+            $strbiaozheng = implode (",", $biaozheng);
         }
         $lizheng = $request->get('lizheng');
         $strlizheng = '';
         if(!empty($lizheng)){
-            $strlizheng = implode (", ", $lizheng);
+            $strlizheng = implode (",", $lizheng);
         }
 
         $biaoli = $request->get('biaoli');
         $strbiaoli = '';
         if(!empty($biaoli)){
-            $strbiaoli = implode (", ", $biaoli);
+            $strbiaoli = implode (",", $biaoli);
         }
 
-        $mai = $request->get('mai');
+        $mai = $request->get('maizheng');
         $strmai = '';
         if(!empty($mai)){
-            $strmai = implode (", ", $mai);
+            $strmai = implode (",", $mai);
         }
 
         $houfang = $request->get('houfang');
@@ -629,10 +629,23 @@ class DoctorController extends Controller{
         $temp->medicines = json_decode($history->recipe);
         $recipe = recipe::where("id",$history->original_recipe)->first();
         $temp->recipe_name = empty($recipe)?'':$recipe->prescription_name;
+        $question_id = $history->question_id;
+        $question = question::where('id',$question_id)->first();
+
+        $biaozheng = $question->biaozheng;
+        $lizheng = $question->lizheng;
+        $biaoli = $question->biaoli;
+        $maizheng = $question->maizheng;
+
         array_push($historyData,$temp);
 //        echo json_encode($historyData);
         return view('admin.inquiry.detail')->with([
             'histories' => $historyData,
+            'biaozheng' => $biaozheng,
+            'lizheng' => $lizheng,
+            'lizheng' => $lizheng,
+            'biaoli' => $biaoli,
+            'maizheng' => $maizheng
         ]);
     }
     public function allHistoryView(){

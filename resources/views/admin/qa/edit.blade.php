@@ -77,6 +77,73 @@
                                 <input class="form-control" type="text" value="{{$question->disease_name}}" data-role="tagsinput" name='disease_name' id="disease_name" placeholder="请输入病名" data-parsley-required>
                             </div>
                         </div>
+                        <div class="row bg-gray mt-3">
+                            <div style="font-size: 25px;" class="col-md-2 col-form-label text-left">
+                                表症
+                            </div>
+                            <div class="col-md-1 text-right col-form-label">
+                                <button type="button" class="btn btn-circle btn-info p-0-0" title="添加表症" onclick="appenItem('biaozheng')"><i class="fas fa-plus"></i></button>
+                            </div>
+                            <div class="col-md-3 col-form-label">
+                                <input type="text" class="form-control" id="biaozhengInput" />
+                            </div>
+                            <div class="col-md-1 text-left col-form-label">
+                                <button type="button" class="btn btn-circle btn-danger p-0-0" title="删除表症" onclick="removeItem('biaozheng')"><i class="fas fa-minus"></i></button>
+                            </div>
+                        </div>
+                        <div id="biaozhengSection">
+                        </div>
+                        <div class="row bg-gray mt-3">
+                            <div style="font-size: 25px;" class="col-md-2 col-form-label text-left">
+                                里症
+                            </div>
+                            <div class="col-md-1 text-right col-form-label">
+                                <button type="button" class="btn btn-circle btn-info p-0-0" title="添加里症" onclick="appenItem('lizheng')"><i class="fas fa-plus"></i></button>
+                            </div>
+                            <div class="col-md-3 col-form-label">
+                                <input type="text" class="form-control" id="lizhengInput" />
+                            </div>
+                            <div class="col-md-1 text-left col-form-label">
+                                <button type="button" class="btn btn-circle btn-danger p-0-0" title="删除表症" onclick="removeItem('lizheng')"><i class="fas fa-minus"></i></button>
+                            </div>
+                        </div>
+                        <div id="lizhengSection">
+                        </div>
+                        <div class="row bg-gray mt-3">
+                            <div style="font-size: 25px;" class="col-md-2 col-form-label text-left">
+                                半表半里
+                            </div>
+                            <div class="col-md-1 text-right col-form-label">
+                                <button type="button" class="btn btn-circle btn-info p-0-0" title="添加半表半里" onclick="appenItem('biaoli')"><i class="fas fa-plus"></i></button>
+                            </div>
+                            <div class="col-md-3 col-form-label">
+                                <input type="text" class="form-control" id="biaoliInput" />
+                            </div>
+                            <div class="col-md-1 text-left col-form-label">
+                                <button type="button" class="btn btn-circle btn-danger p-0-0" title="删除半表半里" onclick="removeItem('biaoli')"><i class="fas fa-minus"></i></button>
+                            </div>
+                        </div>
+                        <div id="biaoliSection">
+                        </div>
+
+                        <div class="row bg-gray mt-3">
+                            <div style="font-size: 25px;" class="col-md-2 col-form-label text-left">
+                                脉症
+                            </div>
+                            <div class="col-md-1 text-right col-form-label">
+                                <button type="button" class="btn btn-circle btn-info p-0-0" title="添加脉症" onclick="appenItem('maizheng')"><i class="fas fa-plus"></i></button>
+                            </div>
+                            <div class="col-md-3 col-form-label">
+                                <input type="text" class="form-control" id="maizhengInput" />
+                            </div>
+                            <div class="col-md-1 text-left col-form-label">
+                                <button type="button" class="btn btn-circle btn-danger p-0-0" title="删除脉症" onclick="removeItem('maizheng')"><i class="fas fa-minus"></i></button>
+                            </div>
+
+                        </div>
+                        <div id="maizhengSection">
+                        </div>
+
                         <div id="answerSection">
                         </div>
                         <input type="hidden" name="questions" id="questions"/>
@@ -86,6 +153,10 @@
                                 <button type="button" class="btn btn-circle btn-success p-0-0"  title="添加问圈" onclick="openQAModal()"><i class="fas fa-plus"></i></button>
                             </div>
                         </div>
+                        <input type="hidden" name="biaozheng" id="biaozheng"/>
+                        <input type="hidden" name="lizheng" id="lizheng"/>
+                        <input type="hidden" name="biaoli" id="biaoli"/>
+                        <input type="hidden" name="maizheng" id="maizheng"/>
 
                         <div class="row">
                             <div class="col-md-12 text-right">
@@ -132,6 +203,10 @@
         .bootstrap-tagsinput{
             width:100%;
         }
+        .bg-gray{
+            background-color:#eee;
+        }
+
     </style>
 
 @endsection
@@ -163,6 +238,9 @@
         strQueries = strQueries.replace(/&quot;/g,'"');
         queries = JSON.parse(strQueries);
         drawAnswerSection(queries);
+        var biaozhengList="{{rtrim(ltrim($biaozheng,'['),']')}}".replace(/&quot;/g,'').split(','),lizhengList = "{{rtrim(ltrim($lizheng,'['),']')}}".replace(/&quot;/g,'').split(','),
+            biaoliList = "{{rtrim(ltrim($biaoli,'['),']')}}".replace(/&quot;/g,'').split(','), maizhengList = "{{rtrim(ltrim($maizheng,'['),']')}}".replace(/&quot;/g,'').split(',');
+
     </script>
 
 @endsection

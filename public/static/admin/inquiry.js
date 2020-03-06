@@ -171,6 +171,11 @@ $(function () {
                     jsonQuestion = JSON.parse(resp.data.question.questions);
                     $("#question_string").val(resp.data.question.questions);
                     $("#recipe").trigger("change");
+                    var biaozhengList = JSON.parse(resp.data.question.biaozheng)
+                    drawItems('biaozheng',biaozhengList,[]);
+                    drawItems('lizheng',JSON.parse(resp.data.question.lizheng),[]);
+                    drawItems('biaoli',JSON.parse(resp.data.question.biaoli),[]);
+                    drawItems('maizheng',JSON.parse(resp.data.question.maizheng),[]);
                 } else {
                     hideOverlay();
                     Swal.fire({
@@ -236,6 +241,7 @@ $(function () {
     });
 
     scrollSidebarTop();
+
 
 });
 
@@ -438,6 +444,11 @@ function drawSlide(questions) {
         html += '\t</div>\n' +
             '</div>';
         indicateHtml += '<li data-target="#carouselExampleIndicators" data-slide-to="' + i + '" class="' + activeClass + '"></li>';
+    }
+    if(questions.length<1){
+        html +='<div class="carousel-inner"><div class="carousel-item active">\n' +
+            '\t<div class="overlaybg"><img src="/img/photos/white.png" class="img-fluid"></div>'
+            +'</div></div>';
     }
     $(".carousel-inner").html(html);
     $(".carousel-indicators").html(indicateHtml);

@@ -39,7 +39,7 @@
                         <div class="form-group mt-3 row">
                             <label for="example-text-input" class="col-2 col-form-label text-right">科室</label>
                             <div class="col-4">
-                                <select class="form-control" name='department' id="department" data-parsley-required>
+                                <select class="form-control" name='department' id="department">
                                     <option value="">--全部科室--</option>
                                     @foreach ($departments as $department)
                                         <option value="{{$department->id}}">{{$department->name}}</option>
@@ -68,7 +68,7 @@
                                 <input class="form-control" type="text" value="" name='disease_name' id="disease_name" data-role="tagsinput" placeholder="输入病名&nbsp;&nbsp;" data-parsley-required />
                             </div>
                         </div>
-                        <div class="row bg-gray">
+                        <div class="row bg-gray mt-3">
                             <div style="font-size: 25px;" class="col-md-2 col-form-label text-left">
                                 表症
                             </div>
@@ -84,7 +84,7 @@
                         </div>
                         <div id="biaozhengSection">
                         </div>
-                        <div class="row bg-gray">
+                        <div class="row bg-gray mt-3">
                             <div style="font-size: 25px;" class="col-md-2 col-form-label text-left">
                                 里症
                             </div>
@@ -95,12 +95,12 @@
                                 <input type="text" class="form-control" id="lizhengInput" />
                             </div>
                             <div class="col-md-1 text-left col-form-label">
-                                <button type="button" class="btn btn-circle btn-danger p-0-0" title="删除表症" onclick="removeItem('lizheng')"><i class="fas fa-minus"></i></button>
+                                <button type="button" class="btn btn-circle btn-danger p-0-0" title="删除里症" onclick="removeItem('lizheng')"><i class="fas fa-minus"></i></button>
                             </div>
                         </div>
                         <div id="lizhengSection">
                         </div>
-                        <div class="row bg-gray">
+                        <div class="row bg-gray mt-3">
                             <div style="font-size: 25px;" class="col-md-2 col-form-label text-left">
                                 半表半里
                             </div>
@@ -117,7 +117,7 @@
                         <div id="biaoliSection">
                         </div>
 
-                        <div class="row bg-gray">
+                        <div class="row bg-gray mt-3">
                             <div style="font-size: 25px;" class="col-md-2 col-form-label text-left">
                                 脉症
                             </div>
@@ -142,6 +142,10 @@
                                 <button type="button" class="btn btn-circle btn-success p-0-0"  title="添加问圈" onclick="openQAModal()"><i class="fas fa-plus"></i></button>
                             </div>
                         </div>
+                        <input type="hidden" name="biaozheng" id="biaozheng"/>
+                        <input type="hidden" name="lizheng" id="lizheng"/>
+                        <input type="hidden" name="biaoli" id="biaoli"/>
+                        <input type="hidden" name="maizheng" id="maizheng"/>
 
                         <div class="row">
                             <div class="col-md-12 text-right">
@@ -220,4 +224,8 @@
     <script src="{{ asset('static/plugin/parsley/zh_cn.js') }}"></script>
     <script src="{{ asset('static/plugin/parsley/zh_cn.extra.js') }}"></script>
 
+    <script>
+        var biaozhengList=['发热','汗出','恶风','鼻鸣干呕','头项强痛'],lizhengList = ['不呕','下之后','大烦渴不解','心下满微痛','吐逆'],
+            biaoliList = ['胸满','小便不利','小便难','小便数','心烦'], maizhengList = ['脉缓','脉浮缓','脉促','脉微缓','脉微'];
+    </script>
 @endsection
