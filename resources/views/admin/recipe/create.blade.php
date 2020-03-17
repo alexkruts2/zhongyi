@@ -31,7 +31,7 @@
                         <div class="form-group mt-3 row">
                             <label for="example-text-input" class="col-2 col-form-label text-right">科室</label>
                             <div class="col-10">
-                                <select class="form-control" name='department' id="department" data-parsley-required>
+                                <select class="form-control" name='department' id="department_" data-parsley-required>
                                     <option value="">--请选择科室--</option>
                                     @foreach ($departments as $department)
                                         <option value="{{$department->id}}">{{$department->name}}</option>
@@ -49,7 +49,7 @@
                         <div id="diseaseSection">
                             <div class="row">
                                 <label class="col-2 col-form-label text-right">
-                                    <button type="button" class="btn btn-default" data-toggle="tooltip" title="删除" data-index="1" onclick="removeDisease(this);"><i class="fas fa-times"></i> </button> &nbsp;病症<span id="label_1">1</span></label>
+                                    &nbsp;病症<span id="label_1">1</span></label>
                                 <div class="col-10">
                                     <input class="form-control" type="text" value="" name="disease[]" id="disease_1" data-parsley-required>
                                 </div>

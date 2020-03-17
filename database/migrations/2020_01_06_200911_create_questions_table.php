@@ -25,6 +25,7 @@ class CreateQuestionsTable extends Migration
             $table->text('lizheng');
             $table->text('biaoli');
             $table->text('maizheng');
+            $table->text('fuDaiNumber');
             $table->timestamps();
         });
     }

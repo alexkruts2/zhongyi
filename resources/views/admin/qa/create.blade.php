@@ -55,12 +55,15 @@
                         <div class="form-group mt-3 row">
                             <label for="example-text-input" class="col-2 col-form-label text-right">药方</label>
                             <div class="col-10">
-                                <select class="select2 m-b-10 select2-multiple" style="width: 100%" multiple="multiple" data-placeholder="Choose" name="recipes[]" data-parsley-required>
+                                <select class="select2 m-b-10 select2-multiple" style="width: 100%" multiple="multiple" id="recipes" data-placeholder="Choose" name="recipes[]" data-parsley-required>
                                     @foreach(\App\recipe::all() as $recipe)
-                                        <option value="{{$recipe->id}}" >{{$recipe->prescription_name}}</option>
+                                        <option value="{{$recipe->id}}" data-medicine="{{$recipe->medicine}}">{{$recipe->prescription_name}}</option>
                                     @endforeach
                                 </select>
                             </div>
+                        </div>
+                        <input type="hidden" id="fuDaiNumber" name="fuDaiNumber"/>
+                        <div id="medicineSection">
                         </div>
                         <div class="form-group mt-3 row">
                             <label for="example-text-input" class="col-2 col-form-label text-right">病名</label>
@@ -227,5 +230,7 @@
     <script>
         var biaozhengList=['发热','汗出','恶风','鼻鸣干呕','头项强痛'],lizhengList = ['不呕','下之后','大烦渴不解','心下满微痛','吐逆'],
             biaoliList = ['胸满','小便不利','小便难','小便数','心烦'], maizhengList = ['脉缓','脉浮缓','脉促','脉微缓','脉微'];
+        medicines=[];
+
     </script>
 @endsection

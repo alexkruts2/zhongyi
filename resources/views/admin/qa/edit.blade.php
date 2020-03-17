@@ -64,13 +64,17 @@
                         <div class="form-group mt-3 row">
                             <label for="example-text-input" class="col-2 col-form-label text-right">药方</label>
                             <div class="col-10">
-                                <select class="select2 m-b-10 select2-multiple" style="width: 100%" multiple="multiple" data-placeholder="Choose" name="recipes[]" value='{{$question->recipes}}' data-parsley-required>
+                                <select class="select2 m-b-10 select2-multiple" style="width: 100%" multiple="multiple" data-placeholder="Choose" id="recipes" name="recipes[]" value='{{$question->recipes}}' data-parsley-required>
                                     @foreach(\App\recipe::all() as $recipe)
                                         <option value="{{$recipe->id}}" {{in_array($recipe->id,json_decode($question->recipes))?'selected':''}}>{{$recipe->prescription_name}}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
+                        <div id="medicineSection">
+                        </div>
+                        <input type="hidden" id="fuDaiNumber" name="fuDaiNumber"/>
+
                         <div class="form-group mt-3 row">
                             <label for="example-text-input" class="col-2 col-form-label text-right">病名</label>
                             <div class="col-10">
@@ -240,7 +244,7 @@
         drawAnswerSection(queries);
         var biaozhengList="{{rtrim(ltrim($biaozheng,'['),']')}}".replace(/&quot;/g,'').split(','),lizhengList = "{{rtrim(ltrim($lizheng,'['),']')}}".replace(/&quot;/g,'').split(','),
             biaoliList = "{{rtrim(ltrim($biaoli,'['),']')}}".replace(/&quot;/g,'').split(','), maizhengList = "{{rtrim(ltrim($maizheng,'['),']')}}".replace(/&quot;/g,'').split(',');
-
+        var medicines = JSON.parse("{{$fuDaiNumber}}".replace(/&quot;/g,''));
     </script>
 
 @endsection

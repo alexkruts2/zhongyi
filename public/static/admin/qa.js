@@ -235,6 +235,15 @@ $(function(){
         drawItems('maizheng',maizhengList,selectedMaizheng);
         changeTrigger();
     }
+    $("#recipes").on("change",function(e){
+        var recipes = $(this).val();
+        drawRecipeSections(recipes);
+    });
+    if(medicines.length){
+        var recipes = $("#recipes").val();
+        drawRecipeSections(recipes);
+    }
+
 });
 
 $('#question-form').submit(function (e) {
@@ -489,4 +498,84 @@ function removeItem(type) {
             selectedBiaozheng = [];
     }
     drawItems(type,itemList,selectedList);
+}
+
+function drawRecipeSections(recipes) {
+    var temp = medicines;
+    if(recipes==''||recipes==null||recipes==undefined){
+        temp = medicines= [];
+        $("#medicineSection").html("");
+        return;
+    }
+
+    medicines = [];
+    for(var i=0; i < recipes.length ; i++){
+        if(temp[recipes[i]]==undefined){
+            medicines[recipes[i]] = 0;
+            temp[recipes[i]] = 0;
+        }
+        else
+            medicines[recipes[i]] = temp[recipes[i]];
+    }
+    showOverlay();
+    $.ajax({
+        url: '/doctor/qa/getRecipes',
+        data: "recipes=" + recipes,
+        type: 'POST',
+        success: function (resp) {
+            hideOverlay();
+            if (resp.code == '0') {
+                var html='';
+                for(var i=0; i < resp.data.length; i++){
+                    html += '<h4 class="text-bold">'+resp.data[i].prescription_name+'</h4><hr>'
+                    var dbmedicines = JSON.parse(resp.data[i].medicine);
+                    for(var j=0; j<dbmedicines.length; j++){
+                        html +='<div class="row">\n' +
+                            '\t<label class="col-2 col-form-label text-right">\n' +
+                            '\t\t'+dbmedicines[j].medicine+'\n' +
+                            '\t</label>\n' +
+                            '\t<div class="col-2">\n' +
+                            '\t\t<input class="form-control" type="number" value="'+dbmedicines[j].min_weight+'" disabled>\n' +
+                            '\t</div>\n' +
+                            '\t<span style="paddint-top:8px">~</span>\n' +
+                            '\t<div class="col-2">\n' +
+                            '\t\t<input class="form-control" type="number" value="'+dbmedicines[j].max_weight+'" disabled>\n' +
+                            '\t</div>\n' +
+                            '\t<div class="col-2 text-left">\n' +
+                            '\t\t<label id="price_6" style="line-height:38px">' + dbmedicines[j].price + '  元/10g</label>\n' +
+                            '\t</div>\n' +
+                            '</div>';
+                    }
+                    html+='<div class="row"> <div class="col-sm-3 p-r-0 text-right col-form-label">副</div> ' +
+                        '<div class="col-sm-2"><input type="number" onchange="changeFuNumber(this)" name="fuNumber_'+resp.data[i].id+'" id="fuNumber_'+resp.data[i].id+'" class="form-control" value="' + medicines[resp.data[i].id] + '" /></div>' +
+                        '<div class="col-sm-2 col-form-label p-l-0">代</div></div>';
+                }
+                $("#medicineSection").html(html);
+            } else {
+                Swal.fire({
+                    type: 'error',
+                    text: resp.message,
+                    title: '错误',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            }
+        },
+        error: function (e) {
+            hideOverlay();
+            Swal.fire({
+                type: 'error',
+                text: 'Internal Error ' + e.status + ' - ' + e.responseJSON.message,
+                title: '错误',
+                showConfirmButton: false,
+                timer: 3000
+            });
+        }
+    });
+}
+
+function changeFuNumber(obj) {
+    var id = obj.id.replace('fuNumber_','');
+    medicines[id] = obj.value;
+    $("#fuDaiNumber").val(JSON.stringify(medicines));
 }

@@ -379,9 +379,9 @@ class HomeController extends Controller
                 ->orderBy($orderColumn, $orderDirection)->skip($start)->take($length)->get();
             $availableDatas = recipe::select('*')->where('flag','!=','DELETED')->get();
         }else{
-            $datas = recipe::select('*')->OrWhere('disease_name','like','%'.$searchValue.'%')->where('flag','!=','DELETED')
+            $datas = recipe::select('*')->OrWhere('prescription_name','like','%'.$searchValue.'%')->where('flag','!=','DELETED')
                 ->orderBy($orderColumn, $orderDirection)->skip($start)->take($length)->get();
-            $availableDatas = recipe::select('*')->where('disease_name','like','%'.$searchValue.'%')->where('flag','!=','DELETED')->get();
+            $availableDatas = recipe::select('*')->where('prescription_name','like','%'.$searchValue.'%')->where('flag','!=','DELETED')->get();
         }
 
         $departmentData = array();
@@ -510,6 +510,8 @@ class HomeController extends Controller
         $disease_name = $request->get('disease_name');
         $questions = $request->get('questions');
         $number = random_str('alphanum',6);
+        $fuDaiNumber = $request->get('fuDaiNumber');
+
 
 
         $biaozheng = $request->get('biaozheng');
@@ -528,7 +530,8 @@ class HomeController extends Controller
             'biaozheng' => $biaozheng,
             'lizheng' => $lizheng,
             'biaoli' => $biaoli,
-            'maizheng' => $mai
+            'maizheng' => $mai,
+            'fuDaiNumber' => $fuDaiNumber
         ]);
         return success($question);
     }
@@ -587,7 +590,8 @@ class HomeController extends Controller
             'biaozheng' => $question->biaozheng,
             'lizheng' => $question->lizheng,
             'biaoli' => $question->biaoli,
-            'maizheng' => $question->maizheng
+            'maizheng' => $question->maizheng,
+            'fuDaiNumber' => $question->fuDaiNumber
         ]);
     }
     public function editQAData(Request $request){
@@ -611,6 +615,7 @@ class HomeController extends Controller
         $lizheng = $request->get('lizheng');
         $biaoli = $request->get('biaoli');
         $mai = $request->get('maizheng');
+        $fuDaiNumber = $request->get('fuDaiNumber');
 
         $question = question::where('id',$question_id)->first();
 
@@ -624,7 +629,8 @@ class HomeController extends Controller
             'biaozheng' => $biaozheng,
             'lizheng' => $lizheng,
             'biaoli' => $biaoli,
-            'maizheng' => $mai
+            'maizheng' => $mai,
+            'fuDaiNumber' => $fuDaiNumber
         ]);
         return success($question);
     }
@@ -804,6 +810,16 @@ class HomeController extends Controller
             "password"=>bcrypt("12345678")
         ]);
         return success("OK");
+    }
+    public function getRecipes(Request $request){
+        validate($request->all(),[
+            'recipes'=>'required'
+        ]);
+        $recipes = $request->get("recipes");
+        $arr_recipes = explode (",", $recipes);
+        $recipes = recipe::select('id','medicine','prescription_name')->whereIn('id',$arr_recipes)->get();
+
+        return success($recipes);
     }
 
 }
