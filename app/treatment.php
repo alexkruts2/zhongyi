@@ -30,7 +30,8 @@ class treatment extends Model
         'biaoli',
         'mai',
         'doctor_question',
-        'houfang'
+        'houfang',
+        'fuNumber'
     ];
 
     public function patient(){

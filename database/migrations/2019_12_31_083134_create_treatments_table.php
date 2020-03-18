@@ -39,6 +39,7 @@ class CreateTreatmentsTable extends Migration
             $table->string('mai',256);
             $table->text('doctor_question');
             $table->string('houfang',8);
+            $table->integer('fuNumber');
             $table->timestamps();
         });
     }

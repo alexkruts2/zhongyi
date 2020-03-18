@@ -5,6 +5,7 @@ use App\department;
 use App\doctor;
 use App\Http\Controllers\Controller;
 use App\patient;
+use App\question;
 use App\recipe;
 use App\setting;
 use App\treatment;
@@ -249,13 +250,22 @@ class AcceptController extends Controller
         $accept_price = setting::where('name','ACCEPT_PRICE')->first()->value;
 
         $state = $treatment->state;
+        $fuNumber = $treatment->fuNumber;
+
+        $question_id = $treatment->question_id;
+        $question = question::where('id',$question_id)->first();
+        $fuDaiNumberInQuestion = json_decode($question->fuDaiNumber);
+        $daiNumber = $fuDaiNumberInQuestion[$treatment->original_recipe];
+
         if($state==config('constant.treat_state.before_treating_pay')){
             $result = array(
                 'id' => $treatment->id,
                 "guahao" => $guahao,
                 "patient_name" => $treatment->patient->name,
                 "recipe" => recipe::where('id',$treatment->original_recipe)->first()->prescription_name,
-                "price" => $treatment->price - $accept_price
+                "price" => $treatment->price - $accept_price,
+                'fuNumber' => $fuNumber,
+                'daiNumber' => $daiNumber
             );
             return success($result);
         }else

@@ -519,6 +519,7 @@ class DoctorController extends Controller{
         $annotation_values = $request->get('annotation_value');
         $total_price = $request->get('total_price');
         $disease_name = $request->get('disease_name');
+        $fuNumber = $request->get('fuNumber');
 
         $strbiaozheng = '';
         $biaozheng = $request->get('biaozheng');
@@ -600,6 +601,7 @@ class DoctorController extends Controller{
             'biaoli' => $strbiaoli,
             'mai' => $strmai,
             'houfang' => $houfang,
+            'fuNumber' => $fuNumber,
             'doctor_question' =>$doctor_question
         ]);
         return success($treatment);
@@ -638,14 +640,16 @@ class DoctorController extends Controller{
         $maizheng = $question->maizheng;
 
         array_push($historyData,$temp);
+        $fuDaiNumberInQuestion = json_decode($question->fuDaiNumber);
+        $daiNumber = $fuDaiNumberInQuestion[$history->original_recipe];
 //        echo json_encode($historyData);
         return view('admin.inquiry.detail')->with([
             'histories' => $historyData,
             'biaozheng' => $biaozheng,
             'lizheng' => $lizheng,
-            'lizheng' => $lizheng,
             'biaoli' => $biaoli,
-            'maizheng' => $maizheng
+            'maizheng' => $maizheng,
+            'daiNumber' => $daiNumber
         ]);
     }
     public function allHistoryView(){

@@ -160,14 +160,14 @@
 
                         <div class="form-group mt-3 row">
                             <label for="example-text-input" class="col-5 offset-1 col-form-label">药方: <b>{{$historyData->recipe_name}}</b>
-                                <button data-toggle="collapse" class="btn btn-default" data-target="#medicineSection" aria-expanded="false">
+                                <button data-toggle="collapse" class="btn btn-default" data-target="#medicineSection" aria-expanded="true">
                                     <i class="fas fa-angle-right"></i>
                                     <i class="fas fa-angle-down"></i>
                                 </button>
 
                             </label>
                         </div>
-                        <div id="medicineSection" class="mt-3 collapse">
+                        <div id="medicineSection" class="mt-3 collapse show">
                             @php
                                 $i = 0
                             @endphp
@@ -178,7 +178,7 @@
                                     <div class="col-3">
                                         <input class="form-control" type="text" value="{{$historyData->medicines[$i]->weight}}" readonly>
                                     </div>
-                                    <div class="col-3 text-center">
+                                    <div class="col-3 text-left">
                                         <label id="price_{{$historyData->medicines[$i]->medicine_id}}" style="line-height: 38px;">{{$historyData->medicines[$i]->price}} 元/10g</label>
                                     </div>
                                 </div>
@@ -186,6 +186,13 @@
                                     $i++
                                 @endphp
                             @endwhile
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-sm-2"></div>
+                            <div class="col-sm-1" style="margin-left: 3.5%"><input type="number" class="text-center form-control" value="{{$historyData->fuNumber}}" disabled></div>
+                            <div class="text-left col-form-label">副</div>
+                            <div class="col-sm-1"><input type="number" class="text-center form-control " value="{{$historyData->fuNumber*$daiNumber}}" disabled  ></div>
+                            <div class="col-sm-1 col-form-label">代</div>
                         </div>
                         <div class="form-group mt-3 row">
                             <label class="col-5 offset-1">总价: <b id="total_price_span" >{{$historyData->price}}</b>元</label>

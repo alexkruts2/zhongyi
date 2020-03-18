@@ -24,7 +24,19 @@ function getGuahaoData(){
                     '\t\t&nbsp;总价: </label>\n' +
                     '\t<div class="col-md-3 col-form-label"><b id="totalPrice">'+resp.data.price+'</b>元 </div>\n' +
                     '</div>\n';
-                $("#medicineSection").html(html+priceHtml);
+                $("#medicineSection").html(html);
+
+                fuHtml = "<div class='row mt-3'>" +
+                    "<div class='col-sm-2'></div>" +
+                    "<div class='col-sm-1' style='margin-left: 3.5%'><input type='number' disabled value='"+resp.data.fuNumber+"' class='text-center form-control' /></div>" +
+                    "<div class='text-left col-form-label'>副</div>" +
+                    "<div class='col-sm-1'><input type='number' class='text-center form-control' value='"+resp.data.daiNumber*resp.data.fuNumber+"'  disabled/></div>" +
+                    "<div class='col-sm-1 col-form-label'>代</div>" +
+                    "</div>";
+                $("#medicineSection").append(fuHtml);
+                $("#medicineSection").append(priceHtml);
+
+
                 $("#totalPrice").html(resp.data.price);
                 $("#giveMedicine").prop("disabled",false);
             } else {

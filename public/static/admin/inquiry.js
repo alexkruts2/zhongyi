@@ -4,7 +4,7 @@ var video='';
 var annotationNumber=0;
 var jsonQuestion = '';
 var record_state = '';
-
+var fuDaiNumbers;
 function drawGuahaoTable() {
     if(guahaoTable)
         guahaoTable.destroy();
@@ -176,6 +176,7 @@ $(function () {
                     drawItems('lizheng',JSON.parse(resp.data.question.lizheng),[]);
                     drawItems('biaoli',JSON.parse(resp.data.question.biaoli),[]);
                     drawItems('maizheng',JSON.parse(resp.data.question.maizheng),[]);
+                    fuDaiNumbers = JSON.parse(resp.data.question.fuDaiNumber);
                 } else {
                     hideOverlay();
                     Swal.fire({
@@ -207,12 +208,23 @@ $(function () {
         for(var i=0; i<medicines.length;i++){
             addMedicine(medicines[i]);
         }
+        html = "<div class='row mt-3'>" +
+            "<div class='col-sm-2'></div>" +
+            "<div class='col-sm-1' style='margin-left: 3.5%'><input type='number' id='fuNumber' name='fuNumber' class='text-center form-control' onkeyup='changeFuNumber(this);' /></div>" +
+            "<div class='text-left col-form-label'>副</div>" +
+            "<div class='col-sm-1'><input type='number' class='text-center form-control' id='daiNumber' disabled/></div>" +
+            "<div class='col-sm-1 col-form-label'>代</div>" +
+            "</div>";
+        $("#medicineSection").append(html);
+
         var other_condition = $("#recipe option:selected").data("othercondition");
         var eating_method = $("#recipe option:selected").data("eating_method");
         var ban = $("#recipe option:selected").data("ban");
         $("#ban").val(ban);
         $("#eating_method").val(eating_method);
         $("#other_condition").val(other_condition);
+
+        $("#eating_method")
         calcPrice();
         changeMaxMinValue();
     });
@@ -504,11 +516,11 @@ function calcPrice(){
                     totalPrice +=weights[i].value*prices[i].value/10.0;
                 else if(units[i].value=='两')
                     totalPrice +=weights[i].value*prices[i].value;
-                //console.log(weights[i].value,prices[i].value);
             }
         }
     }
-    // totalPrice /= 10.0;
+    var fuNumber = $("#fuNumber").val();
+    totalPrice = totalPrice * fuNumber;
     $("#total_price").val(totalPrice);
     $("#total_price_span").html(totalPrice);
     console.log(totalPrice);
@@ -602,3 +614,9 @@ $('#question-form').submit(function (e) {
     });
 });
 
+function changeFuNumber(obj) {
+    var fuNumber = $(obj).val();
+    var daiNumber = fuNumber * fuDaiNumbers[$("#recipe").val()]*1;
+    $("#daiNumber").val(daiNumber);
+    calcPrice();
+}

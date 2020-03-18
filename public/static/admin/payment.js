@@ -38,6 +38,8 @@ function inputGuahao() {
                 $("#recipe").val(resp.data.recipe);
                 $("#price").val(resp.data.price);
                 $("#treat_id").val(resp.data.id);
+                $("#fuNumber").val(resp.data.fuNumber);
+                $("#daiNumber").val(resp.data.fuNumber * resp.data.daiNumber);
                 $('#myModal').modal('hide');
                 $("#payment-form").show();
 

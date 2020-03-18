@@ -780,6 +780,12 @@ class HomeController extends Controller
         $state = $treatData->state;
         if($state!=config('constant.treat_state.after_treating_pay'))
             return error('无效挂号');
+
+        $question_id = $treatData->question_id;
+        $question = question::where('id',$question_id)->first();
+        $fuDaiNumberInQuestion = json_decode($question->fuDaiNumber);
+        $daiNumber = $fuDaiNumberInQuestion[$treatData->original_recipe];
+        $treatData->daiNumber = $daiNumber;
         return success($treatData);
     }
     public function giveMedicine(Request $request){
