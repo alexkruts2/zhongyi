@@ -130,7 +130,7 @@
                         <div class="form-group mt-3 row">
                             <label for="example-text-input" class="col-2 col-form-label text-right"></label>
                             <div class="col-6">
-                                <select class="m-b-10 form-control" style="width: 100%" data-placeholder="Choose" name="recipe" id="recipe">
+                                <select class="m-b-10 form-control select2 " style="width: 100%" data-placeholder="Choose" name="recipe" id="recipe">
                                 </select>
                             </div>
                         </div>
