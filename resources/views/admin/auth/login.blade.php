@@ -46,7 +46,7 @@
                 <a href="javascript:void(0)" class="db"><img width="200px" src="{{asset('static/images/hccenter.png')}}" alt="Home" /></a>
                 <div class="form-group m-t-40">
                     <div class="col-xs-12">
-                        <input class="form-control" id="user_name" name="user_name" type="text" required="" placeholder="用户名" value="{{bcrypt("12345678")}}">
+                        <input class="form-control" id="user_name" name="user_name" type="text" required="" placeholder="用户名" >
                     </div>
                     @if($errors->has('user_name'))
                     <div class="help-block animated fadeInDown">
