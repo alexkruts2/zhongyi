@@ -70,7 +70,7 @@ class DoctorController extends Controller{
                             'option' => $each['option'],
                             'flag' => 'NORMAL'
                         ]);
-                        $price = '-1';
+                        $price = '0';
                         $unit = $each['unit'];
                     }else{
                         $medicine->update([

@@ -149,6 +149,7 @@
                         <input type="hidden" name="lizheng" id="lizheng"/>
                         <input type="hidden" name="biaoli" id="biaoli"/>
                         <input type="hidden" name="maizheng" id="maizheng"/>
+                        <input type="hidden" name="medicines" id="medicines"/>
 
                         <div class="row">
                             <div class="col-md-12 text-right">
