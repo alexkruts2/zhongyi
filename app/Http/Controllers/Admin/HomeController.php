@@ -260,7 +260,8 @@ class HomeController extends Controller
     }
     public function setting(){
         $weixin_url = setting::select('value')->where('name',config('asset.weixin_pay'))->get()[0]->value;
-        $zhifubao_url = setting::select('value')->where('name',config('asset.zhifubao_pay'))->get()[0]->value;
+//        $zhifubao_url = setting::select('value')->where('name',config('asset.zhifubao_pay'))->get()[0]->value;
+        $zhifubao_url = setting::select('value')->where('name','ZHIFUBAO_PAY')->get()[0]->value;
         $accept_price = setting::select('value')->where('name',config('asset.ACCEPT_PRICE'))->get()[0]->value;
 
         return view('admin.setting.payment')->with([
@@ -493,8 +494,9 @@ class HomeController extends Controller
     public function createQAView(){
         $departments = department::select('*')
             ->orderBy('name')->get();
+        $medicines = medicine::select('*')->where('flag','NORMAL')->orderBy('name')->get();
 
-        return view('admin.qa.create')->with(['departments'=>$departments]);
+        return view('admin.qa.create')->with(['departments'=>$departments,'medicines' => $medicines]);
     }
     public function createQA(Request $request){
         validate($request->all(), [
@@ -512,13 +514,13 @@ class HomeController extends Controller
         $number = random_str('alphanum',6);
         $fuDaiNumber = $request->get('fuDaiNumber');
 
-
-
         $biaozheng = $request->get('biaozheng');
         $lizheng = $request->get('lizheng');
         $biaoli = $request->get('biaoli');
         $mai = $request->get('maizheng');
 
+        $medicines = $request->get('medicines');
+        $fuDaiNumber = ""; // added by wangming
 
         $question = question::create([
            'doctor_id' => $doctor_id,
@@ -531,6 +533,7 @@ class HomeController extends Controller
             'lizheng' => $lizheng,
             'biaoli' => $biaoli,
             'maizheng' => $mai,
+            'medicines' => ($medicines),
             'fuDaiNumber' => $fuDaiNumber
         ]);
         return success($question);
@@ -617,6 +620,9 @@ class HomeController extends Controller
         $mai = $request->get('maizheng');
         $fuDaiNumber = $request->get('fuDaiNumber');
 
+        $medicines = $request->get('medicines');
+        $fuDaiNumber = ""; // added by wangming
+
         $question = question::where('id',$question_id)->first();
 
         $question->update([
@@ -630,6 +636,7 @@ class HomeController extends Controller
             'lizheng' => $lizheng,
             'biaoli' => $biaoli,
             'maizheng' => $mai,
+            'medicines' => ($medicines),
             'fuDaiNumber' => $fuDaiNumber
         ]);
         return success($question);
@@ -783,8 +790,9 @@ class HomeController extends Controller
 
         $question_id = $treatData->question_id;
         $question = question::where('id',$question_id)->first();
-        $fuDaiNumberInQuestion = json_decode($question->fuDaiNumber);
-        $daiNumber = $fuDaiNumberInQuestion[$treatData->original_recipe];
+//        $fuDaiNumberInQuestion = json_decode($question->fuDaiNumber);
+//        $daiNumber = $fuDaiNumberInQuestion[$treatData->original_recipe];
+        $daiNumber = 0;
         $treatData->daiNumber = $daiNumber;
         return success($treatData);
     }

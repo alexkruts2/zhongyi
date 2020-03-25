@@ -97,6 +97,7 @@ function removeMedicine(obj) {
     row.remove();
     calcPrice();
 }
+
 function getContraryMedicines(medicine_id,callback){
     showOverlay();
     $.ajax({
@@ -232,7 +233,7 @@ function getContraryIds(medicine_id,callback){
 
 }
 
-function drawItems(type,itemList,selectedList) {
+function drawItems(type,itemList,selectedList, trigger = true) {
     var html = '<div class="form-group mt-3 row">';
     html+='<div class="col-sm-3">'
     var remain = itemList.length % 4;
@@ -249,7 +250,8 @@ function drawItems(type,itemList,selectedList) {
     html+='</div>\n' +
         '</div>';
     $("#"+type+"Section").html(html);
-    changeTrigger();
+    if (trigger == true)
+        changeTrigger();
 }
 function arrayUnique(array) {
     var a = array.concat();
@@ -306,6 +308,58 @@ function changeTrigger() {
             default:
                 selectedBiaozheng = itemList;
         }
+
+        if ($("#question_title").length > 0) {
+            var data = $("#question_title").val();
+            if(data==''||data==null||data==undefined) {
+
+                drawRecipeSections([], [], [], [], []);
+                drawRecipeSectionsOther([], [], [], [], []);
+
+                var forms = new FormData($("#question-form")[0]);
+
+                showOverlay();
+                $.ajax({
+                    url: '/doctor/inquiry/getRecipeOther',
+                    data: forms,
+                    type: 'POST',
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (resp) {
+                        hideOverlay();
+                        if (resp.code == 0) {
+                            drawRecipeOther(resp.data);
+
+                            // fuDaiNumbers = JSON.parse(resp.data.question.fuDaiNumber);
+                        } else {
+                            hideOverlay();
+                            Swal.fire({
+                                type: 'error',
+                                text: resp.message,
+                                title: '错误',
+                                showConfirmButton: false,
+                                timer: 3000
+                            });
+                        }
+                    },
+                    error: function (e) {
+                        hideOverlay();
+                        Swal.fire({
+                            type: 'error',
+                            text: 'Internal Error ' + e.status + ' - ' + e.responseJSON.message,
+                            title: '错误',
+                            showConfirmButton: false,
+                            timer: 3000
+                        });
+                    }
+                });
+
+            } else {
+                return;
+            }
+        }
+
     })
 }
 function arr_diff (a1, a2) {

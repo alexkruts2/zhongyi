@@ -159,7 +159,7 @@
                         </div>
 
                         <div class="form-group mt-3 row">
-                            <label for="example-text-input" class="col-5 offset-1 col-form-label">药方: <b>{{$historyData->recipe_name}}</b>
+                            <label for="example-text-input" class="col-5 offset-1 col-form-label">药方:
                                 <button data-toggle="collapse" class="btn btn-default" data-target="#medicineSection" aria-expanded="true">
                                     <i class="fas fa-angle-right"></i>
                                     <i class="fas fa-angle-down"></i>
@@ -169,33 +169,51 @@
                         </div>
                         <div id="medicineSection" class="mt-3 collapse show">
                             @php
-                                $i = 0
+                                $i = 0;
+                                $totalPrice = 0;
                             @endphp
                             @while (isset($historyData->medicines[$i]))
-                                <div class="row">
-                                    <label class="col-2 col-form-label text-right">
-                                        &nbsp;{{$historyData->medicines[$i]->medicine}}</label>
-                                    <div class="col-3">
-                                        <input class="form-control" type="text" value="{{$historyData->medicines[$i]->weight}}" readonly>
+                                <div class="row mt-3"></div><div class="row mt-3"> <div class="col-sm-2"></div> <h4 class="text-bold col-sm-10">{{$historyData->medicines[$i]->receip_txt}}</h4><hr class="col-sm-8"></div>
+                                @foreach($historyData->medicines[$i]->medicines as $medicine_det)
+                                    <div class="row">
+                                        <label class="col-2 col-form-label text-right">
+                                            &nbsp;{{$medicine_det->name}}</label>
+                                        <div class="col-3">
+                                            <input class="form-control" type="text" value="{{$medicine_det->mass}}" readonly>
+                                        </div>
+                                        <div class="col-3 text-left">
+                                            <label id="price_{{$medicine_det->id}}" style="line-height: 38px;">{{$medicine_det->price}} 元/10g</label>
+                                        </div>
                                     </div>
-                                    <div class="col-3 text-left">
-                                        <label id="price_{{$historyData->medicines[$i]->medicine_id}}" style="line-height: 38px;">{{$historyData->medicines[$i]->price}} 元/10g</label>
+                                @endforeach
+                            <div class="row">
+                                <div class="col-2"></div>
+                                <div class="col-3">
+                                    <div class="custom-control custom-checkbox">
+                                        @if(isset($historyData->houfang[$i]) && $historyData->houfang[$i] == 1)
+                                            <input type="checkbox" class="custom-control-input" id="houfang{{$historyData->medicines[$i]->receip_id}}" name="houfang" checked>
+                                        @else
+                                            <input type="checkbox" class="custom-control-input" id="houfang{{$historyData->medicines[$i]->receip_id}}" name="houfang">
+                                        @endif
+                                        <label class="custom-control-label" for="houfang{{$historyData->medicines[$i]->receip_id}}">是否合方</label>
                                     </div>
                                 </div>
+                            </div>
+                                <div class="row mt-3">
+                                    <div class="col-sm-2"></div>
+                                    <div class="col-sm-1" style="margin-left: 3.5%"><input type="number" class="text-center form-control" value="{{$historyData->medicines[$i]->fu_number}}" disabled></div>
+                                    <div class="text-left col-form-label">副</div>
+                                    <div class="col-sm-1"><input type="number" class="text-center form-control" value="{{$historyData->medicines[$i]->fudai_number}}" disabled></div>
+                                    <div class="text-left col-form-label">代</div>
+                                    <div class="col-sm-2"><input type="text" class="text-center form-control " value="{{number_format($historyData->medicines[$i]->total)}}" readonly  ></div>
+                                    <div class="col-sm-1 col-form-label">元</div>
+                                </div>
                                 @php
-                                    $i++
+                                    $totalPrice += $historyData->medicines[$i]->total;
+                                    $i++;
                                 @endphp
                             @endwhile
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col-sm-2"></div>
-                            <div class="col-sm-1" style="margin-left: 3.5%"><input type="number" class="text-center form-control" value="{{$historyData->fuNumber}}" disabled></div>
-                            <div class="text-left col-form-label">副</div>
-                            <div class="col-sm-1"><input type="number" class="text-center form-control " value="{{$historyData->fuNumber*$daiNumber}}" disabled  ></div>
-                            <div class="col-sm-1 col-form-label">代</div>
-                        </div>
-                        <div class="form-group mt-3 row">
-                            <label class="col-5 offset-1">总价: <b id="total_price_span" >{{$historyData->price}}</b>元</label>
+                            <div class="row mt-3"></div><div class="row mt-3"><div class="col-sm-1"></div> <hr class="col-sm-10"> <div class="col-sm-2"></div> <h4 class="text-bold col-sm-10">总价：{{number_format($totalPrice)}}元</h4></div>
                         </div>
                     @endforeach
 

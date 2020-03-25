@@ -17,7 +17,8 @@ class question extends Model
         'lizheng',
         'biaoli',
         'maizheng',
-        'fuDaiNumber'
+        'fuDaiNumber',
+        'medicines'
     ];
     public function doctor(){
         return $this->belongsTo(doctor::class);

@@ -140,6 +140,7 @@ Route::group(['prefix' => 'doctor'], function () {
             Route::post('/getGuahao', 'Admin\DoctorController@getGuahao')->name('doctor.inquiry.getGuahao');
             Route::post('/uploadVideo', 'Admin\DoctorController@uploadVideo')->name('doctor.inquiry.uploadVideo');
             Route::post('/getRecipe', 'Admin\DoctorController@getRecipe')->name('doctor.inquiry.getRecipe');
+            Route::post('/getRecipeOther', 'Admin\DoctorController@getRecipeOther')->name('doctor.inquiry.getRecipeOther');
             Route::post('/completeTreatment', 'Admin\DoctorController@completeTreatment')->name('doctor.inquiry.completeTreatment');
             Route::get('/startTreatment', 'Admin\DoctorController@startTreatment')->name('doctor.inquiry.startTreatment');
         });

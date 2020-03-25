@@ -41,7 +41,6 @@
                     <div id="medicineSection" class="mt-3">
                     </div>
 
-
                     </div>
             </div>
         </div>

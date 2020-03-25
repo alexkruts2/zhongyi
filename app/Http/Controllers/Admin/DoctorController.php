@@ -502,12 +502,67 @@ class DoctorController extends Controller{
         return success($result);
     }
 
+    public function getRecipeOther(Request $request){
+
+        $biaozhengs = $request->get('biaozheng');
+        $lizhengs = $request->post('lizheng');
+        $biaolis = $request->post('biaoli');
+        $maizhengs = $request->post('maizheng');
+
+        if (empty($biaozhengs) && empty($lizhengs) && empty($biaolis) && empty($maizhengs)) {
+            $result = \DB::select('SELECT *
+                                FROM recipes
+                                WHERE 1 != 1
+                          ');
+            return success($result);
+        }
+
+        $sql = 'SELECT * FROM recipes WHERE ';
+        if (!empty($biaozhengs)) {
+            $sql .= "( 1 != 1 ";
+            for ($i = 0; $i < count($biaozhengs); $i ++) {
+                $sql .= " OR other_condition LIKE '%" . $biaozhengs[$i] . "%'";
+            }
+            $sql .= ")";
+        }
+        if (!empty($lizhengs)) {
+            if (!empty($biaozhengs))
+                $sql .= " AND ";
+            $sql .= " ( 1 != 1 ";
+            for ($i = 0; $i < count($lizhengs); $i ++) {
+                $sql .= " OR other_condition LIKE '%" . $lizhengs[$i] . "%'";
+            }
+            $sql .= ")";
+        }
+        if (!empty($biaolis)) {
+            if (!empty($lizhengs) || !empty($biaozhengs))
+                $sql .= " AND ";
+            $sql .= " ( 1 != 1 ";
+            for ($i = 0; $i < count($biaolis); $i ++) {
+                $sql .= " OR other_condition LIKE '%" . $biaolis[$i] . "%'";
+            }
+            $sql .= ")";
+        }
+        if (!empty($maizhengs)) {
+            if (!empty($lizhengs) || !empty($biaozhengs) || !empty($biaolis))
+                $sql .= " AND ";
+            $sql .= " ( 1 != 1 ";
+            for ($i = 0; $i < count($maizhengs); $i ++) {
+                $sql .= " OR other_condition LIKE '%" . $maizhengs[$i] . "%'";
+            }
+            $sql .= ")";
+        }
+
+        $result = \DB::select($sql);
+        return success($result);
+    }
+
     public function completeTreatment(Request $request){
         validate($request->all(), [
             'guahao' => 'required',
-            'question_title' => 'required',
+//            'question_title' => 'required',
             'recipe' => 'required',
-            'question_string' => 'required'
+//            'question_string' => 'required'
         ]);
 
         $guahao = $request->get('guahao');
@@ -584,23 +639,25 @@ class DoctorController extends Controller{
         $treatment = treatment::where('guahao',$guahao)->first();
         $accept_price = setting::where('name','ACCEPT_PRICE')->first()->value;
 
+        $recipes_detail = $request->get('recipe_detail');
+        $fuNumber = "";
 
         $treatment->update([
             'question_id'=>$question_id,
             'record_video' => $video_url,
             'question' => $question_string,
             'comment' => json_encode($annotations),
-            'original_recipe' => $recipe_id,
+            'original_recipe' => implode(',', $recipe_id),
             'treat_end' => $treat_end,
             'state' => config('constant.treat_state.before_treating_pay'),
             'price' => $total_price + $accept_price*1.0,
             'disease_name' => $disease_name,
-            'recipe' => json_encode($medicines),
+            'recipe' => ($recipes_detail),
             'biaozheng' => $strbiaozheng,
             'lizheng' => $strlizheng,
             'biaoli' => $strbiaoli,
             'mai' => $strmai,
-            'houfang' => $houfang,
+            'houfang' => json_encode($houfang),
             'fuNumber' => $fuNumber,
             'doctor_question' =>$doctor_question
         ]);
@@ -629,19 +686,36 @@ class DoctorController extends Controller{
         $temp->questions = json_decode($history->question);
         $temp->annotations = json_decode($history->comment);
         $temp->medicines = json_decode($history->recipe);
+        $temp->houfang = json_decode($history->houfang);
         $recipe = recipe::where("id",$history->original_recipe)->first();
         $temp->recipe_name = empty($recipe)?'':$recipe->prescription_name;
         $question_id = $history->question_id;
-        $question = question::where('id',$question_id)->first();
 
-        $biaozheng = $question->biaozheng;
-        $lizheng = $question->lizheng;
-        $biaoli = $question->biaoli;
-        $maizheng = $question->maizheng;
+        $biaozheng = "";
+        $lizheng = "";
+        $biaoli = "";
+        $maizheng = "";
+        if (is_null($question_id) || !isset($question_id)) {
+            $biaozheng_default = array("发热", "汗出", "恶风", "鼻鸣干呕", "头项强痛");
+            $lizheng_default = array("不呕", "下之后", "大烦渴不解", "心下满微痛", "吐逆");
+            $biaoli_default = array("胸满", "小便不利", "小便难", "小便数", "心烦");
+            $maizheng_default = array("脉缓", "脉浮缓", "脉促", "脉微缓", "脉微");
+            $biaozheng = json_encode($biaozheng_default);
+            $lizheng = json_encode($lizheng_default);
+            $biaoli = json_encode($biaoli_default);
+            $maizheng = json_encode($maizheng_default);
+        } else {
+            $question = question::where('id',$question_id)->first();
+            $biaozheng = $question->biaozheng;
+            $lizheng = $question->lizheng;
+            $biaoli = $question->biaoli;
+            $maizheng = $question->maizheng;
+        }
 
         array_push($historyData,$temp);
-        $fuDaiNumberInQuestion = json_decode($question->fuDaiNumber);
-        $daiNumber = $fuDaiNumberInQuestion[$history->original_recipe];
+//        $fuDaiNumberInQuestion = json_decode($question->fuDaiNumber);
+//        $daiNumber = $fuDaiNumberInQuestion[$history->original_recipe];
+        $daiNumber = 0;
 //        echo json_encode($historyData);
         return view('admin.inquiry.detail')->with([
             'histories' => $historyData,
@@ -913,8 +987,8 @@ class DoctorController extends Controller{
                           ');
         }else{
             $result = \DB::select('SELECT DAY(treat_start) AS `day`, SUM(price) AS `sum`
-                                FROM treatments 
-                                WHERE MONTH(treat_start)>' . ($month - 1) . ' AND MONTH(treat_start)<' . ($month + 1) . ' AND (treatments.state=\'AFTER_TREATING_PAY\' or treatments.state=\'CLOSE\') 
+                                FROM treatments
+                                WHERE MONTH(treat_start)>' . ($month - 1) . ' AND MONTH(treat_start)<' . ($month + 1) . ' AND (treatments.state=\'AFTER_TREATING_PAY\' or treatments.state=\'CLOSE\')
                                 GROUP BY DAY(treat_start)
                           ');
         }
@@ -934,7 +1008,7 @@ class DoctorController extends Controller{
                           ');
         }else{
             $result = \DB::select('SELECT DAY(treat_start) AS `day`, SUM(price) AS `sum`
-                                FROM treatments 
+                                FROM treatments
                                 WHERE (treat_start)>\'' . $mon_value . '\' AND (treat_start)<\'' . $sat_value . '\' AND (treatments.state=\'AFTER_TREATING_PAY\' or treatments.state=\'CLOSE\')
                                 GROUP BY DAY(treat_start)
                           ');
@@ -959,7 +1033,7 @@ class DoctorController extends Controller{
         }else{
             $result = \DB::select('
             SELECT HOUR(treat_start) AS `hour`, SUM(price) AS `sum`
-            FROM treatments 
+            FROM treatments
             WHERE DAY(treat_start)> \'' . $yesterday . '\' AND DAY(treat_start)< \'' . $tomorrow . '\' AND (treatments.state=\'AFTER_TREATING_PAY\' or treatments.state=\'CLOSE\')
             GROUP BY HOUR(treat_start)
         ');
@@ -1035,7 +1109,7 @@ class DoctorController extends Controller{
 
 
         $sql = "SELECT  treatments.`id`,treatments.`hospital_profit` as price,patients.`name` AS patient_name,patients.`ID_Number`,
-                    departments.`name` AS department_name,doctors.`name` AS doctor_name,treatments.`treat_start`  FROM treatments 
+                    departments.`name` AS department_name,doctors.`name` AS doctor_name,treatments.`treat_start`  FROM treatments
                  LEFT JOIN doctors ON treatments.`doctor_id`=doctors.`id`
                  LEFT JOIN patients ON treatments.`patient_id` = patients.id
                  LEFT JOIN departments ON doctors.`department_id` = departments.`id`
@@ -1116,7 +1190,7 @@ class DoctorController extends Controller{
         }
 
         $sql = "SELECT  treatments.`id`,treatments.`doctor_profit` as price,patients.`name` AS patient_name,patients.`ID_Number`,
-                    departments.`name` AS department_name,doctors.`name` AS doctor_name,treatments.`treat_start`  FROM treatments 
+                    departments.`name` AS department_name,doctors.`name` AS doctor_name,treatments.`treat_start`  FROM treatments
                  LEFT JOIN doctors ON treatments.`doctor_id`=doctors.`id`
                  LEFT JOIN patients ON treatments.`patient_id` = patients.id
                  LEFT JOIN departments ON doctors.`department_id` = departments.`id`

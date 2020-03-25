@@ -31,9 +31,9 @@
                 <div class="card-body">
                     <form id="question-form" method="post" data-parsley-validate="">
                         <div class="form-group mt-3 row">
-                            <label for="example-text-input" class="col-2 col-form-label text-right">标题</label>
+                            <label for="example-text-input" class="col-2 col-form-label text-right">问诊单模板</label>
                             <div class="col-10">
-                                <input class="form-control" type="text" value="" name='title' id="title" placeholder="请输入标题" data-parsley-required>
+                                <input class="form-control" type="text" value="" name='title' id="title" placeholder="请输入问诊单模板" data-parsley-required>
                             </div>
                         </div>
                         <div class="form-group mt-3 row">
@@ -187,6 +187,32 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-success" onclick="addQueryItem()"><i class="ti-save"></i> 保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-2 text-right" style="line-height: 38px;">药材名称</div>
+                        <div class="col-10">
+                            <select class="form-control" name='medicine' id="medicine">
+                                <option value="0">--请选择药材--</option>
+                                @foreach ($medicines as $medicine)
+                                    <option value="{{$medicine->id}}" data-min="{{$medicine->min_weight}}" data-max="{{$medicine->max_weight}}" data-price="{{$medicine->price}}" data-unit="{{$medicine->unit}}">{{$medicine->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" onclick="addMedicineInModal()"><i class=" ti-plus"></i> 确认</button>
                 </div>
             </div>
         </div>

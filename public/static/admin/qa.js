@@ -2,7 +2,7 @@ var questionNumber = 1 , answerNumber = 0;
 var answerItemNumber = 0;
 var queries = [];
 var qa_table;
-
+var recipe_medicines;
 function openQAModal() {
     // Swal.fire({
     //         title: "1个输入框还是2个输入框？",
@@ -276,6 +276,53 @@ $('#question-form').submit(function (e) {
         url = '/doctor/qa/editQA'
     }
 
+    var receips = $("#recipes").select2("data"),
+        receips_txt = $("#recipes").text(),
+        medicine_item = [],
+        medicine_details = [],
+        medicine_detail_item = [],
+        medicine_list = [];
+    for (var i = 0; i < receips.length; i ++) {
+        medicine_details = [];
+        $(".recipe_medicine_" + receips[i].id).each(function(index, obj){
+            medicine_detail_item = {
+                id : $(obj).find("input[name='medicine_id[]']").val(),
+                name :  $(obj).find("input[name='medicine_name[]']").val(),
+                mass : $(obj).find("input[name='mass[]']").val(),
+                price : $(obj).find("input[name='price[]']").val(),
+                unit : $(obj).find("input[name='unit[]']").val(),
+                max_weight : $(obj).find("input[name='max_weight[]']").val(),
+                min_weight : $(obj).find("input[name='min_weight[]']").val()
+            }
+            if (typeof medicine_detail_item.mass != "undefined") {
+                medicine_details.push(medicine_detail_item);
+            }
+        })
+        medicine_item = {
+            receip_id : receips[i].id,
+            receip_txt : receips[i].text,
+            medicines: medicine_details,
+            fu_number: $("input[name='fuNumber_" + receips[i].id + "']").val(),
+            total: $("input[name='totalPrice_" + receips[i].id + "']").val()
+        }
+        medicine_list.push(medicine_item);
+    }
+    forms.append("medicines", JSON.stringify(medicine_list));
+
+    var is_empty_medicine = false;
+    for (var i = 0; i < medicine_list.length; i ++) {
+        if (medicine_list[i].medicines.length == 0)
+            is_empty_medicine = true;
+    }
+    if (is_empty_medicine == true) {
+        Swal.fire({
+            type: 'error',
+            title: '药材不能为空。'
+        });
+        hideOverlay();
+        return ;
+    }
+
     $.ajax({
         url: url,
         data: forms,
@@ -527,28 +574,60 @@ function drawRecipeSections(recipes) {
             if (resp.code == '0') {
                 var html='';
                 for(var i=0; i < resp.data.length; i++){
-                    html += '<h4 class="text-bold">'+resp.data[i].prescription_name+'</h4><hr>'
+                    html += ' <h4 class="text-bold">'+resp.data[i].prescription_name+' <button type="button" class="btn btn-circle btn-warning p-0-0"  title="添加药材" onclick="setRecipeId('+ resp.data[i].id + ');"><i class="fas fa-plus"></i></button></h4><hr>'
                     var dbmedicines = JSON.parse(resp.data[i].medicine);
                     for(var j=0; j<dbmedicines.length; j++){
-                        html +='<div class="row">\n' +
-                            '\t<label class="col-2 col-form-label text-right">\n' +
-                            '\t\t'+dbmedicines[j].medicine+'\n' +
-                            '\t</label>\n' +
-                            '\t<div class="col-2">\n' +
-                            '\t\t<input class="form-control" type="number" value="'+dbmedicines[j].min_weight+'" disabled>\n' +
-                            '\t</div>\n' +
-                            '\t<span style="paddint-top:8px">~</span>\n' +
-                            '\t<div class="col-2">\n' +
-                            '\t\t<input class="form-control" type="number" value="'+dbmedicines[j].max_weight+'" disabled>\n' +
-                            '\t</div>\n' +
-                            '\t<div class="col-2 text-left">\n' +
-                            '\t\t<label id="price_6" style="line-height:38px">' + dbmedicines[j].price + '  元/10g</label>\n' +
-                            '\t</div>\n' +
-                            '</div>';
+                        html+='<div id="recipe_medicine_' + resp.data[i].id + '" class="recipe_medicine_' + resp.data[i].id + '">';
+                        // html +='<div class="row">\n' +
+                        //     '\t<label class="col-2 col-form-label text-right">\n' +
+                        //     '\t\t'+dbmedicines[j].medicine+'\n' +
+                        //     '\t</label>\n' +
+                        //     '\t<div class="col-2">\n' +
+                        //     '\t\t<input class="form-control" type="number" value="'+dbmedicines[j].min_weight+'" disabled>\n' +
+                        //     '\t</div>\n' +
+                        //     '\t<span style="paddint-top:8px">~</span>\n' +
+                        //     '\t<div class="col-2">\n' +
+                        //     '\t\t<input class="form-control" type="number" value="'+dbmedicines[j].max_weight+'" disabled>\n' +
+                        //     '\t</div>\n' +
+                        //     '\t<div class="col-2 text-left">\n' +
+                        //     '\t\t<label id="price_6" style="line-height:38px">' + dbmedicines[j].price + '  元/10g</label>\n' +
+                        //     '\t</div>\n' +
+                        //     '</div>';
+                        var min_weight =  dbmedicines[j].min_weight;
+                        var max_weight =  dbmedicines[j].max_weight;
+                        var weight = dbmedicines[j].weight==undefined?0:dbmedicines[j].weight;
+                        if(dbmedicines[j].weight==undefined&&dbmedicines[j].min_weight==dbmedicines[j].max_weight)
+                            weight = dbmedicines[j].max_weight;
+                        var price = dbmedicines[j].price;
+                        var unit = dbmedicines[j].unit;
+                        selectedMedicine_id = dbmedicines[j].medicine_id;
+                        selectedMedicine_name = dbmedicines[j].medicine;
+
+                        var unitLable = unit==null||unit==''||unit==undefined||unit=='公克'?' 元/10g':unit=='两'?' 元/两':('元/'+unit);
+
+                         html+="<div class=\"row\">\n" +
+                            "   <div class='col-sm-2'></div> <label class=\"col-1 col-form-label text-right\">\n" +
+                            "        <button type=\"button\" class=\"btn btn-default\" data-toggle=\"tooltip\" title=\"删除\" data-index=\""+selectedMedicine_id+"\" onclick=\"removeMedicineQA(" + resp.data[i].id + ", this);\"><i class=\"fas fa-times\"></i> </button> &nbsp;"+selectedMedicine_name+
+                            "<input type='hidden' name='medicine_id[]' value='"+selectedMedicine_id+"' /><input type='hidden' name='medicine_name[]' value='"+selectedMedicine_name+"' /></label>\n" +
+                            "    <div class=\"col-2\">\n" +
+                            "        <input class=\"form-control\" type=\"number\" value=\""+weight+"\" name=\"mass[]\" min=\"0\" onchange='calcPrice(" + resp.data[i].id + ")'  id=\"weight"+selectedMedicine_id+"\">\n" +
+                            "    </div>\n" +
+                            "<div class=\"col-4 text-left\">\n" +
+                            "    <label id=\"price_"+selectedMedicine_id+"\" style=\"line-height: 38px;\">"+price+" "+unitLable+" (最小："+min_weight+", 最大："+ max_weight+") </label><input type='hidden' name='price[]' value='"+price+"' /> \n" +
+                            "<input type='hidden' name='unit[]' value='"+dbmedicines[j].unit+"' />"+
+                            "</div>\n"+
+                            "<input class=\"form-control\" type=\"hidden\" value=\""+max_weight+"\" name=\"max_weight[]\" id=\"max_weight_"+selectedMedicine_id+"\">\n" +
+                            "<input class=\"form-control\" type=\"hidden\" value=\""+min_weight+"\" name=\"min_weight[]\" id=\"min_weight_"+selectedMedicine_id+"\">\n" +
+                            "</div></div>\n"
+                        html +='</div>';
+
                     }
-                    html+='<div class="row"> <div class="col-sm-3 p-r-0 text-right col-form-label">副</div> ' +
+                    html+='<div class="row"> <div class="col-sm-3 p-r-0 text-right col-form-label">1副</div> ' +
                         '<div class="col-sm-2"><input type="number" onchange="changeFuNumber(this)" name="fuNumber_'+resp.data[i].id+'" id="fuNumber_'+resp.data[i].id+'" class="form-control" value="' + medicines[resp.data[i].id] + '" /></div>' +
-                        '<div class="col-sm-2 col-form-label p-l-0">代</div></div>';
+                        '<div class="col-sm-2 col-form-label p-l-0"><label style="line-height: 25px;">代</label></div></div>';
+                    html += '<div class="row"><div class="col-sm-3 p-r-0 text-right col-form-label">总价</div> ' +
+                        '<div class="col-sm-2"><input type="number" disabled name="totalPrice_'+resp.data[i].id+'" id="totalPrice_'+resp.data[i].id+'" class="form-control" value="' + medicines[resp.data[i].id] + '" /><label></label></div>' +
+                        '</div>';
                 }
                 $("#medicineSection").html(html);
             } else {
@@ -578,4 +657,88 @@ function changeFuNumber(obj) {
     var id = obj.id.replace('fuNumber_','');
     medicines[id] = obj.value;
     $("#fuDaiNumber").val(JSON.stringify(medicines));
+}
+function addMedicineInModal() {
+    selectedMedicine_id = $("#medicine").val();
+    selectedMedicine_name = $("#medicine option:selected").text();
+    if(selectedMedicine_id<1) return;
+    var min_weight =  $("#medicine option:selected").data("min");
+    var max_weight =  $("#medicine option:selected").data("max");
+    var price = $("#medicine option:selected").data("price");
+    var unit = $("#medicine option:selected").data("unit");
+
+    var html="<div id='recipe_medicine_" + selectedRecipeId + "' class='recipe_medicine_" + selectedRecipeId + "'><div class=\"row\">\n" +
+        "  <div class='col-sm-2'></div>  <label class=\"col-1 col-form-label text-right\">\n" +
+        "        <button type=\"button\" class=\"btn btn-default\" data-toggle=\"tooltip\" title=\"删除\" data-index=\""+selectedMedicine_id+"\" onclick=\"removeMedicineQA(" + selectedRecipeId + ", this);\"><i class=\"fas fa-times\"></i> </button> &nbsp;"+selectedMedicine_name+
+        "<input type='hidden' name='medicine_id[]' value='"+selectedMedicine_id+"' /><input type='hidden' name='medicine_name[]' value='"+selectedMedicine_name+"' /></label>\n" +
+        "    <div class=\"col-2\">\n" +
+        "        <input class=\"form-control\" type=\"number\" value=\"0\" onchange='calcPrice(" + selectedRecipeId + ")' name=\"mass[]\" id=\"weight_"+selectedMedicine_id+"\">\n" +
+        "    </div>\n" +
+        "<div class=\"col-4 text-left\">\n" +
+        "    <label id=\"price_"+selectedMedicine_id+"\" style=\"line-height: 38px;\">"+price+" 元/10g (最小："+min_weight+", 最大："+ max_weight+")</label><input type='hidden' name='price[]' value='"+price+"' /> \n" +
+        "<input type='hidden' name='unit[]' value='"+unit+"' />"+
+        "</div>\n"+
+        "<input class=\"form-control\" type=\"hidden\" value=\""+max_weight+"\" name=\"max_weight[]\" id=\"max_weight_"+selectedMedicine_id+"\">\n" +
+        "<input class=\"form-control\" type=\"hidden\" value=\""+min_weight+"\" name=\"min_weight[]\" id=\"min_weight_"+selectedMedicine_id+"\">\n" +
+        "</div>\n" +
+        "</div>";
+    if ($("#recipe_medicine_"+selectedRecipeId).length > 0)
+        $("#recipe_medicine_"+selectedRecipeId).after(html);
+    else
+        $("#medicineSection hr").after(html);
+    // $("#medicine option:selected").attr("disabled","disabled");
+    // $("#medicine").prop("selectedIndex",-1);
+    changeMaxMinValue();
+    getContraryIds(selectedMedicine_id,function(contraryIds){
+        for(var i=0; i < contraryIds.length; i++){
+            $("#medicine option[value='"+contraryIds[i]+"']").attr("disabled","disabled");
+        }
+    });
+
+}
+function setRecipeId(id){
+    selectedRecipeId = id;
+    $("#myModal").modal('show');
+
+    var sel_medicineIds = [];
+    $(".recipe_medicine_" + id).each(function(index, obj){
+        sel_medicineIds.push($(obj).find("input[name='medicine_id[]']").val());
+    });
+    for (var i = 0; i < sel_medicineIds.length; i ++) {
+        $("#medicine option[value='"+sel_medicineIds[i]+"']").attr("disabled","disabled");
+    }
+
+}
+
+function calcPrice(Medicine_id) {
+    var totalPrice = 0,
+        amount = 0,
+        price_per_unit = 0,
+        amount_per_unit = 0,
+        unit = "",
+        mass_obj = "",
+        price_obj = "",
+        unit_obj = "";
+    $(".recipe_medicine_" + Medicine_id).each(function(index, obj){
+        mass_obj = $(obj).find("input[name='mass[]']");
+        price_obj = $(obj).find("input[name='price[]']");
+        unit_obj = $(obj).find("input[name='unit[]']");
+        amount = parseInt($(mass_obj).val());
+        price_per_unit = parseInt($(price_obj).val());
+        unit = $(unit_obj).val();
+        amount_per_unit = unit=="null"||unit==null||unit==''||unit==undefined||unit=='公克' ? 10 : 1;
+        totalPrice += amount * (price_per_unit / amount_per_unit);
+    });
+
+    $("#totalPrice_" + Medicine_id).val(totalPrice);
+
+}
+
+function removeMedicineQA(recipeId, obj) {
+    var id = $(obj).data("index");
+    $("#medicine option[value='" + id + "']").attr("disabled",false);
+    var row = $(obj).parent().parent().parent();
+    row.remove();
+
+    calcPrice(recipeId);
 }

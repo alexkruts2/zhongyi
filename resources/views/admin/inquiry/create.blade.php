@@ -57,8 +57,9 @@
                         </div>
                         <div class="mt-3 row">
                             <div class="col-md-10 form-inline">
-                                <label for="history_number" >&nbsp;&nbsp;&nbsp;标题&nbsp;&nbsp; </label>
-                                <select class="select2 m-b-10" name="question_title" id="question_title" data-placeholder="请选择"data-parsley-required style="width:71.3%;">
+                                <label for="history_number" >&nbsp;&nbsp;&nbsp;问诊单模板&nbsp;&nbsp; </label>
+                                <select class="select2 m-b-10" name="question_title" id="question_title" data-placeholder="请选择问诊单模板" style="width:71.3%;">
+                                    <option></option>
                                     @foreach(\App\question::all() as $question)
                                         <option value="{{$question->id}}" >{{$question->title}}</option>
                                     @endforeach
@@ -122,15 +123,27 @@
                         </div>
 
                         <div class="row bg-gray">
+                            <label for="example-text-input" style="font-size: 27px;" class="col-2 col-form-label text-left">
+                                医生嘱托
+                            </label>
+                        </div>
+                        <div id = "annotationSection">
+                            <div class="form-group mt-3 row">
+                                <div class="col-12">
+                                    <textarea class="form-control" type="text" name='doctor_question' id="doctor_question"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row bg-gray">
                             <label for="example-text-input" style="font-size: 27px;" class="col-2 col-form-label text-left">药方
-                                <button type="button" class="btn btn-circle btn-warning p-0-0"  data-toggle="modal" data-target="#myModal" title="添加药材" ><i class="fas fa-plus"></i></button>
                             </label>
                         </div>
 
                         <div class="form-group mt-3 row">
                             <label for="example-text-input" class="col-2 col-form-label text-right"></label>
                             <div class="col-6">
-                                <select class="m-b-10 form-control select2 " style="width: 100%" data-placeholder="Choose" name="recipe" id="recipe">
+                                <select class="m-b-10 form-control select2 select2-multiple" style="width: 100%" data-placeholder="Choose" multiple="multiple" name="recipe[]" id="recipe">
                                 </select>
                             </div>
                         </div>
@@ -149,47 +162,6 @@
                                 <span id="total_price_span" ></span>元
                             </div>
                             <input type="hidden" id="total_price" name="total_price" ></input>
-                        </div>
-
-                        <div class="form-group mt-3 row bg-gray">
-                            <label for="example-text-input" class="col-2 col-form-label text-right" >其他症状</label>
-                            <div class="col-8">
-                                <textarea class="form-control" type="text" name='other_condition' id="other_condition" style="background-color:#ddd;" disabled></textarea>
-                            </div>
-                        </div>
-                        <div class="form-group mt-3 row bg-gray">
-                            <label for="example-text-input" class="col-2 col-form-label text-right" >禁忌</label>
-                            <div class="col-8">
-                                <textarea class="form-control" type="text" name='ban' id="ban" style="background-color:#ddd;"  disabled></textarea>
-                            </div>
-                        </div>
-                        <div class="form-group mt-3 row bg-gray">
-                            <label for="example-text-input" class="col-2 col-form-label text-right" >煎服方法</label>
-                            <div class="col-8">
-                                <textarea class="form-control" type="text" name='eating_method' id="eating_method" style="background-color:#ddd;"  disabled></textarea>
-                            </div>
-                        </div>
-                        <div class="form-group mt-3 row bg-gray">
-                            <label for="example-text-input" class="col-2 col-form-label text-right" >医生嘱托</label>
-                            <div class="col-6">
-                                <textarea class="form-control" type="text" name='doctor_question' id="doctor_question" style="background-color:#ddd;"></textarea>
-                            </div>
-                        </div>
-                        <div class="form-group mt-3 row bg-gray">
-                            <label for="example-text-input" class="col-2 col-form-label text-right" >病名</label>
-                            <div class="col-6">
-                                <input class="form-control" type="text" name='disease_name' id="disease_name" style="background-color:#ddd;">
-                            </div>
-                        </div>
-                        <div class="form-group mt-3 row">
-                            <label for="example-text-input" class="col-2 col-form-label text-right" ></label>
-                            <div class="col-8">
-                                <div class="custom-control custom-checkbox">
-                                    <input type="hidden" class="custom-control-input" name="houfang" value="0">
-                                    <input type="checkbox" class="custom-control-input" id="houfang" name="houfang" value="1" onclick="this.previousSibling.value=1-this.previousSibling.value">
-                                    <label class="custom-control-label" for="houfang">是否合方</label>
-                                </div>
-                            </div>
                         </div>
 
                         <div class="row mt-3">
@@ -226,7 +198,6 @@
                         <div class="col-2 text-right" style="line-height: 38px;">药材名称</div>
                         <div class="col-10">
                             <select class="form-control" name='medicine' id="medicine">
-                                <option value="0">--请选择药材--</option>
                                 @foreach ($medicines as $medicine)
                                     <option value="{{$medicine->id}}" data-min="{{$medicine->min_weight}}" data-max="{{$medicine->max_weight}}" data-price="{{$medicine->price}}">{{$medicine->name}}</option>
                                 @endforeach
