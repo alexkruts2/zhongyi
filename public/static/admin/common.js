@@ -672,3 +672,13 @@ function addMedicineInModal(inquiry) {
 
 }
 
+function calcPriceTotal(){
+    var totalPrice = 0;
+    var recipeDatas = JSON.parse($("#medicines").val());
+    for(var i=0; i < recipeDatas.length; i++){
+        var fuNumber = recipeDatas[i].fuNumber!=undefined&&recipeDatas[i].fuNumber!=null&&recipeDatas[i].fuNumber!=''?recipeDatas[i].fuNumber:1;
+        totalPrice += calcPrice(recipeDatas[i].medicine)*fuNumber;
+    }
+    $("#total_price").val(totalPrice);
+    $("#total_price_span").html(totalPrice);
+}

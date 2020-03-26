@@ -58,6 +58,7 @@
                                     </div>
                                 </section>
                             </div>
+                        <input type="hidden" name="medicines" id="medicines" />
 
                             <div class="form-group mt-3 row">
                             <div class="col-lg-6 question-area">

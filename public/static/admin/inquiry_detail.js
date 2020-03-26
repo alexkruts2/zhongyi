@@ -10,6 +10,7 @@ $(function(){
     if (typeof recipes !== 'undefined') {
         $("#medicines").val(recipes);
         drawMedicine(JSON.parse(recipes),false,false);
+        calcPriceTotal();
     }
 
 });
