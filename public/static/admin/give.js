@@ -129,21 +129,6 @@ function drawRecipeSections (medicines, houfang) {
         html += ' <h4 class="text-bold">'+recipes[i].receip_txt+'</h4><hr>';
         for(var j=0; j<dbmedicines.length; j++){
             html+='<div id="recipe_medicine_' + recipes[i].receip_id + '" class="recipe_medicine_' + recipes[i].receip_id + '">';
-            // html +='<div class="row">\n' +
-            //     '\t<label class="col-2 col-form-label text-right">\n' +
-            //     '\t\t'+dbmedicines[j].medicine+'\n' +
-            //     '\t</label>\n' +
-            //     '\t<div class="col-2">\n' +
-            //     '\t\t<input class="form-control" type="number" value="'+dbmedicines[j].min_weight+'" disabled>\n' +
-            //     '\t</div>\n' +
-            //     '\t<span style="paddint-top:8px">~</span>\n' +
-            //     '\t<div class="col-2">\n' +
-            //     '\t\t<input class="form-control" type="number" value="'+dbmedicines[j].max_weight+'" disabled>\n' +
-            //     '\t</div>\n' +
-            //     '\t<div class="col-2 text-left">\n' +
-            //     '\t\t<label id="price_6" style="line-height:38px">' + dbmedicines[j].price + '  元/10g</label>\n' +
-            //     '\t</div>\n' +
-            //     '</div>';
             var min_weight =  dbmedicines[j].min_weight;
             var max_weight =  dbmedicines[j].max_weight;
             var weight = dbmedicines[j].mass;

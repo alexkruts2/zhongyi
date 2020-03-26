@@ -65,10 +65,10 @@
                         <input type="hidden" id="fuDaiNumber" name="fuDaiNumber"/>
                         <div id="medicineSection">
                         </div>
-                        <div class="form-group mt-3 row">
+                        <div class="form-group mt-3 row" style="display: none">
                             <label for="example-text-input" class="col-2 col-form-label text-right">病名</label>
                             <div class="col-10">
-                                <input class="form-control" type="text" value="" name='disease_name' id="disease_name" data-role="tagsinput" placeholder="输入病名&nbsp;&nbsp;" data-parsley-required />
+                                <input class="form-control" type="text" value="" name='disease_name' id="disease_name" data-role="tagsinput" placeholder="输入病名&nbsp;&nbsp;" />
                             </div>
                         </div>
                         <div class="row bg-gray mt-3">
@@ -213,7 +213,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success" onclick="addMedicineInModal()"><i class=" ti-plus"></i> 确认</button>
+                    <button type="button" class="btn btn-success" onclick="addMedicineInModal(false)"><i class=" ti-plus"></i> 确认</button>
                 </div>
             </div>
         </div>

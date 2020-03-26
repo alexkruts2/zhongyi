@@ -503,7 +503,6 @@ class HomeController extends Controller
             'title' => 'required',
             'doctor_id' => 'required',
             'recipes' => 'required',
-            'disease_name' => 'required',
             'questions' => 'required'
         ]);
         $title = $request->get('title');
@@ -512,7 +511,6 @@ class HomeController extends Controller
         $disease_name = $request->get('disease_name');
         $questions = $request->get('questions');
         $number = random_str('alphanum',6);
-        $fuDaiNumber = $request->get('fuDaiNumber');
 
         $biaozheng = $request->get('biaozheng');
         $lizheng = $request->get('lizheng');
@@ -528,13 +526,12 @@ class HomeController extends Controller
            'recipes' => json_encode($recipes),
            'title' => $title,
            'number' => $number,
-           'disease_name' => $disease_name,
+           'disease_name' => '',
             'biaozheng' => $biaozheng,
             'lizheng' => $lizheng,
             'biaoli' => $biaoli,
             'maizheng' => $mai,
             'medicines' => ($medicines),
-            'fuDaiNumber' => $fuDaiNumber
         ]);
         return success($question);
     }
@@ -583,6 +580,7 @@ class HomeController extends Controller
         $question = question::select('*')->where('id',$id)->first();
         $department_id = $question->doctor->department->id;
         $doctors = doctor::select('*')->where('department_id',$department_id)->orderBy('name')->get();
+        $medicines = medicine::select('*')->where('flag','NORMAL')->orderBy('name')->get();
 
         return view('admin.qa.edit')->with([
             'question'=>$question,
@@ -594,7 +592,8 @@ class HomeController extends Controller
             'lizheng' => $question->lizheng,
             'biaoli' => $question->biaoli,
             'maizheng' => $question->maizheng,
-            'fuDaiNumber' => $question->fuDaiNumber
+            'fuDaiNumber' => $question->fuDaiNumber,
+            'medicines' => $medicines
         ]);
     }
     public function editQAData(Request $request){
@@ -603,7 +602,6 @@ class HomeController extends Controller
             'title'=>'required',
             'doctor_id' => 'required',
             'recipes' => 'required',
-            'disease_name' => 'required',
             'questions' => 'required',
             'number' => 'required'
         ]);
@@ -611,16 +609,15 @@ class HomeController extends Controller
         $title = $request->get('title');
         $doctor_id = $request->get('doctor_id');
         $recipes = $request->get('recipes');
-        $disease_name = $request->get('disease_name');
         $questions = $request->get('questions');
         $number = $request->get('number');
         $biaozheng = $request->get('biaozheng');
         $lizheng = $request->get('lizheng');
         $biaoli = $request->get('biaoli');
         $mai = $request->get('maizheng');
-        $fuDaiNumber = $request->get('fuDaiNumber');
 
         $medicines = $request->get('medicines');
+
         $fuDaiNumber = ""; // added by wangming
 
         $question = question::where('id',$question_id)->first();
@@ -631,7 +628,7 @@ class HomeController extends Controller
             'recipes' => json_encode($recipes),
             'title' => $title,
             'number' => $number,
-            'disease_name' => $disease_name,
+            'disease_name' => '',
             'biaozheng' => $biaozheng,
             'lizheng' => $lizheng,
             'biaoli' => $biaoli,

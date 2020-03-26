@@ -7,10 +7,10 @@ var record_state = '';
 var fuDaiNumbers;
 var selectedRecipeId = 0;
 
-var biaozheng_default = ["发热", "汗出", "恶风", "鼻鸣干呕", "头项强痛"],
-    lizheng_default = ["不呕", "下之后", "大烦渴不解", "心下满微痛", "吐逆"],
-    biaoli_default = ["胸满", "小便不利", "小便难", "小便数", "心烦"],
-    maizheng_default = ["脉缓", "脉浮缓", "脉促", "脉微缓", "脉微"];
+var biaozheng_default = "发热，汗出，恶风，鼻鸣干呕，头项强痛，恶寒，项背强几几，汗出恶风，汗遂漏不止，小便难，四肢微急难以屈伸 ，微寒，如虐状，热多寒少，身痒，面色有热色，大汗出，形似疟，热多寒少，无汗，自汗出，微恶寒，脚挛急，厥，足温，喘而汗出，身疼腰痛，骨节疼痛，无汗而喘，身疼痛，不汗出而烦躁，厥逆，筋惕肉瞤，身不疼但重，发汗，身无大热，发汗后，汗出而喘，发汗过多，欲得按，身为振振摇，大汗出，身热不去，身瞤动，振振欲擗地，身热恶风，颈项强，日晡所发潮热，潮热，身黄，项强，头痛发热，微盗汗出，日晡所小有潮热，心下痛不可近，支节烦疼，但头汗出，汗出不恶寒，汗出而喘，无大热，伤寒发热汗出不解，时时恶风，背微恶寒，发热无汗，风湿相抟，身体疼烦，不能自转侧，骨节疼烦掣痛（不得屈伸，近之则痛剧），恶风不欲去衣，身微肿，汗出而闷，身重，身难以转侧，口不仁，手足逆冷，自汗出，头痛，日久热不退，其背恶寒，厥逆，四肢沉重疼痛，身体痛，手足寒，骨节痛，手足厥逆（四逆），汗出而厥，手足厥寒，身体重，腰中冷如坐水中，形如水状，腹重如带五千钱，腰以下冷痛，手足厥寒，大汗出，热不去，汗出而厥，身有微热，头痛，大病瘥后腰以下有水气，身体强几几，无汗小便反少，卧不着席，脚挛急，齘齿，全身抽搐，湿家身烦疼，一身尽疼，汗出恶风，身体疼烦，不能自转侧，风湿相搏，骨节疼烦掣痛，手足不得屈伸、近之则痛剧，汗出短气，恶风不欲去衣，身微肿，骨节疼烦，半身不遂，但臂不遂，身痒而瘾疹；外证疮疡，诸肢节疼痛，身体尪赢，脚肿如脱，病历节不可屈伸、疼痛，脚气疼痛、不可屈伸，关节痛，外证身体不仁（身体麻痹不仁）、如风痹状（风痹要疼的，血痹不疼），面色薄，面色白，手足烦，手足烦热，酸削不能行，四肢酸疼，虚劳腰痛，肌肤甲错，两目黯黑。身体重，腰中冷，腰以下冷湿，腹重，振寒（寒战），发汗后脐下悸，其身甲错，腹皮急（肚皮拘急痉挛）、按之濡（软）、如肿状，手足厥冷，白汗出，逆冷，手足不仁，面色黧黑，手足痹，面翕热如醉状，一身面目黄肿，汗出恶风，恶风，一身悉肿，续自汗出，四肢肿，无大热，四肢聂聂动，黄汗病、身肿发热汗出而渴、状如风水、汗色黄如柏汁，黄汗病两胫自冷，历节病两胫发热，身甲错，恶疮，身瞤，腰髋弛痛，腰以上汗出、下无汗，有物在皮中状，身疼重，骨疼，身冷，恶寒，身痹不仁".split('，');
+var lizheng_default = "下利而渴），大汗出，热不去，下利厥逆而恶寒，吐逆，大下利而厥冷，里寒外热，下利谵语，下利后烦按之心下濡，呕，吐涎沫，脉微下利，热多欲饮水，气逆欲吐，大病瘥后劳复，不渴，大便坚硬不通，身热而渴，汗出恶寒，能食，温温欲吐，里急，后重，少腹满，腹痛，腹中痛，腹无积聚，腹满、饮食如故，脉浮而数，腹中寒气、雷鸣切痛，呕吐，痛而闭者（腹胀满而痛，大便不通），心胸中大寒痛（痛而不可触），呕不能饮食，腹中寒，胁下偏痛，寒疝绕脐痛，寒疝腹中痛，下利不饮食（有宿食），但欲饮热，自利、利反快，虽利、心下续坚满，病溢饮、水饮流到四肢当汗出而不汗出，心下痞坚，支饮胸满（大便不通），腹满（肚子胀）口舌干燥，呕家不渴，先渴后呕，呕吐、心下痞、眩悸，心胸中有停痰宿水，吐水，心胸间虚、气满、不能食，多唾口燥，从小腹上冲胸咽，面热如醉、为胃热上冲熏面，微热消渴，消渴、小便反多、以饮一斗、小便一斗，渴欲饮水、水入则吐，渴欲饮水不止，其人苦渴，渴欲饮水，口干舌燥，不渴，食已汗出，暮卧盗汗出，汗出已反发热，腹满胁鸣相逐".split('，');
+var    biaoli_default = "胸满，小便不利，小便难，小便数，心烦，咽中干，烦躁，喘而胸满者，嗜卧，胸满胁痛，不汗出而烦躁，咳，少腹满，喘，咳而微喘，微喘，昼日烦躁不得眠，夜而安静，气上冲胸，起则头眩，烦，虚烦不得眠，心中懊侬，烦热，胸中窒，虚烦，卧起不安者，头眩，心烦腹满，往来寒热，胸胁苦满，嘿嘿不欲饮食，心烦喜呕，胁下痞硬，胁下满，呕而发热，腹中急痛，心中悸而烦，郁郁微烦，胸胁满而呕，热结膀胱，其人如狂，少腹急结，血自下，惊狂，卧起不安，气从少腹上冲心，发狂，少腹硬满，小便自利，瘀热在里，少腹硬，其人如狂，其人喜忘，有久瘀血，短气躁烦，心中懊侬，心下支结，胸胁满微结，引胁下痛，气上冲喉咽，不得息，小便自利，汗出短气，表有热，里亦有热，虚劳不足，汗出而闷，心动悸，独语如见鬼状，不识人，循衣摸床，惕而不安，微喘直视，发热谵语，腹满身重，难以转侧，但欲寐，心中烦，不得卧，咽痛、胸满、心烦，咽中伤生疮、不能语言、声不出者，小便自利，胸中气塞，短气，咽中干，虚赢少气，气上冲胸，口噤不得语，胸满，口噤，不呕，小便自利（小便频数），百合病（静默不言不语，昏昏然，卧起不安，饮食无常，冷热不定，口苦，小便赤，精神失常，癫，），狐惑病（默默欲眠，目不得闭，卧起不安，蚀于喉为惑，蚀于阴为狐，不欲饮食，恶闻食臭，其面目乍赤、乍黑、乍白。蚀于上部则声喝，蚀于下部则咽干），微烦，默默但欲卧，目赤如鸠眼，目四眦黑，左胁下脾肿大，病癥瘕，邪火内炽、吐血、衄血、三焦积热、眼目赤肿、口舌生疮、外证疮疡，头眩短气，目瞑，精自出，阴头寒，目眩（目眶痛），发落，男子失精，女子梦交，阴寒精自出，梦失精，咽干口燥，虚劳虚烦不得眠，小便自利，腹重，咳而上气、喉中水鸡声，咳逆上气，时时吐浊，但坐不得眠，咳而脉浮，咳而脉沉，火逆上气、咽喉不利，肺痈（喘不得卧，咳而胸满）、浓未成，咳而胸满，咽干不渴，时出浊唾腥臭，久久吐脓如米粥，咳而上气，喘，目如脱状，烦躁而喘，咳有微热、烦燥胸满，气上冲胸，温疟者其脉如平、身无寒但热、骨节疼烦、时呕，疟多寒者名日牡疟，疟病发渴，治疟寒多微有热、或但寒不热，胸满而短气，少腹弦急（比里急还厉害，），虚劳里急（里急就是少腹里急），少腹拘急（小腹痉挛、抽搐），往来寒热，气从少腹上至心，喘息咳唾，胸背痛，胸痹心痛，心痛彻背，胸痹不得卧，胸痹心中痞、留气结在胸，胁下逆抢心，胸痹、胸中气塞，喉中涩、噎塞习习如痒，胸痹缓急（时轻时重），心中痞，诸逆心悬痛，心痛彻背、背痛彻心，胸胁逆满，胸胁支满，目眩，心下有痰饮（微则短气、甚则悸），常欲蹈其胸上，肝着(瘀滞），悬饮内痛，咳家，咳家、咳烦、胸中痛，喘满，病支饮（咳逆倚息、短气不得卧、其形如肿),苦冒眩，支饮不得息（痰饮充斥、压迫肺，呼吸困难），脐下有悸，吐涎沫而癫眩，咳逆、倚息不得卧，小便难，时复冒，冲气即低、而反更咳、胸满、咳满，咳满即止、而更复渴、冲气复发，消渴小便反多、以饮一斗、小便一斗，小便如粟状、小腹弦急、痛引脐中，小便自利，烦躁，遗尿，心下坚大如盘、边如旋盘".split('，');
+var maizheng_default = "脉缓，脉浮缓，脉促，脉微缓，脉微，脉洪大，脉微弱，脉浮，脉沉，脉浮细，脉沉微，脉沉紧，脉浮数，脉微而沉，脉沉结，脉浮而动数，脉沉而紧，脉关上浮，寸脉微浮，脉浮，脉浮虚而涩，脉浮滑，脉结悸，脉结代，脉迟，脉弦，脉涩，脉滑，脉浮数，脉数，无脉，脉微欲绝，脉微而厥，脉细欲绝，脉弱，脉沉迟，脉浮虚而涩脉微而数，脉阴阳俱微，脉浮弱而涩，脉极虚芤迟，脉浮大，脉浮而数，脉紧弦，脉沉弦，脉伏，脉沉弦，脉沉紧，脉沉小，脉迟而涩".split('，');
 
 function drawGuahaoTable() {
     if(guahaoTable)
@@ -169,6 +169,7 @@ $(function () {
         if(data==''||data==null||data==undefined) {
             // default list
             drawItems('biaozheng',biaozheng_default,[], false);
+
             drawItems('lizheng',lizheng_default,[], false);
             drawItems('biaoli',biaoli_default,[], false);
             drawItems('maizheng',maizheng_default,[], true);
@@ -189,9 +190,16 @@ $(function () {
                     if (resp.code == 0) {
                         drawSlide(JSON.parse(resp.data.question.questions));
                         jsonQuestion = JSON.parse(resp.data.question.questions);
-                        drawRecipe(resp.data.question, resp.data.recipe);
+                        var medicines = JSON.parse(resp.data.question.medicines);
+                        for(var i =  0; i < medicines.length; i++){
+                            $("#recipe").append(new Option(medicines[i].prescription_name,medicines[i].id,false,true));
+                        }
+                        $("#recipe").prop('disabled',true);
+                        $("#medicines").val(resp.data.question.medicines);
+
+                        drawMedicine(medicines,true,false);
+
                         $("#question_string").val(resp.data.question.questions);
-                        // $("#recipe").trigger("change");
                         var biaozhengList = JSON.parse(resp.data.question.biaozheng)
                         drawItems('biaozheng',biaozhengList,[], false);
                         drawItems('lizheng',JSON.parse(resp.data.question.lizheng),[], false);
@@ -227,52 +235,15 @@ $(function () {
 
     $("#recipe").on("change",function (e) {
         var recipes = $(this).val();
-        var medicines = [];
-        var eating_method = [];
-        var ban = [];
-        var othercondition = [];
-        var selrecipes = [];
-        var selbuf = $("#recipe").select2("data");
-        var data = $("#question_title").val();
-
-        // if (recipes.length > 3) {
-        //     Swal.fire({
-        //         type: 'warning',
-        //         title: '不得超过3个。',
-        //         showConfirmButton: false,
-        //         timer: 3000
-        //     });
-        //     $("#recipe").val('').change();
-        //     return;
-        // }
-
-        if(data==''||data==null||data==undefined) { // no selected question
-            for (var i = 0; i < recipes.length; i ++) {
-                medicines.push($("#recipe option[value='" + recipes[i] + "']").data("medicine"))
-                eating_method.push($("#recipe option[value='" + recipes[i] + "']").data("eating_method"))
-                ban.push($("#recipe option[value='" + recipes[i] + "']").data("ban"))
-                othercondition.push($("#recipe option[value='" + recipes[i] + "']").data("othercondition"))
-            }
-            for (var i = 0; i < selbuf.length; i ++) {
-                selrecipes.push({prescription_name: selbuf[i].text, id: selbuf[i].id});
-            }
-            drawRecipeSectionsOther(selrecipes, medicines, eating_method, ban, othercondition);
-        } else {
-            medicines = $("#recipe option:selected").data("medicine");
-            for (var i = 0; i < recipes.length; i ++) {
-                eating_method.push($("#recipe option[value='" + recipes[i] + "']").data("eating_method"))
-                ban.push($("#recipe option[value='" + recipes[i] + "']").data("ban"))
-                othercondition.push($("#recipe option[value='" + recipes[i] + "']").data("othercondition"))
-            }
-            drawRecipeSections(recipes, medicines, eating_method, ban, othercondition);
-        }
-
+        drawRecipeSections(recipes,true);
     });
 
     // default slide
     drawSlide([]);
 
     // default list
+    // drawZhengSection('biaozheng',biaozheng_default,[]);
+
     drawItems('biaozheng',biaozheng_default,[]);
     drawItems('lizheng',lizheng_default,[]);
     drawItems('biaoli',biaoli_default,[]);
@@ -464,127 +435,6 @@ function drawRecipeOther(recipes){
     $("#recipe").html(html);
 }
 
-function drawRecipeSections(selrecipes, medicines, eating_method, ban, othercondition) {
-    var temp = medicines;
-    var html = "";
-    if(medicines==''||medicines==null||medicines==undefined){
-        temp = medicines= [];
-        $("#medicineSection").html("");
-        calcPrice();
-        return;
-    }
-
-    var recipes = (medicines);
-    for(var i=0; i < recipes.length; i++){
-        var dbmedicines = (recipes[i].medicines);
-        if (selrecipes.indexOf(recipes[i].receip_id) < 0)
-            continue;
-        html += ' <h4 class="text-bold">'+recipes[i].receip_txt+'</h4><hr>';
-        for(var j=0; j<dbmedicines.length; j++){
-            html+='<div id="recipe_medicine_' + recipes[i].receip_id + '" class="recipe_medicine_' + recipes[i].receip_id + '">';
-            // html +='<div class="row">\n' +
-            //     '\t<label class="col-2 col-form-label text-right">\n' +
-            //     '\t\t'+dbmedicines[j].medicine+'\n' +
-            //     '\t</label>\n' +
-            //     '\t<div class="col-2">\n' +
-            //     '\t\t<input class="form-control" type="number" value="'+dbmedicines[j].min_weight+'" disabled>\n' +
-            //     '\t</div>\n' +
-            //     '\t<span style="paddint-top:8px">~</span>\n' +
-            //     '\t<div class="col-2">\n' +
-            //     '\t\t<input class="form-control" type="number" value="'+dbmedicines[j].max_weight+'" disabled>\n' +
-            //     '\t</div>\n' +
-            //     '\t<div class="col-2 text-left">\n' +
-            //     '\t\t<label id="price_6" style="line-height:38px">' + dbmedicines[j].price + '  元/10g</label>\n' +
-            //     '\t</div>\n' +
-            //     '</div>';
-            var min_weight =  dbmedicines[j].min_weight;
-            var max_weight =  dbmedicines[j].max_weight;
-            var weight = dbmedicines[j].mass;
-            if(dbmedicines[j].weight==undefined&&dbmedicines[j].min_weight==dbmedicines[j].max_weight)
-                weight = dbmedicines[j].max_weight;
-            var price = dbmedicines[j].price;
-            var unit = dbmedicines[j].unit;
-            selectedMedicine_id = dbmedicines[j].id;
-            selectedMedicine_name = dbmedicines[j].name;
-
-            var unitLable = unit==null || unit=="null" ||unit==''||unit==undefined||unit=='公克'?' 元/10g':unit=='两'?' 元/两':('元/'+unit);
-
-            html+="<div class=\"row\">\n" +
-                "   <div class='col-sm-2'></div> <label class=\"col-1 col-form-label text-right\">\n" +
-                selectedMedicine_name +
-                "<input type='hidden' name='medicine_id[]' value='"+selectedMedicine_id+"' /><input type='hidden' name='medicine_name[]' value='"+selectedMedicine_name+"' /></label>\n" +
-                "    <div class=\"col-2\">\n" +
-                "        <input class=\"form-control\" type=\"number\" value=\""+weight+"\" name=\"mass[]\" min=\"0\"  id=\"weight"+selectedMedicine_id+"\" disabled>\n" +
-                "    </div>\n" +
-                "<div class=\"col-4 text-left\">\n" +
-                "    <label id=\"price_"+selectedMedicine_id+"\" style=\"line-height: 38px;\">"+price+" "+unitLable+" (最小："+min_weight+", 最大："+ max_weight+") </label><input type='hidden' name='price[]' value='"+price+"' /> \n" +
-                "<input type='hidden' name='unit[]' value='"+dbmedicines[j].unit+"' />"+
-                "</div>\n"+
-                "<input class=\"form-control\" type=\"hidden\" value=\""+max_weight+"\" name=\"max_weight[]\" id=\"max_weight_"+selectedMedicine_id+"\">\n" +
-                "<input class=\"form-control\" type=\"hidden\" value=\""+min_weight+"\" name=\"min_weight[]\" id=\"min_weight_"+selectedMedicine_id+"\">\n" +
-                "</div>" +
-            "</div>\n"
-            html +='</div>';
-
-        }
-
-        html += '<div id="recipe_medicine_' + recipes[i].receip_id + '">' +
-            "<div class=\"row\">\n" +
-            "   <div class='col-sm-2'></div> <label class=\"col-1 col-form-label text-right\">\n其他症状</label>\n" +
-            "    <div class=\"col-8\">\n" +
-            "        <textarea class=\"form-control\" type=\"text\" disabled>" + othercondition[i] + "</textarea>\n" +
-            "    </div>\n" +
-            "</div>\n" +
-        "</div>\n";
-
-        html += '<div id="recipe_medicine_' + recipes[i].receip_id + '">' +
-            "<div class=\"row\">\n" +
-            "   <div class='col-sm-2'></div> <label class=\"col-1 col-form-label text-right\">\n禁忌</label>\n" +
-            "    <div class=\"col-8\">\n" +
-            "        <textarea class=\"form-control\" type=\"text\" disabled>" + ban[i] + "</textarea>\n" +
-            "    </div>\n" +
-            "</div>\n" +
-            "</div>\n";
-
-        html += '<div id="recipe_medicine_' + recipes[i].receip_id + '">' +
-            "<div class=\"row\">\n" +
-            "   <div class='col-sm-2'></div> <label class=\"col-1 col-form-label text-right\">\n煎服方法</label>\n" +
-            "    <div class=\"col-8\">\n" +
-            "        <textarea class=\"form-control\" type=\"text\" disabled>" + eating_method[i] + "</textarea>\n" +
-            "    </div>\n" +
-            "</div>\n" +
-            "</div>\n";
-
-        html += '<div id="recipe_medicine_' + recipes[i].receip_id + '">' +
-            "<div class=\"row\">\n" +
-            "   <div class='col-sm-2'></div> <div class=\"col-1\">\n</div>\n" +
-            "    <div class=\"col-8\">\n" +
-            "        <div class=\"custom-control custom-checkbox\">" +
-            "           <input type=\"hidden\" class=\"custom-control-input\" name=\"houfang[]\" value=\"0\">" +
-            "           <input type=\"checkbox\" class=\"custom-control-input\" id=\"houfang_" + recipes[i].receip_id + "\" onclick=\"sethoufang(this)\">" +
-            "           <label class=\"custom-control-label\" for=\"houfang_" + recipes[i].receip_id + "\">\n是否合方</label>" +
-            "        </div>\n" +
-            "    </div>\n" +
-            "</div>\n" +
-            "</div>\n";
-
-        html += "<div class='row mt-3 fuPrice fuPrice_" + recipes[i].receip_id + "\'>" +
-            "<div class='col-sm-2'></div>" +
-            "<div class='col-sm-1' style='margin-left: 3.5%'>" +
-            "<input class=\"form-control\" type=\"hidden\" value=\""+recipes[i].total+"\" name=\"totalPrice[]\" id=\"totalPrice_"+recipes[i].receip_id+"\">\n" +
-            "<input class=\"form-control\" type=\"hidden\" value=\""+recipes[i].fu_number+"\" name=\"daiNumber[]\" id=\"daiNumber_"+recipes[i].receip_id+"\">\n" +
-            "<input type='number' id='fuNumber_" + recipes[i].receip_id + "' name='fuNumber[]' min='0' class='text-center form-control' onchange='changeFuNumber(" + recipes[i].receip_id + ", this);' value='1'/></div>" +
-            "<div class='text-left col-form-label'>副</div>" +
-            "<div class='col-sm-2'><input type='number' class='text-center form-control' id='fudaiNumber_" + recipes[i].receip_id + "' name='fudaiNumber[]' value=\"" + recipes[i].fu_number + "\"/></div>" +
-            "<div class='col-form-label'>代</div>" +
-            "<div class='col-sm-2'><input type='number' class='text-center form-control fuPriceVal' id='fuPrice_" + recipes[i].receip_id + "' name='fuPrice[]' value='" + recipes[i].total + "'disabled/></div>" +
-            "<div class='col-sm-1 col-form-label'>元</div>" +
-            "</div>";
-    }
-    $("#medicineSection").html(html);
-    calcPrice();
-
-}
 
 function drawRecipeSectionsOther(selrecipes, medicines, eating_method, ban, othercondition) {
     var temp = medicines;
@@ -782,52 +632,52 @@ $('#question-form').submit(function (e) {
     showOverlay();
     var forms = new FormData($(this)[0]);
 
-    var receips = $("#recipe").select2("data"),
-        medicine_item = [],
-        medicine_details = [],
-        medicine_detail_item = [],
-        medicine_list = [];
-    for (var i = 0; i < receips.length; i ++) {
-        medicine_details = [];
-        $(".recipe_medicine_" + receips[i].id).each(function(index, obj){
-            medicine_detail_item = {
-                id : $(obj).find("input[name='medicine_id[]']").val(),
-                name :  $(obj).find("input[name='medicine_name[]']").val(),
-                mass : $(obj).find("input[name='mass[]']").val(),
-                price : $(obj).find("input[name='price[]']").val(),
-                unit : $(obj).find("input[name='unit[]']").val(),
-                max_weight : $(obj).find("input[name='max_weight[]']").val(),
-                min_weight : $(obj).find("input[name='min_weight[]']").val()
-            }
-            if (typeof medicine_detail_item.mass != "undefined") {
-                medicine_details.push(medicine_detail_item);
-            }
-        })
-        medicine_item = {
-            receip_id : receips[i].id,
-            receip_txt : receips[i].text,
-            medicines: medicine_details,
-            fu_number: $("#fuNumber_" + receips[i].id).val(),
-            fudai_number: $("#fudaiNumber_" + receips[i].id).val(),
-            total: $("#fuPrice_" + receips[i].id).val()
-        }
-        medicine_list.push(medicine_item);
-    }
-    forms.append("recipe_detail", JSON.stringify(medicine_list));
+    // var receips = $("#recipe").select2("data"),
+    //     medicine_item = [],
+    //     medicine_details = [],
+    //     medicine_detail_item = [],
+    //     medicine_list = [];
+    // for (var i = 0; i < receips.length; i ++) {
+    //     medicine_details = [];
+    //     $(".recipe_medicine_" + receips[i].id).each(function(index, obj){
+    //         medicine_detail_item = {
+    //             id : $(obj).find("input[name='medicine_id[]']").val(),
+    //             name :  $(obj).find("input[name='medicine_name[]']").val(),
+    //             mass : $(obj).find("input[name='mass[]']").val(),
+    //             price : $(obj).find("input[name='price[]']").val(),
+    //             unit : $(obj).find("input[name='unit[]']").val(),
+    //             max_weight : $(obj).find("input[name='max_weight[]']").val(),
+    //             min_weight : $(obj).find("input[name='min_weight[]']").val()
+    //         }
+    //         if (typeof medicine_detail_item.mass != "undefined") {
+    //             medicine_details.push(medicine_detail_item);
+    //         }
+    //     })
+    //     medicine_item = {
+    //         receip_id : receips[i].id,
+    //         receip_txt : receips[i].text,
+    //         medicines: medicine_details,
+    //         fu_number: $("#fuNumber_" + receips[i].id).val(),
+    //         fudai_number: $("#fudaiNumber_" + receips[i].id).val(),
+    //         total: $("#fuPrice_" + receips[i].id).val()
+    //     }
+    //     medicine_list.push(medicine_item);
+    // }
+    // forms.append("recipe_detail", JSON.stringify(medicine_list));
 
-    var is_empty_medicine = false;
-    for (var i = 0; i < medicine_list.length; i ++) {
-        if (medicine_list[i].medicines.length == 0)
-            is_empty_medicine = true;
-    }
-    if (is_empty_medicine == true) {
-        Swal.fire({
-            type: 'error',
-            title: '药材不能为空。'
-        });
-        hideOverlay();
-        return ;
-    }
+    // var is_empty_medicine = false;
+    // for (var i = 0; i < medicine_list.length; i ++) {
+    //     if (medicine_list[i].medicines.length == 0)
+    //         is_empty_medicine = true;
+    // }
+    // if (is_empty_medicine == true) {
+    //     Swal.fire({
+    //         type: 'error',
+    //         title: '药材不能为空。'
+    //     });
+    //     hideOverlay();
+    //     return ;
+    // }
 
     var sel_houfang_length = 0;
     $("input[name='houfang[]']").each(function(index, obj){
@@ -888,134 +738,7 @@ $('#question-form').submit(function (e) {
     });
 });
 
-function addMedicineInModal() {
-    selectedMedicine_id = $("#medicine").val();
-    selectedMedicine_name = $("#medicine option:selected").text();
-    if(selectedMedicine_id<1) return;
-    var min_weight =  $("#medicine option:selected").data("min");
-    var max_weight =  $("#medicine option:selected").data("max");
-    var price = $("#medicine option:selected").data("price");
 
-    var html="<div id='recipe_medicine_" + selectedRecipeId + "' class='recipe_medicine_" + selectedRecipeId + "'><div class=\"row\">\n" +
-        "  <div class='col-sm-2'></div>  <label class=\"col-1 col-form-label text-right\">\n" +
-        "        <button type=\"button\" class=\"btn btn-default\" data-toggle=\"tooltip\" title=\"删除\" data-index=\""+selectedMedicine_id+"\" onclick=\"removeMedicineInq(" + selectedRecipeId + ", this);\"><i class=\"fas fa-times\"></i> </button> &nbsp;"+selectedMedicine_name+
-        "<input type='hidden' name='medicine_id[]' value='"+selectedMedicine_id+"' /><input type='hidden' name='medicine_name[]' value='"+selectedMedicine_name+"' /></label>\n" +
-        "    <div class=\"col-2\">\n";
-
-    var data = $("#question_title").val();
-    if (data == "") {
-        html+="        <input class=\"form-control\" type=\"number\" value=\"0\" onchange='calcPriceOther(" + selectedRecipeId + ")' name=\"mass[]\" id=\"weight"+selectedMedicine_id+"\">\n";
-    } else {
-        html+="        <input class=\"form-control\" type=\"number\" value=\"0\" onchange='calcPrice()' name=\"mass[]\" id=\"weight_"+selectedMedicine_id+"\">\n";
-    }
-
-    html+="    </div>\n" +
-        "<div class=\"col-4 text-left\">\n" +
-        "    <label id=\"price_"+selectedMedicine_id+"\" style=\"line-height: 38px;\">"+price+" 元/10g (最小："+min_weight+", 最大："+ max_weight+")</label><input type='hidden' name='price[]' value='"+price+"' /> \n" +
-        "</div>\n"+
-        "<input class=\"form-control\" type=\"hidden\" value=\""+max_weight+"\" name=\"max_weight[]\" id=\"max_weight_"+selectedMedicine_id+"\">\n" +
-        "<input class=\"form-control\" type=\"hidden\" value=\""+min_weight+"\" name=\"min_weight[]\" id=\"min_weight_"+selectedMedicine_id+"\">\n" +
-        "</div>\n" +
-        "</div>";
-
-    if ($(".recipe_medicine_" + selectedRecipeId).length > 1)
-        $("#recipe_medicine_"+selectedRecipeId).after(html);
-    else
-        $("#recipe_medicine_"+selectedRecipeId).before(html);
-    // $("#medicine option:selected").attr("disabled","disabled");
-    // $("#medicine").prop("selectedIndex",-1);
-    changeMaxMinValue();
-    getContraryIds(selectedMedicine_id,function(contraryIds){
-        for(var i=0; i < contraryIds.length; i++){
-            $("#medicine option[value='"+contraryIds[i]+"']").attr("disabled","disabled");
-        }
-    });
-}
-
-function setRecipeId(id){
-    selectedRecipeId = id;
-    $("#myModal").modal('show');
-
-    var sel_medicineIds = [];
-    $(".recipe_medicine_" + id).each(function(index, obj){
-        sel_medicineIds.push($(obj).find("input[name='medicine_id[]']").val());
-    });
-    for (var i = 0; i < sel_medicineIds.length; i ++) {
-        $("#medicine option[value='"+sel_medicineIds[i]+"']").attr("disabled","disabled");
-    }
-
-}
-
-function calcPrice(){
-
-    var fuPrice_obj = "";
-    var totalPrice = 0;
-
-    $(".fuPrice").each(function(index, obj){
-        fuPrice_obj = $(obj).find("input[name='fuPrice[]']");
-        totalPrice += parseInt($(fuPrice_obj).val());
-    });
-
-    $("#total_price").val(totalPrice);
-    $("#total_price_span").html(totalPrice);
-    console.log(totalPrice);
-}
-
-function calcPriceOther(recipe_id){
-
-    var fuPrice_obj = "";
-    var totalPrice = 0;
-
-    var totalPrice = 0,
-        amount = 0,
-        price_per_unit = 0,
-        amount_per_unit = 0,
-        unit = "",
-        mass_obj = "",
-        price_obj = "",
-        unit_obj = "";
-    $(".recipe_medicine_" + recipe_id).each(function(index, obj){
-        mass_obj = $(obj).find("input[name='mass[]']");
-        price_obj = $(obj).find("input[name='price[]']");
-        unit_obj = $(obj).find("input[name='unit[]']");
-        amount = parseInt($(mass_obj).val());
-        price_per_unit = parseInt($(price_obj).val());
-        unit = $(unit_obj).val();
-        amount_per_unit = unit=="null"||unit==null||unit==''||unit==undefined||unit=='公克' ? 10 : 1;
-        totalPrice += amount * (price_per_unit / amount_per_unit);
-    });
-
-    var fuNumber = $("#fuNumber_" + recipe_id).val();
-    $("#totalPrice_" + recipe_id).val(totalPrice);
-    $("#fuPrice_" + recipe_id).val(totalPrice * fuNumber);
-
-    totalPrice = 0;
-    $(".fuPrice").each(function(index, obj){
-        fuPrice_obj = $(obj).find("input[name='fuPrice[]']");
-        totalPrice += parseInt($(fuPrice_obj).val());
-    });
-
-    $("#total_price").val(totalPrice);
-    $("#total_price_span").html(totalPrice);
-    console.log(totalPrice);
-}
-
-function changeFuNumber(receip_id, obj) {
-    var fuNumber = $(obj).val();
-    var daiNumber = $("#daiNumber_" + receip_id).val();
-    var fuPrice = fuNumber * $("#totalPrice_" + receip_id).val();
-    var fudaiNumber = fuNumber * daiNumber;
-    $("#fuPrice_" + receip_id).val(fuPrice);
-    var data = $("#question_title").val();
-    if (data == "") {
-        calcPriceOther(receip_id);
-    } else {
-        calcPrice();
-
-        $("#fudaiNumber_" + receip_id).val(fudaiNumber);
-
-    }
-}
 
 function init_recipeSection() {
     drawSlide([]);
@@ -1025,8 +748,18 @@ function init_recipeSection() {
 }
 
 function sethoufang(obj) {
-    var houfang = $(obj).prev().val();
-    $(obj).prev().val(1 - houfang);
+    var houfang = $(obj).prop('checked');
+    // $(obj).prev().val(1 - houfang);
+    var recipeId = $(obj)[0].id.replace('houfang_','');
+    var strMedicins = $("#medicines").val();
+    var recipeDatas = JSON.parse(strMedicins);
+    for(var i = 0 ; i < recipeDatas.length; i++){
+         if(recipeDatas[i].id==recipeId){
+             recipeDatas[i].shifouhefang = houfang;
+             break;
+         }
+    }
+    $("#medicines").val(JSON.stringify(recipeDatas));
 }
 
 function removeMedicineInq(recipeId, obj) {
@@ -1036,4 +769,35 @@ function removeMedicineInq(recipeId, obj) {
     row.remove();
 
     calcPriceOther(recipeId);
+}
+function changeFuNumber(obj) {
+    var id = obj.id.replace('fuNumber_','');
+    var fuNumber = $(obj).val();
+    var strMedicines = $("#medicines").val();
+    recipeDatas = JSON.parse(strMedicines);
+
+    for(var i = 0 ; i < recipeDatas.length; i++){
+        if(recipeDatas[i].id==id){
+            recipeDatas[i].fuNumber = fuNumber;
+            recipeDatas[i].price = calcPrice(recipeDatas[i].medicine)*fuNumber;
+            break;
+        }
+    }
+    $("#medicines").val(JSON.stringify(recipeDatas));
+    if($("#question_title").val()==''||$("#question_title").val()==undefined||$("#question_title").val()==null)
+        drawMedicine(recipeDatas,true,true);
+    else
+        drawMedicine(recipeDatas,true,false);
+    calcPriceTotal();
+}
+
+function calcPriceTotal(){
+    var totalPrice = 0;
+    var recipeDatas = JSON.parse($("#medicines").val());
+    for(var i=0; i < recipeDatas.length; i++){
+        var fuNumber = recipeDatas[i].fuNumber!=undefined&&recipeDatas[i].fuNumber!=null&&recipeDatas[i].fuNumber!=''?recipeDatas[i].fuNumber:1;
+        totalPrice += calcPrice(recipeDatas[i].medicine)*fuNumber;
+    }
+    $("#total_price").val(totalPrice);
+    $("#total_price_span").html(totalPrice);
 }

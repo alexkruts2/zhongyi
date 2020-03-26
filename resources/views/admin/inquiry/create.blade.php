@@ -27,6 +27,7 @@
                     <form id="question-form" method="post" data-parsley-validate="">
                         <input type="hidden" id="video_url" name="video_url"/>
                         <input type="hidden" id="question_string" name="question_string"/>
+                        <input type="hidden" id="medicines" name="medicines"/>
                         <div class="mt-3 row">
                             <div class="col-md-4 form-inline">
                                 <label for="guahao" >病历号&nbsp;&nbsp; </label>
@@ -101,25 +102,25 @@
                             <label for="example-text-input" style="font-size: 27px;" class="col-2 col-form-label text-left">表症
                             </label>
                         </div>
-                        <div class="mt-3" id="biaozhengSection">
+                        <div class="mt-3" id="biaozhengSection" style="max-height: 300px; overflow-y: auto">
                         </div>
                         <div class="row bg-gray">
                             <label for="example-text-input" style="font-size: 27px;" class="col-2 col-form-label text-left">里症
                             </label>
                         </div>
-                        <div class="mt-3" id="lizhengSection">
+                        <div class="mt-3" id="lizhengSection" style="max-height: 300px; overflow-y: auto">
                         </div>
                         <div class="row bg-gray">
                             <label for="example-text-input" style="font-size: 27px;" class="col-2 col-form-label text-left">半表半里
                             </label>
                         </div>
-                        <div class="mt-3" id="biaoliSection">
+                        <div class="mt-3" id="biaoliSection" style="max-height: 300px; overflow-y: auto">
                         </div>
                         <div class="row bg-gray">
                             <label for="example-text-input" style="font-size: 27px;" class="col-2 col-form-label text-left">脉症
                             </label>
                         </div>
-                        <div class="mt-3" id="maizhengSection">
+                        <div class="mt-3" id="maizhengSection" style="max-height: 330px; overflow-y: auto">
                         </div>
 
                         <div class="row bg-gray">
@@ -206,7 +207,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success" onclick="addMedicineInModal()"><i class=" ti-plus"></i> 确认</button>
+                    <button type="button" class="btn btn-success" onclick="addMedicineInModal(true)"><i class=" ti-plus"></i> 确认</button>
                 </div>
             </div>
         </div>

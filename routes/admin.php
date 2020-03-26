@@ -106,7 +106,6 @@ Route::group(['prefix' => 'doctor'], function () {
             Route::get('/edit/{id}','Admin\HomeController@editQAView')->name('doctor.qa.edit');
             Route::post('/editQA','Admin\HomeController@editQAData')->name('doctor.qa.edit');
             Route::get('/delete','Admin\HomeController@deleteQA')->name('doctor.qa.delete');
-            Route::post('/getRecipes','Admin\HomeController@getRecipes')->name('doctor.qa.getRecipes');
         });
 
         Route::group(['prefix' => 'medicine'], function () {
@@ -154,6 +153,9 @@ Route::group(['prefix' => 'doctor'], function () {
             Route::get('/detail/{treat_id}', 'Admin\DoctorController@detailTreatment')->name('doctor.inquiry.detailTreatment');
             Route::get('/getContraryIds', 'Admin\DoctorController@getContraryIds')->name('doctor.medicine.getContraryIds');
         });
+
+        Route::post('/history/getRecipes','Admin\HomeController@getRecipes')->name('doctor.qa.getRecipes');
+
         Route::group(['prefix' => 'setting'], function () {
             Route::get('/change_password', 'Admin\DoctorController@change_password')->name('doctor.setting.change_password');
             Route::post('/change_password', 'Admin\DoctorController@change_password_data')->name('doctor.setting.change_password.data');

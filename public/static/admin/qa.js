@@ -238,13 +238,11 @@ $(function(){
     $("#recipes").on("change",function(e){
 
         var recipes = $(this).val();
-        drawRecipeSections(recipes);
+        drawRecipeSections(recipes,false);
     });
-    if(medicines.length){
-        var recipes = $("#recipes").val();
-
-        drawRecipeSections(recipes);
-
+    if (typeof recipes !== 'undefined') {
+        $("#medicines").val(recipes);
+        $("#recipes").trigger('change');
     }
 
 });
@@ -279,53 +277,53 @@ $('#question-form').submit(function (e) {
         url = '/doctor/qa/editQA'
     }
 
-    var receips = $("#recipes").select2("data");
-    //     receips_txt = $("#recipes").text(),
-    //     medicine_item = [],
-    //     medicine_details = [],
-    //     medicine_detail_item = [],
-    //     medicine_list = [];
-    // for (var i = 0; i < receips.length; i ++) {
-    //     medicine_details = [];
-    //     $(".recipe_medicine_" + receips[i].id).each(function(index, obj){
-    //         medicine_detail_item = {
-    //             id : $(obj).find("input[name='medicine_id[]']").val(),
-    //             name :  $(obj).find("input[name='medicine_name[]']").val(),
-    //             mass : $(obj).find("input[name='mass[]']").val(),
-    //             price : $(obj).find("input[name='price[]']").val(),
-    //             unit : $(obj).find("input[name='unit[]']").val(),
-    //             max_weight : $(obj).find("input[name='max_weight[]']").val(),
-    //             min_weight : $(obj).find("input[name='min_weight[]']").val()
-    //         }
-    //         if (typeof medicine_detail_item.mass != "undefined") {
-    //             medicine_details.push(medicine_detail_item);
-    //         }
-    //     })
-    //     medicine_item = {
-    //         receip_id : receips[i].id,
-    //         receip_txt : receips[i].text,
-    //         medicines: medicine_details,
-    //         fu_number: $("input[name='fuNumber_" + receips[i].id + "']").val(),
-    //         total: $("input[name='totalPrice_" + receips[i].id + "']").val()
-    //     }
-    //     medicine_list.push(medicine_item);
+    // var receips = $("#recipes").select2("data");
+    // //     receips_txt = $("#recipes").text(),
+    // //     medicine_item = [],
+    // //     medicine_details = [],
+    // //     medicine_detail_item = [],
+    // //     medicine_list = [];
+    // // for (var i = 0; i < receips.length; i ++) {
+    // //     medicine_details = [];
+    // //     $(".recipe_medicine_" + receips[i].id).each(function(index, obj){
+    // //         medicine_detail_item = {
+    // //             id : $(obj).find("input[name='medicine_id[]']").val(),
+    // //             name :  $(obj).find("input[name='medicine_name[]']").val(),
+    // //             mass : $(obj).find("input[name='mass[]']").val(),
+    // //             price : $(obj).find("input[name='price[]']").val(),
+    // //             unit : $(obj).find("input[name='unit[]']").val(),
+    // //             max_weight : $(obj).find("input[name='max_weight[]']").val(),
+    // //             min_weight : $(obj).find("input[name='min_weight[]']").val()
+    // //         }
+    // //         if (typeof medicine_detail_item.mass != "undefined") {
+    // //             medicine_details.push(medicine_detail_item);
+    // //         }
+    // //     })
+    // //     medicine_item = {
+    // //         receip_id : receips[i].id,
+    // //         receip_txt : receips[i].text,
+    // //         medicines: medicine_details,
+    // //         fu_number: $("input[name='fuNumber_" + receips[i].id + "']").val(),
+    // //         total: $("input[name='totalPrice_" + receips[i].id + "']").val()
+    // //     }
+    // //     medicine_list.push(medicine_item);
+    // // }
+    // var medicine_list = getMedicineList();
+    // // forms.append("medicines", JSON.stringify(medicine_list));
+    //
+    // var is_empty_medicine = false;
+    // for (var i = 0; i < medicine_list.length; i ++) {
+    //     if (medicine_list[i].medicines.length == 0)
+    //         is_empty_medicine = true;
     // }
-    var medicine_list = getMedicineList();
-    // forms.append("medicines", JSON.stringify(medicine_list));
-
-    var is_empty_medicine = false;
-    for (var i = 0; i < medicine_list.length; i ++) {
-        if (medicine_list[i].medicines.length == 0)
-            is_empty_medicine = true;
-    }
-    if (is_empty_medicine == true) {
-        Swal.fire({
-            type: 'error',
-            title: '药材不能为空。'
-        });
-        hideOverlay();
-        return ;
-    }
+    // if (is_empty_medicine == true) {
+    //     Swal.fire({
+    //         type: 'error',
+    //         title: '药材不能为空。'
+    //     });
+    //     hideOverlay();
+    //     return ;
+    // }
 
     $.ajax({
         url: url,
@@ -551,71 +549,7 @@ function removeItem(type) {
     drawItems(type,itemList,selectedList);
 }
 
-function drawRecipeSections(recipes) {
-    var temp = medicines;
-    if(recipes==''||recipes==null||recipes==undefined){
-        temp = medicines= [];
-        $("#medicineSection").html("");
-        $("#medicines").val('');
-        return;
-    }
 
-    medicines = [];
-    for(var i=0; i < recipes.length ; i++){
-        if(temp[recipes[i]]==undefined){
-            medicines[recipes[i]] = 0;
-            temp[recipes[i]] = 0;
-        }
-        else
-            medicines[recipes[i]] = temp[recipes[i]];
-    }
-    showOverlay();
-    $.ajax({
-        url: '/doctor/qa/getRecipes',
-        data: "recipes=" + recipes,
-        type: 'POST',
-        success: function (resp) {
-            hideOverlay();
-            if (resp.code == '0') {
-                var strMedicines = $("#medicines").val();
-                if(strMedicines=='')
-                    originalMedicines = [];
-                else
-                    originalMedicines = JSON.parse(strMedicines);
-
-                var drawRecipes = getDrawData(originalMedicines,resp.data);
-                var html=drawMedicine(drawRecipes);
-                $("#medicineSection").html(html);
-                nowRecipes = getMedicineList();
-                $("#medicines").val(JSON.stringify(nowRecipes));
-            } else {
-                Swal.fire({
-                    type: 'error',
-                    text: resp.message,
-                    title: '错误',
-                    showConfirmButton: false,
-                    timer: 3000
-                });
-            }
-        },
-        error: function (e) {
-            hideOverlay();
-            Swal.fire({
-                type: 'error',
-                text: 'Internal Error ' + e.status + ' - ' + e.responseJSON.message,
-                title: '错误',
-                showConfirmButton: false,
-                timer: 3000
-            });
-        }
-    });
-}
-
-function changeFuNumber(obj) {
-    var id = obj.id.replace('fuNumber_','');
-    medicines[id] = obj.value;
-    $("#fuDaiNumber").val(JSON.stringify(medicines));
-}
 function addMedicineInModal() {
     selectedMedicine_id = $("#medicine").val();
     selectedMedicine_name = $("#medicine option:selected").text();
@@ -624,29 +558,53 @@ function addMedicineInModal() {
     var max_weight =  $("#medicine option:selected").data("max");
     var price = $("#medicine option:selected").data("price");
     var unit = $("#medicine option:selected").data("unit");
+    var weight = max_weight==min_weight?max_weight:0;
 
-    var html="<div id='recipe_medicine_" + selectedRecipeId + "' class='recipe_medicine_" + selectedRecipeId + "'><div class=\"row\">\n" +
-        "  <div class='col-sm-2'></div>  <label class=\"col-1 col-form-label text-right\">\n" +
-        "        <button type=\"button\" class=\"btn btn-default\" data-toggle=\"tooltip\" title=\"删除\" data-index=\""+selectedMedicine_id+"\" onclick=\"removeMedicineQA(" + selectedRecipeId + ", this);\"><i class=\"fas fa-times\"></i> </button> &nbsp;"+selectedMedicine_name+
-        "<input type='hidden' name='medicine_id[]' value='"+selectedMedicine_id+"' /><input type='hidden' name='medicine_name[]' value='"+selectedMedicine_name+"' /></label>\n" +
-        "    <div class=\"col-2\">\n" +
-        "        <input class=\"form-control\" type=\"number\" value=\"0\" onchange='calcPrice(" + selectedRecipeId + ")' name=\"mass[]\" id=\"weight_"+selectedMedicine_id+"\">\n" +
-        "    </div>\n" +
-        "<div class=\"col-4 text-left\">\n" +
-        "    <label id=\"price_"+selectedMedicine_id+"\" style=\"line-height: 38px;\">"+price+" 元/10g (最小："+min_weight+", 最大："+ max_weight+")</label><input type='hidden' name='price[]' value='"+price+"' /> \n" +
-        "<input type='hidden' name='unit[]' value='"+unit+"' />"+
-        "</div>\n"+
-        "<input class=\"form-control\" type=\"hidden\" value=\""+max_weight+"\" name=\"max_weight[]\" id=\"max_weight_"+selectedMedicine_id+"\">\n" +
-        "<input class=\"form-control\" type=\"hidden\" value=\""+min_weight+"\" name=\"min_weight[]\" id=\"min_weight_"+selectedMedicine_id+"\">\n" +
-        "</div>\n" +
-        "</div>";
-    if ($("#recipe_medicine_"+selectedRecipeId).length > 0)
-        $("#recipe_medicine_"+selectedRecipeId).after(html);
-    else
-        $("#medicineSection hr").after(html);
-    // $("#medicine option:selected").attr("disabled","disabled");
-    // $("#medicine").prop("selectedIndex",-1);
-    changeMaxMinValue();
+    medicine_detail_item = {
+        medicine_id : selectedMedicine_id,
+        medicine :  selectedMedicine_name,
+        weight : weight,
+        price : price,
+        unit : unit,
+        max_weight : max_weight,
+        min_weight : min_weight
+    };
+    var strMedicines = $("#medicines").val();
+    recipeDatas = JSON.parse(strMedicines);
+    for(var i = 0 ; i < recipeDatas.length;i++){
+        if(recipeDatas[i].id==selectedRecipeId){
+            medicine_temp = JSON.parse(recipeDatas[i].medicine);
+            medicine_temp.push(medicine_detail_item);
+            recipeDatas[i].medicine = JSON.stringify(medicine_temp);
+            break;
+        }
+    }
+    drawMedicine(recipeDatas,false,true);
+    $("#medicines").val(JSON.stringify(recipeDatas));
+
+    // var html="<div id='recipe_medicine_" + selectedRecipeId + "_"+selectedMedicine_id+"' class='recipe_medicine_" + selectedRecipeId + "'><div class=\"row\">\n" +
+    //     "  <div class='col-sm-2'></div>  <label class=\"col-1 col-form-label text-right\">\n" +
+    //     "        <button type=\"button\" class=\"btn btn-default\" data-toggle=\"tooltip\" title=\"删除\" data-index=\""+selectedMedicine_id+"\" onclick=\"removeMedicineQA(" + selectedRecipeId + ", this);\"><i class=\"fas fa-times\"></i> </button> &nbsp;"+selectedMedicine_name+
+    //     "<input type='hidden' name='medicine_id[]' value='"+selectedMedicine_id+"' /><input type='hidden' name='medicine_name[]' value='"+selectedMedicine_name+"' /></label>\n" +
+    //     "    <div class=\"col-2\">\n" +
+    //     "        <input class=\"form-control\" type=\"number\" value=\"0\" onchange='calcPrice(" + selectedRecipeId + ")' name=\"mass[]\" id=\"weight_"+selectedMedicine_id+"\">\n" +
+    //     "    </div>\n" +
+    //     "<div class=\"col-4 text-left\">\n" +
+    //     "    <label id=\"price_"+selectedMedicine_id+"\" style=\"line-height: 38px;\">"+price+" 元/10g (最小："+min_weight+", 最大："+ max_weight+")</label><input type='hidden' name='price[]' value='"+price+"' /> \n" +
+    //     "<input type='hidden' name='unit[]' value='"+unit+"' />"+
+    //     "</div>\n"+
+    //     "<input class=\"form-control\" type=\"hidden\" value=\""+max_weight+"\" name=\"max_weight[]\" id=\"max_weight_"+selectedMedicine_id+"\">\n" +
+    //     "<input class=\"form-control\" type=\"hidden\" value=\""+min_weight+"\" name=\"min_weight[]\" id=\"min_weight_"+selectedMedicine_id+"\">\n" +
+    //     "</div>\n" +
+    //     "</div>";
+    // if ($("#recipe_medicine_"+selectedRecipeId).length > 0)
+    //     $("#recipe_medicine_"+selectedRecipeId).after(html);
+    // else
+    //     $("#medicineSection hr").after(html);
+
+    $("#medicine option:selected").attr("disabled","disabled");
+    $("#medicine").prop("selectedIndex",-1);
+    // changeMaxMinValue();
     getContraryIds(selectedMedicine_id,function(contraryIds){
         for(var i=0; i < contraryIds.length; i++){
             $("#medicine option[value='"+contraryIds[i]+"']").attr("disabled","disabled");
@@ -654,49 +612,29 @@ function addMedicineInModal() {
     });
 
 }
-function setRecipeId(id){
-    selectedRecipeId = id;
-    $("#myModal").modal('show');
 
-    var sel_medicineIds = [];
-    $(".recipe_medicine_" + id).each(function(index, obj){
-        sel_medicineIds.push($(obj).find("input[name='medicine_id[]']").val());
-    });
-    for (var i = 0; i < sel_medicineIds.length; i ++) {
-        $("#medicine option[value='"+sel_medicineIds[i]+"']").attr("disabled","disabled");
-    }
-
-}
-
-function calcPrice(recipe_id) {
-    var totalPrice = 0,
-        amount = 0,
-        price_per_unit = 0,
-        amount_per_unit = 0,
-        unit = "",
-        mass_obj = "",
-        price_obj = "",
-        unit_obj = "";
-    $(".recipe_medicine_" + recipe_id).each(function(index, obj){
-        mass_obj = $(obj).find("input[name='weight[]']");
-        price_obj = $(obj).find("input[name='price[]']");
-        unit_obj = $(obj).find("input[name='unit[]']");
-        amount = parseInt($(mass_obj).val());
-        price_per_unit = parseInt($(price_obj).val());
-        unit = $(unit_obj).val();
-        amount_per_unit = unit=="null"||unit==null||unit==''||unit==undefined||unit=='公克' ? 10 : 1;
-        totalPrice += amount * (price_per_unit / amount_per_unit);
-    });
-
-    $("#totalPrice_" + recipe_id).val(totalPrice);
-
-}
 
 function removeMedicineQA(recipeId, obj) {
     var id = $(obj).data("index");
-    $("#medicine option[value='" + id + "']").attr("disabled",false);
-    var row = $(obj).parent().parent().parent();
-    row.remove();
+
+    var strMedicines = $("#medicines").val();
+    recipeDatas = JSON.parse(strMedicines);
+    for(var i = 0 ; i < recipeDatas.length;i++){
+        if(recipeDatas[i].id==recipeId){
+            medicine_temp = JSON.parse(recipeDatas[i].medicine);
+            for(var j=0; j<medicine_temp.length;j++){
+                if(medicine_temp[j].medicine_id==id){
+                    medicine_temp.splice(j,1);
+                    break;
+                }
+            }
+            recipeDatas[i].medicine = JSON.stringify(medicine_temp);
+            break;
+        }
+    }
+    drawMedicine(recipeDatas,false,true);
+    $("#medicines").val(JSON.stringify(recipeDatas));
+
 
     calcPrice(recipeId);
 }
@@ -736,75 +674,5 @@ function getMedicineList(){
     return medicine_list;
 }
 
-function drawMedicine(data) {
-    var html = '';
-    for(var i=0; i < data.length; i++){
-        html += ' <h4 class="text-bold">'+data[i].prescription_name+' <button type="button" class="btn btn-circle btn-warning p-0-0"  title="添加药材" onclick="setRecipeId('+ data[i].receip_id + ');"><i class="fas fa-plus"></i></button></h4><hr>'
-        var dbmedicines = JSON.parse(data[i].medicine);
-        for(var j=0; j<dbmedicines.length; j++){
-            html+='<div id="recipe_medicine_' + dbmedicines[j].medicine_id + '_'+data[i].id+'" class="recipe_medicine_' + data[i].id + '">';
-            var min_weight =  dbmedicines[j].min_weight;
-            var max_weight =  dbmedicines[j].max_weight;
-            var weight = dbmedicines[j].weight==undefined?0:dbmedicines[j].weight;
-            if(dbmedicines[j].weight==undefined&&dbmedicines[j].min_weight==dbmedicines[j].max_weight)
-                weight = dbmedicines[j].max_weight;
-            var price = dbmedicines[j].price;
-            var unit = dbmedicines[j].unit;
-            selectedMedicine_id = dbmedicines[j].medicine_id;
-            selectedMedicine_name = dbmedicines[j].medicine;
 
-            var unitLable = unit==null||unit==''||unit==undefined||unit=='公克'?' 元/10g':unit=='两'?' 元/两':('元/'+unit);
 
-            html+="<div class=\"row\">\n" +
-                "   <div class='col-sm-2'></div> <label class=\"col-1 col-form-label text-right\">\n" +
-                "        <button type=\"button\" class=\"btn btn-default\" data-toggle=\"tooltip\" title=\"删除\" data-index=\""+selectedMedicine_id+"\" onclick=\"removeMedicineQA(" + data[i].id + ", this);\"><i class=\"fas fa-times\"></i> </button> &nbsp;"+selectedMedicine_name+
-                "<input type='hidden' name='medicine_id[]' value='"+selectedMedicine_id+"' /><input type='hidden' name='medicine_name[]' value='"+selectedMedicine_name+"' /></label>\n" +
-                "    <div class=\"col-2\">\n" +
-                "        <input class=\"form-control\" type=\"number\" value=\""+weight+"\" name=\"weight[]\" min=\"0\" onchange='calcPrice(" + data[i].id + ")'  id=\"weight"+selectedMedicine_id+"\">\n" +
-                "    </div>\n" +
-                "<div class=\"col-4 text-left\">\n" +
-                "    <label id=\"price_"+selectedMedicine_id+"\" style=\"line-height: 38px;\">"+price+" "+unitLable+" (最小："+min_weight+", 最大："+ max_weight+") </label><input type='hidden' name='price[]' value='"+price+"' /> \n" +
-                "<input type='hidden' name='unit[]' value='"+dbmedicines[j].unit+"' />"+
-                "</div>\n"+
-                "<input class=\"form-control\" type=\"hidden\" value=\""+max_weight+"\" name=\"max_weight[]\" id=\"max_weight_"+selectedMedicine_id+"\">\n" +
-                "<input class=\"form-control\" type=\"hidden\" value=\""+min_weight+"\" name=\"min_weight[]\" id=\"min_weight_"+selectedMedicine_id+"\">\n" +
-                "</div></div>\n"
-            html +='</div>';
-
-        }
-        html+='<div class="row"> <div class="col-sm-3 p-r-0 text-right col-form-label">1副</div> ' +
-            '<div class="col-sm-2"><input type="number" onchange="changeFuNumber(this)" name="fuNumber_'+data[i].id+'" id="fuNumber_'+data[i].id+'" class="form-control" value="' + medicines[data[i].id] + '" /></div>' +
-            '<div class="col-sm-2 col-form-label p-l-0"><label style="line-height: 25px;">代</label></div></div>';
-        html += '<div class="row"><div class="col-sm-3 p-r-0 text-right col-form-label">总价</div> ' +
-            '<div class="col-sm-2"><input type="number" disabled name="totalPrice_'+data[i].id+'" id="totalPrice_'+data[i].id+'" class="form-control" value="' + medicines[data[i].id] + '" /><label></label></div>' +
-            '</div>';
-    }
-    return html;
-}
-
-function getDrawData(orginalRecipes,newRecipes){
-    if(newRecipes.length>orginalRecipes.length){
-        for(var i=0; i < orginalRecipes.length; i++){
-            if(checkMedicineContain(orginalRecipes[i].id,newRecipes)){
-                newRecipes.splice(i,1);
-            }
-        }
-        var result = orginalRecipes.concat(newRecipes);
-    }else{
-        var result = [];
-        for(var i=0; i<orginalRecipes.length; i++){
-            if(checkMedicineContain(orginalRecipes[i].id,newRecipes)){
-                result.push(orginalRecipes[i]);
-            }
-        }
-    }
-    return result;
-
-}
-function checkMedicineContain(id,Recipes){
-    for(var i=0; i < Recipes.length; i++){
-        if(id==Recipes[i].id)
-            return true;
-    }
-    return false;
-}

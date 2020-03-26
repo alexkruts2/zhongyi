@@ -72,68 +72,8 @@
                             </div>
                         </div>
                         <div id="medicineSection">
-                            @foreach(json_decode($question->medicines) as $medicine)
-                                <h4 class="text-bold">
-                                    {{$medicine->receip_txt}}
-                                    <button type="button" class="btn btn-circle btn-warning p-0-0"  title="添加药材" onclick="setRecipeId({{$medicine->receip_id}})">
-                                        <i class="fas fa-plus"></i>
-                                    </button>
-                                </h4><hr>
-                                @foreach($medicine->medicines as $medicine_det)
-                                    <div id="recipe_medicine_{{$medicine->receip_id}}" class="recipe_medicine_{{$medicine->receip_id}}">
-                                        <div class="row">
-                                            <div class='col-sm-2'></div>
-                                            <label class="col-1 col-form-label text-right">
-                                                <button type="button" class="btn btn-default" data-toggle="tooltip" title="删除" data-index="{{$medicine_det->id}}" onclick="removeMedicine(this);"><i class="fas fa-times"></i> </button> &nbsp;
-                                                {{$medicine_det->name}}
-                                                <input type='hidden' name='medicine_id[]' value='{{$medicine_det->id}}' /><input type='hidden' name='medicine_name[]' value='{{$medicine_det->name}}' />
-                                            </label>
-                                            <div class="col-2">
-                                                <input class="form-control" type="number" value="{{$medicine_det->mass}}" name="mass[]" min="0" onchange='calcPrice({{$medicine->receip_id}})'  id="weight{{$medicine_det->id}}">
-                                            </div>
-                                            <div class="col-4 text-left">
-                                                <label id="price_{{$medicine_det->id}}" style="line-height: 38px;">{{$medicine_det->price}}
-                                                    @if (is_null($medicine_det->unit) || $medicine_det->unit == "null" || $medicine_det->unit == "" || $medicine_det->unit == "公克")
-                                                        元/10g
-                                                    @elseif ($medicine_det->unit == "两")
-                                                        元/两
-                                                    @else
-                                                        元/{{$medicine_det->unit}}
-                                                    @endif
-                                                    (最小：{{$medicine_det->min_weight}}, 最大：{{$medicine_det->max_weight}})
-                                                </label>
-                                                <input type='hidden' name='price[]' value='{{$medicine_det->price}}' />
-                                                <input type='hidden' name='unit[]' value='{{$medicine_det->unit}}' />
-                                            </div>
-                                            <input class="form-control" type="hidden" value="{{$medicine_det->max_weight}}" name="max_weight[]" id="max_weight_{{$medicine_det->id}}">
-                                            <input class="form-control" type="hidden" value="{{$medicine_det->min_weight}}" name="min_weight[]" id="min_weight_{{$medicine_det->id}}">
-                                        </div>
-                                    </div>
-                                @endforeach
-                                <div class="row">
-                                    <div class="col-sm-3 p-r-0 text-right col-form-label">1副</div>
-                                    <div class="col-sm-2">
-                                        <input type="number" onchange="changeFuNumber(this)" name="fuNumber_{{$medicine->receip_id}}" id="fuNumber_{{$medicine->receip_id}}" class="form-control" value="{{$medicine->fu_number}}" />
-                                    </div>
-                                    <div class="col-sm-2 col-form-label p-l-0"><label style="line-height: 25px;">代</label></div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-3 p-r-0 text-right col-form-label">总价</div>
-                                    <div class="col-sm-2">
-                                        <input type="number" disabled name="totalPrice_{{$medicine->receip_id}}" id="totalPrice_{{$medicine->receip_id}}" class="form-control" value="{{$medicine->total}}" />
-                                        <label></label>
-                                    </div>
-                                </div>
-                            @endforeach
-
-                        <input type="hidden" id="fuDaiNumber" name="fuDaiNumber"/>
-
-                        <div class="form-group mt-3 row">
-                            <label for="example-text-input" class="col-2 col-form-label text-right">病名</label>
-                            <div class="col-10">
-                                <input class="form-control" type="text" value="{{$question->disease_name}}" data-role="tagsinput" name='disease_name' id="disease_name" placeholder="请输入病名" data-parsley-required>
-                            </div>
                         </div>
+
                         <div class="row bg-gray mt-3">
                             <div style="font-size: 25px;" class="col-md-2 col-form-label text-left">
                                 表症
@@ -214,6 +154,7 @@
                         <input type="hidden" name="lizheng" id="lizheng"/>
                         <input type="hidden" name="biaoli" id="biaoli"/>
                         <input type="hidden" name="maizheng" id="maizheng"/>
+                        <input type="hidden" name="medicines" id="medicines" />
 
                         <div class="row">
                             <div class="col-md-12 text-right">
@@ -256,6 +197,34 @@
             </div>
         </div>
     </div>
+
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-2 text-right" style="line-height: 38px;">药材名称</div>
+                        <div class="col-10">
+                            <select class="form-control" name='medicine' id="medicine">
+                                <option value="0">--请选择药材--</option>
+                                @foreach ($medicines as $medicine)
+                                    <option value="{{$medicine->id}}" data-min="{{$medicine->min_weight}}" data-max="{{$medicine->max_weight}}" data-price="{{$medicine->price}}" data-unit="{{$medicine->unit}}">{{$medicine->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" onclick="addMedicineInModal(false)"><i class=" ti-plus"></i> 确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <style>
         .bootstrap-tagsinput{
             width:100%;
@@ -297,7 +266,9 @@
         drawAnswerSection(queries);
         var biaozhengList="{{rtrim(ltrim($biaozheng,'['),']')}}".replace(/&quot;/g,'').split(','),lizhengList = "{{rtrim(ltrim($lizheng,'['),']')}}".replace(/&quot;/g,'').split(','),
             biaoliList = "{{rtrim(ltrim($biaoli,'['),']')}}".replace(/&quot;/g,'').split(','), maizhengList = "{{rtrim(ltrim($maizheng,'['),']')}}".replace(/&quot;/g,'').split(',');
-        var medicines = JSON.parse("{{$fuDaiNumber}}".replace(/&quot;/g,''));
+
+        var recipes = "{{json_encode($question->medicines)}}".replace(/&quot;/g,'"');
+        recipes = recipes.substr(1,recipes.length-2);
     </script>
 
 @endsection
