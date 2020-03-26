@@ -7,4 +7,9 @@ $(function(){
         drawItems('maizheng', maizhengList, selmaizheng);
     }
     $("input[type='checkbox']").prop('disabled',true);
+    if (typeof recipes !== 'undefined') {
+        $("#medicines").val(recipes);
+        drawMedicine(JSON.parse(recipes),false,false);
+    }
+
 });

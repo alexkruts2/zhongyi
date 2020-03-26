@@ -207,6 +207,7 @@
             selLizheng = "{{$historyData->lizheng}}".split(','),
             selBiaoli = "{{$historyData->biaoli}}".split(','),
             selmaizheng = "{{$historyData->mai}}".split(',');
-
+        var recipes = "{{json_encode($historyData->recipe)}}".replace(/&quot;/g,'"');
+        recipes = recipes.substr(1,recipes.length-2);
     </script>
 @endsection
