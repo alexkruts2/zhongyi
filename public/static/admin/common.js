@@ -423,7 +423,7 @@ function drawMedicine(data,inquiry=false,appendable) {
             var unitLable = unit==null||unit==''||unit==undefined||unit=='公克'?' 元/10g':unit=='两'?' 元/两':('元/'+unit);
 
             html+="<div class=\"row\">\n" +
-                "   <div class='col-sm-2'></div> <label class=\"col-1 col-form-label text-right\">\n" +
+                "   <div class='col-sm-1'></div> <label class=\"col-2 col-form-label text-right\">\n" +
                 "        <button type=\"button\" class=\"btn btn-default\" data-toggle=\"tooltip\" title=\"删除\" data-index=\""+selectedMedicine_id+"\" onclick=\"removeMedicineQA(" + data[i].id + ", this);\"><i class=\"fas fa-times\"></i> </button> &nbsp;"+selectedMedicine_name+
                 "<input type='hidden' name='medicine_id[]' value='"+selectedMedicine_id+"' /><input type='hidden' name='medicine_name[]' value='"+selectedMedicine_name+"' /></label>\n" +
                 "    <div class=\"col-2\">\n" +
@@ -457,8 +457,37 @@ function drawMedicine(data,inquiry=false,appendable) {
 
         if(inquiry==true)
             fuhtml = '<div class="col-sm-1"></div> <div class="col-sm-2 text-right"><input type="number" class="form-control text-right" onchange="changeFuNumber(this)" name="fuNumber_' +data[i].id+'" id="fuNumber_'+data[i].id+'" min="1" value="'+data[i].fuNumber+'"/></div><div class="text-left col-form-label">副</div>' ;
-            else
-                fuhtml = '<div class="col-sm-3 p-r-0 text-right col-form-label">1副</div>';
+        else
+            fuhtml = '<div class="col-sm-3 p-r-0 text-right col-form-label">1副</div>';
+
+        // if(inquiry==true){
+            otherHtml = '<div class="row mt-3">\n' +
+                '   <div class="col-sm-1"></div> \n' +
+                '   <label class="col-2 col-form-label text-right mt-3">其他病症</label>\n' +
+                '    <div class="col-4">\n' +
+                '        <textarea class="form-control" type="text" disabled rows="3">'+data[i].other_condition+'</textarea>\n' +
+                '    </div>\n' +
+                '</div>' ;
+            html+=otherHtml;
+            eatingHtml = '<div class="row mt-3">\n' +
+                '   <div class="col-sm-1"></div> \n' +
+                '   <label class="col-2 col-form-label text-right mt-3">煎服法</label>\n' +
+                '    <div class="col-4">\n' +
+                '        <textarea class="form-control" type="text" disabled rows="3">'+data[i].eating_method+'</textarea>\n' +
+                '    </div>\n' +
+                '</div>' ;
+            html+=eatingHtml;
+            banHtml = '<div class="row mt-3">\n' +
+                '   <div class="col-sm-1"></div> \n' +
+                '   <label class="col-2 col-form-label text-right mt-3">禁忌</label>\n' +
+                '    <div class="col-4">\n' +
+                '        <textarea class="form-control" type="text" disabled rows="3">'+data[i].ban+'</textarea>\n' +
+                '    </div>\n' +
+                '</div>' ;
+            html+=banHtml;
+        // }
+
+
 
         html+='<div class="row mt-3">' + fuhtml +
             '<div class="col-sm-2"><input type="number" onchange="changeDaiNumber(this)" name="daiNumber_'+data[i].id+'" id="daiNumber_'+data[i].id+'" class="form-control" '+disabled+' min="1" value="' + data[i].daiNumber + '" /></div>' +

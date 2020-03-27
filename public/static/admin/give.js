@@ -18,10 +18,14 @@ function getGuahaoData(){
             hideOverlay();
             if (resp.code == '0') {
                 var recipe = JSON.parse(resp.data.recipe);
-                var houfang = JSON.parse(resp.data.houfang);
+                // var houfang = JSON.parse(resp.data.houfang);
+                $("#medicines").val(resp.data.recipe);
 
-                drawRecipeSections (recipe, houfang);
+                drawMedicine(JSON.parse(resp.data.recipe),true,false);
+                // (recipe, houfang);
+                calcPriceTotal();
 
+                $("input").prop("disabled",true);
                 $("#totalPrice").html(resp.data.price);
                 $("#giveMedicine").prop("disabled",false);
             } else {
@@ -119,7 +123,6 @@ function drawRecipeSections (medicines, houfang) {
     if(medicines==''||medicines==null||medicines==undefined){
         temp = medicines= [];
         $("#medicineSection").html("");
-        calcPrice();
         return;
     }
 
@@ -197,21 +200,6 @@ function drawRecipeSections (medicines, houfang) {
     html += ' <hr><h4 class="text-bold">总价：'+totalPrice.toLocaleString("en")+'元</h4>';
 
     $("#medicineSection").html(html);
-    calcPrice();
 
 }
 
-function calcPrice(){
-
-    var fuPrice_obj = "";
-    var totalPrice = 0;
-
-    $(".fuPrice").each(function(index, obj){
-        fuPrice_obj = $(obj).find("input[name='fuPrice[]']");
-        totalPrice += parseInt($(fuPrice_obj).val());
-    });
-
-    $("#total_price").val(totalPrice);
-    $("#total_price_span").html(totalPrice);
-    console.log(totalPrice);
-}

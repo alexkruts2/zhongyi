@@ -262,7 +262,7 @@ class AcceptController extends Controller
                 'id' => $treatment->id,
                 "guahao" => $guahao,
                 "patient_name" => $treatment->patient->name,
-                "recipe" => recipe::where('id',$treatment->original_recipe)->first()->prescription_name,
+                "recipe" => getPrescriptionName($treatment->recipe),
                 "price" => $treatment->price - $accept_price,
                 'fuNumber' => $fuNumber,
                 'daiNumber' => $daiNumber
@@ -313,7 +313,8 @@ class AcceptController extends Controller
             $temp['id'] = $data->id;
             $temp['treat_start'] = $data->treat_start;
             $temp['patient_name'] = $data->patient->name;
-            $temp['recipe_name'] = recipe::where('id',$data->original_recipe)->first()->prescription_name;
+            $strRecipes = getPrescriptionName($data->recipe);
+            $temp['recipe_name'] = $strRecipes;
             $temp['price'] = $data->price;
             $temp['doctor_name'] = $data->doctor->name;
             array_push($arrayDatas,$temp);

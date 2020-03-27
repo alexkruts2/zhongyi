@@ -488,15 +488,10 @@ class DoctorController extends Controller{
             'question_id' => 'required'
         ]);
         $question = question::where('id',$request->get('question_id'))->first();
-        $recipe_ids = json_decode($question->recipes);
-
-        $recipe_datas = array();
-        foreach($recipe_ids as $recipe_id){
-            $recipe = recipe::where("id",$recipe_id)->first();
-            array_push($recipe_datas,$recipe);
-        }
+        $recipe_datas = getRecipeJSON($question->medicines);
+        $question->medicines = $recipe_datas;
         $result = array(
-            "recipe" => $recipe_datas,
+            "recipe" => json_decode($recipe_datas),
             "question" => $question
         );
         return success($result);

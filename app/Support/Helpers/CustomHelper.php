@@ -7,6 +7,7 @@
  */
 use App\AuthToken;
 use App\Image;
+use App\recipe;
 use App\Video;
 use App\File;
 use App\User;
@@ -974,3 +975,45 @@ if (!function_exists('updateRecipesByMedicineUnit')) {
 }
 
 
+if (!function_exists('getRecipeJSON')) {
+    function getRecipeJSON($strMedicine)
+    {
+        $recipes = json_decode($strMedicine);
+        $result = [];
+        foreach($recipes as $recipe){
+            $tempRecipe = recipe::where('id',$recipe->id)->first();
+            $recipe->medicine = getMedicineJSON($recipe->medicine);
+            $recipe->other_condition = $tempRecipe->other_condition;
+            $recipe->eating_method =  $tempRecipe->eating_method;
+            $recipe->ban = $tempRecipe->ban;
+            array_push($result,$recipe);
+        }
+        return json_encode($result);
+    }
+}
+if (!function_exists('getMedicineJSON')) {
+    function getMedicineJSON($strMedicine)
+    {
+            $medicines = json_decode($strMedicine);
+            $medicinesForArray = [];
+            foreach($medicines as $medicine){
+                $tempMedicine = \App\medicine::where('id',$medicine->medicine_id)->first();
+                $medicine->price = $tempMedicine->price;
+                $medicine->max_weight =  $tempMedicine->max_weight;
+                $medicine->min_weight =  $tempMedicine->min_weight;
+                array_push($medicinesForArray,$medicine);
+            }
+            return json_encode($medicinesForArray);
+    }
+}
+if (!function_exists('getPrescriptionName')) {
+    function getPrescriptionName($strMedicine)
+    {
+        $recipes = json_decode($strMedicine);
+        $strRecipes = '';
+        foreach ($recipes as $recipe) $strRecipes.= $recipe->prescription_name.",";
+        $strRecipes = rtrim($strRecipes,',');
+
+        return $strRecipes;
+    }
+}

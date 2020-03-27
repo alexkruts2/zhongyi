@@ -54,13 +54,6 @@
                                 <input class="form-control" type="text"  name='price' id="price" readonly="readonly"/>
                             </div>
                         </div>
-                        <div class="row mt-3">
-                            <div class="col-sm-2"></div>
-                            <div class="col-sm-2"><input type="number" id="fuNumber" class="text-center form-control"  disabled=""></div>
-                            <div class="text-left col-form-label">副</div>
-                            <div class="col-sm-2"><input type="number" id="daiNumber"  class="text-center form-control "  disabled=""></div>
-                            <div class="col-sm-1 col-form-label">代</div>
-                        </div>
 
                         <div class="row mt-3">
                             <div class="col-6">

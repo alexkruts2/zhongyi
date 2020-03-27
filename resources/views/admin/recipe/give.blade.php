@@ -40,8 +40,12 @@
                     </div>
                     <div id="medicineSection" class="mt-3">
                     </div>
-
+                    <div class="row mt-3"><div class="col-sm-1"></div>
+                        <hr class="col-sm-10"> <div class="col-sm-2"></div> <h4 class="text-bold col-sm-10">总价：<span id="total_price_span"></span>元</h4>
                     </div>
+
+                    <input type="hidden" id="medicines"/>
+                </div>
             </div>
         </div>
     </div>

@@ -267,7 +267,7 @@
         var biaozhengList="{{rtrim(ltrim($biaozheng,'['),']')}}".replace(/&quot;/g,'').split(','),lizhengList = "{{rtrim(ltrim($lizheng,'['),']')}}".replace(/&quot;/g,'').split(','),
             biaoliList = "{{rtrim(ltrim($biaoli,'['),']')}}".replace(/&quot;/g,'').split(','), maizhengList = "{{rtrim(ltrim($maizheng,'['),']')}}".replace(/&quot;/g,'').split(',');
 
-        var recipes = "{{json_encode($question->medicines)}}".replace(/&quot;/g,'"');
+        var recipes = "{{json_encode($recipes)}}".replace(/&quot;/g,'"');
         recipes = recipes.substr(1,recipes.length-2);
     </script>
 

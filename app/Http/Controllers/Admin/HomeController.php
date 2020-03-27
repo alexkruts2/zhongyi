@@ -582,6 +582,8 @@ class HomeController extends Controller
         $doctors = doctor::select('*')->where('department_id',$department_id)->orderBy('name')->get();
         $medicines = medicine::select('*')->where('flag','NORMAL')->orderBy('name')->get();
 
+
+
         return view('admin.qa.edit')->with([
             'question'=>$question,
             'departments'=>$departments,
@@ -593,7 +595,8 @@ class HomeController extends Controller
             'biaoli' => $question->biaoli,
             'maizheng' => $question->maizheng,
             'fuDaiNumber' => $question->fuDaiNumber,
-            'medicines' => $medicines
+            'medicines' => $medicines,
+            'recipes' => getRecipeJSON($question->medicines)
         ]);
     }
     public function editQAData(Request $request){
@@ -787,10 +790,7 @@ class HomeController extends Controller
 
         $question_id = $treatData->question_id;
         $question = question::where('id',$question_id)->first();
-//        $fuDaiNumberInQuestion = json_decode($question->fuDaiNumber);
-//        $daiNumber = $fuDaiNumberInQuestion[$treatData->original_recipe];
-        $daiNumber = 0;
-        $treatData->daiNumber = $daiNumber;
+        $treatData->recipe = getRecipeJSON($treatData->recipe);
         return success($treatData);
     }
     public function giveMedicine(Request $request){
@@ -828,9 +828,14 @@ class HomeController extends Controller
         ]);
         $recipes = $request->get("recipes");
         $arr_recipes = explode (",", $recipes);
-        $recipes = recipe::select('id','medicine','prescription_name')->whereIn('id',$arr_recipes)->get();
+        $recipes = recipe::select('id','medicine','prescription_name','other_condition','eating_method','ban')->whereIn('id',$arr_recipes)->get();
+        $result = [];
+        foreach($recipes as $recipe){
+            $recipe->medicine = getMedicineJSON($recipe->medicine);
+            array_push($result,$recipe);
+        }
 
-        return success($recipes);
+        return success($result);
     }
 
 }
