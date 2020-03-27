@@ -435,7 +435,6 @@ function drawRecipeOther(recipes){
     $("#recipe").html(html);
 }
 
-
 function drawRecipeSectionsOther(selrecipes, medicines, eating_method, ban, othercondition) {
     var temp = medicines;
     var html = "";
@@ -451,21 +450,6 @@ function drawRecipeSectionsOther(selrecipes, medicines, eating_method, ban, othe
         html += ' <h4 class="text-bold">'+recipes[i].prescription_name+' <button type="button" class="btn btn-circle btn-warning p-0-0"  title="添加药材" onclick="setRecipeId('+ recipes[i].id + ');"><i class="fas fa-plus"></i></button></h4><hr>';
         for(var j=0; j<dbmedicines.length; j++){
             html+='<div id="recipe_medicine_' + recipes[i].id + '" class="recipe_medicine_' + recipes[i].id + '">';
-            // html +='<div class="row">\n' +
-            //     '\t<label class="col-2 col-form-label text-right">\n' +
-            //     '\t\t'+dbmedicines[j].medicine+'\n' +
-            //     '\t</label>\n' +
-            //     '\t<div class="col-2">\n' +
-            //     '\t\t<input class="form-control" type="number" value="'+dbmedicines[j].min_weight+'" disabled>\n' +
-            //     '\t</div>\n' +
-            //     '\t<span style="paddint-top:8px">~</span>\n' +
-            //     '\t<div class="col-2">\n' +
-            //     '\t\t<input class="form-control" type="number" value="'+dbmedicines[j].max_weight+'" disabled>\n' +
-            //     '\t</div>\n' +
-            //     '\t<div class="col-2 text-left">\n' +
-            //     '\t\t<label id="price_6" style="line-height:38px">' + dbmedicines[j].price + '  元/10g</label>\n' +
-            //     '\t</div>\n' +
-            //     '</div>';
             var min_weight =  dbmedicines[j].min_weight;
             var max_weight =  dbmedicines[j].max_weight;
             var weight = dbmedicines[j].weight==undefined?0:dbmedicines[j].weight;
@@ -555,7 +539,6 @@ function drawRecipeSectionsOther(selrecipes, medicines, eating_method, ban, othe
     for(var i=0; i < recipes.length; i++){
         calcPriceOther(recipes[i].id);
     }
-
 }
 
 function drawSlide(questions) {
@@ -667,7 +650,8 @@ $('#question-form').submit(function (e) {
                     showConfirmButton: false,
                     timer: 1500
                 });
-                window.location.href = "/doctor/history/all"
+                if(url=='/doctor/inquiry/completeTreatment')
+                    window.location.href = "/doctor/inquiry/view"
             } else {
                 hideOverlay();
                 Swal.fire({
@@ -692,8 +676,6 @@ $('#question-form').submit(function (e) {
     });
 });
 
-
-
 function init_recipeSection() {
     drawSlide([]);
     drawRecipe([], []);
@@ -703,7 +685,6 @@ function init_recipeSection() {
 
 function sethoufang(obj) {
     var houfang = $(obj).prop('checked');
-    // $(obj).prev().val(1 - houfang);
     var recipeId = $(obj)[0].id.replace('houfang_','');
     var strMedicins = $("#medicines").val();
     var recipeDatas = JSON.parse(strMedicins);
@@ -714,6 +695,7 @@ function sethoufang(obj) {
          }
     }
     $("#medicines").val(JSON.stringify(recipeDatas));
+    calcPriceTotal();
 }
 
 function removeMedicineInq(recipeId, obj) {
@@ -745,3 +727,54 @@ function changeFuNumber(obj) {
     calcPriceTotal();
 }
 
+function searchRecipes(){
+    if ($("#question_title").length > 0) {
+        var data = $("#question_title").val();
+        if(data==''||data==null||data==undefined) {
+
+            drawRecipeSections([], [], [], [], []);
+            drawRecipeSectionsOther([], [], [], [], []);
+
+            var forms = new FormData($("#question-form")[0]);
+
+            showOverlay();
+            $.ajax({
+                url: '/doctor/inquiry/getRecipeOther',
+                data: forms,
+                type: 'POST',
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (resp) {
+                    hideOverlay();
+                    if (resp.code == 0) {
+                        drawRecipeOther(resp.data);
+                    } else {
+                        hideOverlay();
+                        Swal.fire({
+                            type: 'error',
+                            text: resp.message,
+                            title: '错误',
+                            showConfirmButton: false,
+                            timer: 3000
+                        });
+                    }
+                },
+                error: function (e) {
+                    hideOverlay();
+                    Swal.fire({
+                        type: 'error',
+                        text: 'Internal Error ' + e.status + ' - ' + e.responseJSON.message,
+                        title: '错误',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+                }
+            });
+
+        } else {
+            return;
+        }
+    }
+
+}

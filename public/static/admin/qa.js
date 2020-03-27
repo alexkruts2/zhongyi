@@ -582,26 +582,6 @@ function addMedicineInModal() {
     drawMedicine(recipeDatas,false,true);
     $("#medicines").val(JSON.stringify(recipeDatas));
 
-    // var html="<div id='recipe_medicine_" + selectedRecipeId + "_"+selectedMedicine_id+"' class='recipe_medicine_" + selectedRecipeId + "'><div class=\"row\">\n" +
-    //     "  <div class='col-sm-2'></div>  <label class=\"col-1 col-form-label text-right\">\n" +
-    //     "        <button type=\"button\" class=\"btn btn-default\" data-toggle=\"tooltip\" title=\"删除\" data-index=\""+selectedMedicine_id+"\" onclick=\"removeMedicineQA(" + selectedRecipeId + ", this);\"><i class=\"fas fa-times\"></i> </button> &nbsp;"+selectedMedicine_name+
-    //     "<input type='hidden' name='medicine_id[]' value='"+selectedMedicine_id+"' /><input type='hidden' name='medicine_name[]' value='"+selectedMedicine_name+"' /></label>\n" +
-    //     "    <div class=\"col-2\">\n" +
-    //     "        <input class=\"form-control\" type=\"number\" value=\"0\" onchange='calcPrice(" + selectedRecipeId + ")' name=\"mass[]\" id=\"weight_"+selectedMedicine_id+"\">\n" +
-    //     "    </div>\n" +
-    //     "<div class=\"col-4 text-left\">\n" +
-    //     "    <label id=\"price_"+selectedMedicine_id+"\" style=\"line-height: 38px;\">"+price+" 元/10g (最小："+min_weight+", 最大："+ max_weight+")</label><input type='hidden' name='price[]' value='"+price+"' /> \n" +
-    //     "<input type='hidden' name='unit[]' value='"+unit+"' />"+
-    //     "</div>\n"+
-    //     "<input class=\"form-control\" type=\"hidden\" value=\""+max_weight+"\" name=\"max_weight[]\" id=\"max_weight_"+selectedMedicine_id+"\">\n" +
-    //     "<input class=\"form-control\" type=\"hidden\" value=\""+min_weight+"\" name=\"min_weight[]\" id=\"min_weight_"+selectedMedicine_id+"\">\n" +
-    //     "</div>\n" +
-    //     "</div>";
-    // if ($("#recipe_medicine_"+selectedRecipeId).length > 0)
-    //     $("#recipe_medicine_"+selectedRecipeId).after(html);
-    // else
-    //     $("#medicineSection hr").after(html);
-
     $("#medicine option:selected").attr("disabled","disabled");
     $("#medicine").prop("selectedIndex",-1);
     // changeMaxMinValue();

@@ -9,9 +9,8 @@ $(function(){
     $("input[type='checkbox']").prop('disabled',true);
     if (typeof recipes !== 'undefined') {
         $("#medicines").val(recipes);
-        drawMedicine(JSON.parse(recipes),true,false);
+        drawMedicine(JSON.parse(recipes),true,false,true);
         calcPriceTotal();
-
         $("input").prop("disabled",true);
     }
 

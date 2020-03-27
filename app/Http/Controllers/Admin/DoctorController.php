@@ -711,13 +711,13 @@ class DoctorController extends Controller{
 
         $datas = treatment::select('treatments.*')
             ->where('patients.name','like','%'.$searchValue.'%')
-            ->where('state','!=',config('constant.treat_state.close'))
+            ->where('state',config('constant.treat_state.close'))
 //            ->where('state','!=',config('constant.treat_state.accept'))
             ->join('patients', 'treatments.patient_id', '=', 'patients.id')
             ->orderBy('treat_start', 'desc')->orderBy($orderColumn, $orderDirection)->skip($start)->take($length)->get();
         $availableDatas = treatment::select('*')
             ->where('patients.name','like','%'.$searchValue.'%')
-            ->where('state','!=',config('constant.treat_state.close'))
+            ->where('state',config('constant.treat_state.close'))
 //            ->where('state','!=',config('constant.treat_state.accept'))
             ->join('patients', 'treatments.patient_id', '=', 'patients.id')
             ->get();

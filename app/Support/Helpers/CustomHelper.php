@@ -1003,6 +1003,7 @@ if (!function_exists('getMedicineJSON')) {
                 $medicine->min_weight =  $tempMedicine->min_weight;
                 array_push($medicinesForArray,$medicine);
             }
+
             return json_encode($medicinesForArray);
     }
 }

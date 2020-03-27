@@ -93,7 +93,6 @@ function drawIndividualTable() {
                 'orderable': false,
                 "mRender": function (data, type, full) {
                     return '<button class="btn btn-sm btn-success m-l-5" onclick="location.href=\'/doctor/history/detail/' + data+ '\'"><i class="ti-pencil-alt"></i>详情</button>';
-
                 }
             },
             {"className": "text-center", "targets": "_all"}

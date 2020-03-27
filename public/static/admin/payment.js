@@ -130,7 +130,8 @@ function drawPaymentTable() {
             {data: 'patient_name'},
             {data: 'recipe_name'},
             {data:'price'},
-            {data:'doctor_name'}
+            {data:'doctor_name'},
+            {data:'id'}
         ],
         "language": {
             "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Chinese.json"
@@ -147,6 +148,14 @@ function drawPaymentTable() {
             {
                 "aTargets": [4],
                 'orderable': false,
+            },
+            {
+                "aTargets": [5],
+                'orderable': false,
+                "mRender": function (data, type, full) {
+                    return '<button class="btn btn-sm btn-success m-l-5" onclick="location.href=\'/doctor/history/detail/' + data+ '\'"><i class="ti-pencil-alt"></i>详情</button>';
+                }
+
             },
 
             {"className": "text-center", "targets": "_all"}

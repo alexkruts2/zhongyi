@@ -34,6 +34,7 @@
                                     <th class="text-center">处方</th>
                                     <th class="text-center">费用（￥）</th>
                                     <th class="text-center">医生</th>
+                                    <th class="text-center">操作</th>
                                 </tr>
                             </thead>
                             <tbody>
