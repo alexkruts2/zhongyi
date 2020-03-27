@@ -88,7 +88,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-6">
-                                <video id="myVideo" preload="auto" autoplay  class="video-js vjs-default-skin"></video>
+                                <video id="myVideo" preload="auto"  class="video-js vjs-default-skin"></video>
                             </div>
                         </div>
                         <div class="row bg-gray">

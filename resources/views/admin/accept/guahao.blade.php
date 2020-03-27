@@ -37,7 +37,7 @@
                         <table id="tbl_guahao" class="display nowrap table table-striped table-bordered">
                             <thead>
                             <tr>
-                                <th class="text-center">问诊时间</th>
+                                <th class="text-center">时间</th>
                                 <th class="text-center">挂号</th>
                                 <th class="text-center">姓名</th>
                                 <th class="text-center">手机号</th>

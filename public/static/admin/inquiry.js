@@ -291,7 +291,7 @@ function startVideoCamera(){
         width: 1440,
         height: 960,
         fluid: false,
-        autoplay:true,
+        autoplay:false,
         plugins: {
             record: {
                 audio: false,
@@ -632,53 +632,6 @@ $('#question-form').submit(function (e) {
     showOverlay();
     var forms = new FormData($(this)[0]);
 
-    // var receips = $("#recipe").select2("data"),
-    //     medicine_item = [],
-    //     medicine_details = [],
-    //     medicine_detail_item = [],
-    //     medicine_list = [];
-    // for (var i = 0; i < receips.length; i ++) {
-    //     medicine_details = [];
-    //     $(".recipe_medicine_" + receips[i].id).each(function(index, obj){
-    //         medicine_detail_item = {
-    //             id : $(obj).find("input[name='medicine_id[]']").val(),
-    //             name :  $(obj).find("input[name='medicine_name[]']").val(),
-    //             mass : $(obj).find("input[name='mass[]']").val(),
-    //             price : $(obj).find("input[name='price[]']").val(),
-    //             unit : $(obj).find("input[name='unit[]']").val(),
-    //             max_weight : $(obj).find("input[name='max_weight[]']").val(),
-    //             min_weight : $(obj).find("input[name='min_weight[]']").val()
-    //         }
-    //         if (typeof medicine_detail_item.mass != "undefined") {
-    //             medicine_details.push(medicine_detail_item);
-    //         }
-    //     })
-    //     medicine_item = {
-    //         receip_id : receips[i].id,
-    //         receip_txt : receips[i].text,
-    //         medicines: medicine_details,
-    //         fu_number: $("#fuNumber_" + receips[i].id).val(),
-    //         fudai_number: $("#fudaiNumber_" + receips[i].id).val(),
-    //         total: $("#fuPrice_" + receips[i].id).val()
-    //     }
-    //     medicine_list.push(medicine_item);
-    // }
-    // forms.append("recipe_detail", JSON.stringify(medicine_list));
-
-    // var is_empty_medicine = false;
-    // for (var i = 0; i < medicine_list.length; i ++) {
-    //     if (medicine_list[i].medicines.length == 0)
-    //         is_empty_medicine = true;
-    // }
-    // if (is_empty_medicine == true) {
-    //     Swal.fire({
-    //         type: 'error',
-    //         title: '药材不能为空。'
-    //     });
-    //     hideOverlay();
-    //     return ;
-    // }
-
     var sel_houfang_length = 0;
     $("input[name='houfang[]']").each(function(index, obj){
         if ($(obj).val() == "1")
@@ -714,6 +667,7 @@ $('#question-form').submit(function (e) {
                     showConfirmButton: false,
                     timer: 1500
                 });
+                window.location.href = "/doctor/history/all"
             } else {
                 hideOverlay();
                 Swal.fire({

@@ -344,21 +344,21 @@ class DoctorController extends Controller{
         if($orderColumn=='patient_name')
             $orderColumn = 'patients.name';
 
-        if(empty($doctor_id)){//admin
-            $datas = treatment::select('treatments.*')->where('state',config('constant.treat_state.waiting_treatment'))
+//        if(empty($doctor_id)){//admin
+//            $datas = treatment::select('treatments.*')->where('state',config('constant.treat_state.waiting_treatment'))->orWhere('state',config('constant.treat_state.treating'))
+//                ->join('patients', 'treatments.patient_id', '=', 'patients.id')
+//                ->orderBy('treatments.created_at', 'desc')->orderBy($orderColumn, $orderDirection)->skip($start)->take($length)->get();
+//            $availableDatas = treatment::select('treatments.*')->where('state',config('constant.treat_state.waiting_treatment'))->orWhere('state',config('constant.treat_state.treating'))
+//                ->join('patients', 'treatments.patient_id', '=', 'patients.id')
+//                ->get();
+//        }else {//doctor
+                $datas = treatment::select('treatments.*')->where('doctor_id', $doctor_id)->where('state', config('constant.treat_state.waiting_treatment'))->orWhere('state',config('constant.treat_state.treating'))
                 ->join('patients', 'treatments.patient_id', '=', 'patients.id')
                 ->orderBy('treatments.created_at', 'desc')->orderBy($orderColumn, $orderDirection)->skip($start)->take($length)->get();
-            $availableDatas = treatment::select('treatments.*')->where('state',config('constant.treat_state.waiting_treatment'))
-                ->join('patients', 'treatments.patient_id', '=', 'patients.id')
-                ->get();
-        }else {//doctor
-                $datas = treatment::select('treatments.*')->where('doctor_id', $doctor_id)->where('state', config('constant.treat_state.waiting_treatment'))
-                ->join('patients', 'treatments.patient_id', '=', 'patients.id')
-                ->orderBy('treatments.created_at', 'desc')->orderBy($orderColumn, $orderDirection)->skip($start)->take($length)->get();
-                $availableDatas =treatment::select('treatments.*')->where('doctor_id', $doctor_id)->where('state', config('constant.treat_state.waiting_treatment'))
+                $availableDatas =treatment::select('treatments.*')->where('doctor_id', $doctor_id)->where('state', config('constant.treat_state.waiting_treatment'))->orWhere('state',config('constant.treat_state.treating'))
                     ->join('patients', 'treatments.patient_id', '=', 'patients.id')
                     ->get();
-        }
+//        }
         $guahaoDatas = [];
         foreach($datas as $data){
             $temp = array();
@@ -432,7 +432,7 @@ class DoctorController extends Controller{
             $temp['guahao'] = $data->guahao;
             $temp['patient_name'] = $data->patient->name;
             $temp['doctor_name'] = $data->doctor->name;
-            $temp['disease_name'] = $data->disease_name;
+            $temp['disease_name'] = '$data->disease_name';
             $temp['number'] = $i;
             $temp['date'] = $data->treat_start;
             $original_recipe = $data->original_recipe;
@@ -555,14 +555,12 @@ class DoctorController extends Controller{
     public function completeTreatment(Request $request){
         validate($request->all(), [
             'guahao' => 'required',
-            'medicines' => 'required',
         ]);
 
         $guahao = $request->get('guahao');
         $question_id = $request->get('question_title');
         $video_url = $request->get('video_url');
         $question_string = $request->get('question_string');
-//        $recipe_id = $request->get('recipe');
         $annotation_keys = $request->get('annotation_key');
         $annotation_values = $request->get('annotation_value');
         $total_price = $request->get('total_price');
@@ -606,7 +604,11 @@ class DoctorController extends Controller{
         $accept_price = setting::where('name','ACCEPT_PRICE')->first()->value;
 
         $recipes_detail = $request->get('medicines');
-
+        if(empty($recipes_detail)){
+            $recipes_detail = '[]';
+            $state = config('constant.treat_state.close');
+        }else
+            $state = config('constant.treat_state.before_treating_pay');
         $treatment->update([
             'question_id'=>$question_id,
             'record_video' => $video_url,
@@ -614,7 +616,7 @@ class DoctorController extends Controller{
             'comment' => json_encode($annotations),
 //            'original_recipe' => implode(',', $recipe_id),
             'treat_end' => $treat_end,
-            'state' => config('constant.treat_state.before_treating_pay'),
+            'state' => $state,
             'price' => $total_price + $accept_price*1.0,
             'disease_name' => $disease_name,
             'recipe' => ($recipes_detail),
@@ -709,14 +711,14 @@ class DoctorController extends Controller{
 
         $datas = treatment::select('treatments.*')
             ->where('patients.name','like','%'.$searchValue.'%')
-            ->where('state','!=',config('constant.treat_state.waiting_treatment'))
-            ->where('state','!=',config('constant.treat_state.accept'))
+            ->where('state','!=',config('constant.treat_state.close'))
+//            ->where('state','!=',config('constant.treat_state.accept'))
             ->join('patients', 'treatments.patient_id', '=', 'patients.id')
             ->orderBy('treat_start', 'desc')->orderBy($orderColumn, $orderDirection)->skip($start)->take($length)->get();
         $availableDatas = treatment::select('*')
             ->where('patients.name','like','%'.$searchValue.'%')
-            ->where('state','!=',config('constant.treat_state.waiting_treatment'))
-            ->where('state','!=',config('constant.treat_state.accept'))
+            ->where('state','!=',config('constant.treat_state.close'))
+//            ->where('state','!=',config('constant.treat_state.accept'))
             ->join('patients', 'treatments.patient_id', '=', 'patients.id')
             ->get();
 

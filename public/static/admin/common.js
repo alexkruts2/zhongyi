@@ -424,10 +424,10 @@ function drawMedicine(data,inquiry=false,appendable) {
 
             html+="<div class=\"row\">\n" +
                 "   <div class='col-sm-1'></div> <label class=\"col-2 col-form-label text-right\">\n" +
-                "        <button type=\"button\" class=\"btn btn-default\" data-toggle=\"tooltip\" title=\"删除\" data-index=\""+selectedMedicine_id+"\" onclick=\"removeMedicineQA(" + data[i].id + ", this);\"><i class=\"fas fa-times\"></i> </button> &nbsp;"+selectedMedicine_name+
+                "        <button type=\"button\" class=\"btn btn-default\" data-toggle=\"tooltip\" title=\"删除\" data-index=\""+selectedMedicine_id+"\" onclick=\"removeMedicineQA(" + data[i].id + ", this,"+inquiry+","+appendable+");\"><i class=\"fas fa-times\"></i> </button> &nbsp;"+selectedMedicine_name+
                 "<input type='hidden' name='medicine_id[]' value='"+selectedMedicine_id+"' /><input type='hidden' name='medicine_name[]' value='"+selectedMedicine_name+"' /></label>\n" +
                 "    <div class=\"col-2\">\n" +
-                "        <input class=\"form-control\" type=\"number\" value=\""+weight+"\"  min=\"1\"  name=\"weight[]\" min=\"0\" onchange='setWeight(" + data[i].id + ",this,"+dbmedicines[j].medicine_id+")'  id=\"weight"+selectedMedicine_id+"\" " + disabled + ">\n" +
+                "        <input class=\"form-control\" type=\"number\" value=\""+weight+"\"  min=\"1\"  name=\"weight[]\" min=\"0\" onchange='setWeight(" + data[i].id + ",this,"+dbmedicines[j].medicine_id+","+inquiry+","+appendable+")'  id=\"weight"+selectedMedicine_id+"\" " + disabled + ">\n" +
                 "    </div>\n" +
                 "<div class=\"col-4 text-left\">\n" +
                 "    <label id=\"price_"+selectedMedicine_id+"\" style=\"line-height: 38px;\">"+price+" "+unitLable+" (最小："+min_weight+", 最大："+ max_weight+") </label><input type='hidden' name='price[]' value='"+price+"' /> \n" +
@@ -456,7 +456,7 @@ function drawMedicine(data,inquiry=false,appendable) {
             html += shifouhefangHtml;
 
         if(inquiry==true)
-            fuhtml = '<div class="col-sm-1"></div> <div class="col-sm-2 text-right"><input type="number" class="form-control text-right" onchange="changeFuNumber(this)" name="fuNumber_' +data[i].id+'" id="fuNumber_'+data[i].id+'" min="1" value="'+data[i].fuNumber+'"/></div><div class="text-left col-form-label">副</div>' ;
+            fuhtml = '<div class="col-sm-1"></div> <div class="col-sm-2 text-right"><input type="number" class="form-control text-right" onchange="changeFuNumber(this)" name="fuNumber_' +data[i].id+'" id="fuNumber_'+data[i].id+'" min="1" value="'+(data[i].fuNumber==undefined||data[i].fuNumber==null?1:data[i].fuNumber)+'"/></div><div class="text-left col-form-label">副</div>' ;
         else
             fuhtml = '<div class="col-sm-3 p-r-0 text-right col-form-label">1副</div>';
 
@@ -464,7 +464,7 @@ function drawMedicine(data,inquiry=false,appendable) {
             otherHtml = '<div class="row mt-3">\n' +
                 '   <div class="col-sm-1"></div> \n' +
                 '   <label class="col-2 col-form-label text-right mt-3">其他病症</label>\n' +
-                '    <div class="col-4">\n' +
+                '    <div class="col-7">\n' +
                 '        <textarea class="form-control" type="text" disabled rows="3">'+data[i].other_condition+'</textarea>\n' +
                 '    </div>\n' +
                 '</div>' ;
@@ -472,7 +472,7 @@ function drawMedicine(data,inquiry=false,appendable) {
             eatingHtml = '<div class="row mt-3">\n' +
                 '   <div class="col-sm-1"></div> \n' +
                 '   <label class="col-2 col-form-label text-right mt-3">煎服法</label>\n' +
-                '    <div class="col-4">\n' +
+                '    <div class="col-7">\n' +
                 '        <textarea class="form-control" type="text" disabled rows="3">'+data[i].eating_method+'</textarea>\n' +
                 '    </div>\n' +
                 '</div>' ;
@@ -480,7 +480,7 @@ function drawMedicine(data,inquiry=false,appendable) {
             banHtml = '<div class="row mt-3">\n' +
                 '   <div class="col-sm-1"></div> \n' +
                 '   <label class="col-2 col-form-label text-right mt-3">禁忌</label>\n' +
-                '    <div class="col-4">\n' +
+                '    <div class="col-7">\n' +
                 '        <textarea class="form-control" type="text" disabled rows="3">'+data[i].ban+'</textarea>\n' +
                 '    </div>\n' +
                 '</div>' ;
@@ -490,7 +490,7 @@ function drawMedicine(data,inquiry=false,appendable) {
 
 
         html+='<div class="row mt-3">' + fuhtml +
-            '<div class="col-sm-2"><input type="number" onchange="changeDaiNumber(this)" name="daiNumber_'+data[i].id+'" id="daiNumber_'+data[i].id+'" class="form-control" '+disabled+' min="1" value="' + data[i].daiNumber + '" /></div>' +
+            '<div class="col-sm-2"><input type="number" onchange="changeDaiNumber(this)" name="daiNumber_'+data[i].id+'" id="daiNumber_'+data[i].id+'" class="form-control" '+disabled+' min="1" value="' + (data[i].daiNumber==undefined||data[i].daiNumber==null||data[i].daiNumber<1?1:data[i].daiNumber) + '" /></div>' +
             '<div class="col-sm-2 col-form-label p-l-0"><label style="line-height: 25px;">代</label></div></div>';
         html += '<div class="row"><div class="col-sm-3 p-r-0 text-right col-form-label">总价</div> ' +
             '<div class="col-sm-2"><input type="number" disabled name="totalPrice_'+data[i].id+'" id="totalPrice_'+data[i].id+'" class="form-control" value="' + data[i].price + '" /><label></label></div>' +
@@ -606,7 +606,7 @@ function checkMedicineContain(id,Recipes){
     }
     return false;
 }
-function setWeight(recipe_id,obj,medicine_id) {
+function setWeight(recipe_id,obj,medicine_id,inquiry,appendable) {
     var weight = parseInt($(obj).val());
     // $("medicines")
     var strMedicines = $("#medicines").val();
@@ -626,7 +626,7 @@ function setWeight(recipe_id,obj,medicine_id) {
         }
     }
     $("#medicines").val(JSON.stringify(recipeDatas));
-    drawMedicine(recipeDatas,false,true);
+    drawMedicine(recipeDatas,inquiry,appendable);
 }
 function changeDaiNumber(obj) {
     var id = obj.id.replace('daiNumber_','');
@@ -710,4 +710,29 @@ function calcPriceTotal(){
     }
     $("#total_price").val(totalPrice);
     $("#total_price_span").html(totalPrice);
+}
+function removeMedicineQA(recipeId, obj,inquiry,appendable) {
+    var id = $(obj).data("index");
+
+    var strMedicines = $("#medicines").val();
+    recipeDatas = JSON.parse(strMedicines);
+    for(var i = 0 ; i < recipeDatas.length;i++){
+        if(recipeDatas[i].id==recipeId){
+            medicine_temp = JSON.parse(recipeDatas[i].medicine);
+            for(var j=0; j<medicine_temp.length;j++){
+                if(medicine_temp[j].medicine_id==id){
+                    medicine_temp.splice(j,1);
+                    break;
+                }
+            }
+            recipeDatas[i].medicine = JSON.stringify(medicine_temp);
+            recipeDatas[i].price = calcPrice(recipeDatas[i].medicine);
+            break;
+        }
+    }
+    drawMedicine(recipeDatas,inquiry,appendable);
+    $("#medicines").val(JSON.stringify(recipeDatas));
+
+
+    calcPrice(recipeId);
 }

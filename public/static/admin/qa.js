@@ -614,30 +614,6 @@ function addMedicineInModal() {
 }
 
 
-function removeMedicineQA(recipeId, obj) {
-    var id = $(obj).data("index");
-
-    var strMedicines = $("#medicines").val();
-    recipeDatas = JSON.parse(strMedicines);
-    for(var i = 0 ; i < recipeDatas.length;i++){
-        if(recipeDatas[i].id==recipeId){
-            medicine_temp = JSON.parse(recipeDatas[i].medicine);
-            for(var j=0; j<medicine_temp.length;j++){
-                if(medicine_temp[j].medicine_id==id){
-                    medicine_temp.splice(j,1);
-                    break;
-                }
-            }
-            recipeDatas[i].medicine = JSON.stringify(medicine_temp);
-            break;
-        }
-    }
-    drawMedicine(recipeDatas,false,true);
-    $("#medicines").val(JSON.stringify(recipeDatas));
-
-
-    calcPrice(recipeId);
-}
 
 function getMedicineList(){
     var receips = $("#recipes").select2("data"),

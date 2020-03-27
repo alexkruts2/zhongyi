@@ -52,7 +52,7 @@ $(function () {
         "aoColumnDefs": [
             {
                 "aTargets":[0],
-                'orderable':false,
+                'orderable':true,
                 "mRender":function(data,type,full) {
                     if(data=='0000-00-00 00:00:00')
                         return '';
@@ -205,12 +205,13 @@ function dataURItoBlob( dataURI ) {
     return new Blob( [ buffer ], { type: mimeString } );
 }
 
-function print(guahao) {
+function print(guahao,callbackFunc) {
 
     JsBarcode("#barcode", guahao);
     printJS({
         printable: 'print',
-        type: 'html'
+        type: 'html',
+        onPrintDialogClose:callbackFunc
     });
 }
 function deleteTreatment(id, obj) {
@@ -320,7 +321,9 @@ function payAccept() {
             hideOverlay();
             if (resp.code == 0) {
                 hideOverlay();
-                print(resp.data.guahao);
+                print(resp.data.guahao,function(){
+                     window.location.href='/doctor/accept/guahao/view';
+                });
                 $("#payModal").modal('hide');
             } else {
                 hideOverlay();

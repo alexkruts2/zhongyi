@@ -105,6 +105,8 @@ class AcceptController extends Controller
         $orderColumn = $columns[$orderColumnIndex]['data'];
         $orderDirection = $order[0]['dir'];
 
+        if($orderColumn =='treat_start') $orderColumn = 'treatments.created_at';
+
         $datas = treatment::select('treatments.*')->where('guahao','like','%'.$searchValue.'%')
             ->orWhere('disease_name','like','%'.$searchValue.'%')
             ->orWhere('ID_Number','like','%'.$searchValue.'%')
@@ -120,7 +122,7 @@ class AcceptController extends Controller
         $guahaoData = array();
         foreach($datas as $data) {
             $obj["id"] = $data->id;
-            $obj['treat_start'] = $data->treat_start;
+            $obj['treat_start'] = $data->created_at->format('Y-m-d H:i:s');
             $obj['guahao'] = $data->guahao;
             $obj['patient_name'] = $data->patient->name;
             $obj['patient_phone'] = $data->patient->phone_number;

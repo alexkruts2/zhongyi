@@ -49,7 +49,6 @@
                             <thead>
                             <tr>
                                 <th class="text-center">看诊时间</th>
-                                <th class="text-center">病名</th>
                                 <th class="text-center">药方</th>
                                 <th class="text-center">医生</th>
                                 <th class="text-center">操作</th>

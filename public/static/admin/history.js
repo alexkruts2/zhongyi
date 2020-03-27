@@ -74,7 +74,6 @@ function drawIndividualTable() {
         },
         columns: [
             {data: 'date'},
-            {data: 'disease_name'},
             {data: 'recipe'},
             {data: 'doctor_name'},
             {data: 'id'}
@@ -90,7 +89,7 @@ function drawIndividualTable() {
                     return data==null||data==''||data==undefined?data:data.substring(0, 10);;
                 }
             }, {
-                "aTargets": [4],
+                "aTargets": [3],
                 'orderable': false,
                 "mRender": function (data, type, full) {
                     return '<button class="btn btn-sm btn-success m-l-5" onclick="location.href=\'/doctor/history/detail/' + data+ '\'"><i class="ti-pencil-alt"></i>详情</button>';
