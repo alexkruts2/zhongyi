@@ -68,10 +68,9 @@ function drawDoctorProfitTable() {
         },
         columns: [
             {data: null},
-            {data: 'patient_name'},
-            {data: 'ID_Number'},
             {data: 'department_name'},
             {data: 'doctor_name'},
+            {data: 'patient_name'},
             {data: 'price'},
             {data:'treat_start'}
         ],
