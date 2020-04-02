@@ -18,7 +18,7 @@
             </ol>
         </div>
         <div class="col-md-6 text-right">
-            <button type="button" class="btn btn-info" onclick="location.href='/doctor/history/individual'">添加</button>
+            <button type="button" class="btn btn-info" onclick="location.href='/doctor/history/individual'">个人病例</button>
         </div>
     </div>
     <div class="row">
