@@ -61,6 +61,7 @@ function drawDoctorProfitTable() {
                 hospital:$("#hospital").val(),
                 department:$("#department").val(),
                 from:$("#from").val(),
+                doctor_id:$("#doctor_id").val(),
                 to:$("#to").val()
             },
             "dataType":"json"
