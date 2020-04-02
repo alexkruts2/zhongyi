@@ -430,7 +430,7 @@ function drawMedicine(data,inquiry=false,appendable,inquiry_detail=false) {
                 '</div>' ;
             html+=eatingHtml;
             var ban = data[i].ban=='null'||data[i].ban=='undefined'?'':data[i].ban;
-            ban = ban==null
+            ban = ban==null?'':ban;
             banHtml = '<div class="row mt-3">\n' +
                 '   <div class="col-sm-1"></div> \n' +
                 '   <label class="col-2 col-form-label text-right mt-3">禁忌</label>\n' +
