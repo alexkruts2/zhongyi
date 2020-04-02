@@ -409,10 +409,10 @@ class DoctorController extends Controller{
             ->first();
         $patient_id = $treatment->patient_id;
 
-        $datas = treatment::select('treatments.*')->where('treatments.patient_id',$patient_id)->where('state','!=',config('constant.treat_state.waiting_treatment'))
+        $datas = treatment::select('treatments.*')->where('treatments.patient_id',$patient_id)->where('state',config('constant.treat_state.CLOSE'))
             ->join('patients', 'treatments.patient_id', '=', 'patients.id')
             ->orderBy('treat_start', $orderDirection)->skip($start)->take($length)->get();
-        $availableDatas =treatment::select('treatments.*')->where('treatments.patient_id',$patient_id)->where('state','!=',config('constant.treat_state.waiting_treatment'))
+        $availableDatas =treatment::select('treatments.*')->where('treatments.patient_id',$patient_id)->where('state',config('constant.treat_state.CLOSE'))
             ->join('patients', 'treatments.patient_id', '=', 'patients.id')
             ->get();
         $guahaoDatas = [];
