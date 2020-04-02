@@ -1019,7 +1019,12 @@ if (!function_exists('getPrescriptionName')) {
     {
         $recipes = json_decode($strMedicine);
         $strRecipes = '';
-        foreach ($recipes as $recipe) $strRecipes.= $recipe->prescription_name.",";
+        foreach ($recipes as $recipe){
+            if(array_key_exists($recipe,'shifouhefang')){
+                if($recipe->shifouhefang==true)
+                    $strRecipes.= $recipe->prescription_name.",";
+            }
+        }
         $strRecipes = rtrim($strRecipes,',');
 
         return $strRecipes;
