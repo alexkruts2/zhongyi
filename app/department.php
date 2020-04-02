@@ -9,5 +9,8 @@ class department extends Model
     protected $fillable = [
         'name'
     ];
+    public function hospital(){
+        $this->belongsTo(hospital::class);
+    }
 
 }

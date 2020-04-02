@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class question extends Model
 {
     protected $fillable = [
-        'doctor_id',
+        'department_id',
         'number',
         'questions',
         'recipes',
@@ -20,8 +20,8 @@ class question extends Model
         'fuDaiNumber',
         'medicines'
     ];
-    public function doctor(){
-        return $this->belongsTo(doctor::class);
+    public function department(){
+        return $this->belongsTo(department::class);
     }
 
 }

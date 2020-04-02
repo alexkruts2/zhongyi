@@ -502,12 +502,11 @@ class HomeController extends Controller
     public function createQA(Request $request){
         validate($request->all(), [
             'title' => 'required',
-            'doctor_id' => 'required',
             'recipes' => 'required',
             'questions' => 'required'
         ]);
         $title = $request->get('title');
-        $doctor_id = $request->get('doctor_id');
+        $department_id = $request->get('department');
         $recipes = $request->get('recipes');
         $disease_name = $request->get('disease_name');
         $questions = $request->get('questions');
@@ -522,8 +521,8 @@ class HomeController extends Controller
         $fuDaiNumber = ""; // added by wangming
 
         $question = question::create([
-           'doctor_id' => $doctor_id,
            'questions' => $questions,
+           'department_id'=>$department_id,
            'recipes' => json_encode($recipes),
            'title' => $title,
            'number' => $number,
@@ -579,7 +578,7 @@ class HomeController extends Controller
             ->orderBy('name')->get();
 
         $question = question::select('*')->where('id',$id)->first();
-        $department_id = $question->doctor->department->id;
+        $department_id = $question->department_id;
         $doctors = doctor::select('*')->where('department_id',$department_id)->orderBy('name')->get();
         $medicines = medicine::select('*')->where('flag','NORMAL')->orderBy('name')->get();
 
@@ -588,7 +587,6 @@ class HomeController extends Controller
             'departments'=>$departments,
             'department_id'=>$department_id,
             'doctors'=>$doctors,
-            'doctor_id' => $question->doctor_id,
             'biaozheng' => $question->biaozheng,
             'lizheng' => $question->lizheng,
             'biaoli' => $question->biaoli,
@@ -609,7 +607,7 @@ class HomeController extends Controller
         ]);
         $question_id = $request->get('question_id');
         $title = $request->get('title');
-        $doctor_id = $request->get('doctor_id');
+        $department_id = $request->get('department');
         $recipes = $request->get('recipes');
         $questions = $request->get('questions');
         $number = $request->get('number');
@@ -625,7 +623,7 @@ class HomeController extends Controller
         $question = question::where('id',$question_id)->first();
 
         $question->update([
-            'doctor_id' => $doctor_id,
+            'department_id' => $department_id,
             'questions' => $questions,
             'recipes' => json_encode($recipes),
             'title' => $title,
