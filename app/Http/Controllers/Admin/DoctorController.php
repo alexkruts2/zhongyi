@@ -788,7 +788,7 @@ class DoctorController extends Controller{
         $data = treatment::select('treatments.*')->where('patients.ID_Number',$IDNumber)
             ->join('patients', 'treatments.patient_id', '=', 'patients.id')->first();
         if(empty($data))
-            return error('该患者不存在');
+            return error('该身份证号无效，请输入别的身份证号');
         else
             return success($data->id);
     }
