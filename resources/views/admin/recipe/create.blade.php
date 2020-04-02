@@ -111,7 +111,7 @@
                     <div class="row">
                         <div class="col-2 text-right" style="line-height: 38px;">药材名称</div>
                         <div class="col-10">
-                            <select class="form-control" name='medicine' id="medicine">
+                            <select class="select2 form-control" name='medicine' id="medicine">
                                 <option value="0">--请选择药材--</option>
                                 @foreach ($medicines as $medicine)
                                     <option value="{{$medicine->id}}" data-min="{{$medicine->min_weight}}" data-unit="{{$medicine->unit}}" data-max="{{$medicine->max_weight}}" data-price="{{$medicine->price}}">{{$medicine->name}}</option>

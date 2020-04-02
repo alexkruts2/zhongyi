@@ -38,7 +38,7 @@
                         </div>
                         <div class="form-group mt-3 row">
                             <label for="example-text-input" class="col-2 col-form-label text-right">科室</label>
-                            <div class="col-4">
+                            <div class="col-10">
                                 <select class="form-control" name='department' id="department">
                                     <option value="">--全部科室--</option>
                                     @foreach ($departments as $department)
