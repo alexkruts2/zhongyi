@@ -344,7 +344,7 @@ $('#question-form').submit(function (e) {
                     showConfirmButton: false,
                     timer: 1500
                 });
-                window.location.href = '/admin/qa/view';
+                window.location.href = '/doctor/qa/view';
             } else {
                 hideOverlay();
                 Swal.fire({
