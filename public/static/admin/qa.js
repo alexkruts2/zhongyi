@@ -201,7 +201,7 @@ $(function(){
             {data: 'title'},
             {data: 'department',orderable:false},
             {data: 'created_at'},
-            {data:'doctor_name'},
+            {data:'doctor_name',orderable:false},
             {data:'id'}
             ],
         "language": {
@@ -344,7 +344,7 @@ $('#question-form').submit(function (e) {
                     showConfirmButton: false,
                     timer: 1500
                 });
-                // window.location.href = '/admin/qa/view';
+                window.location.href = '/admin/qa/view';
             } else {
                 hideOverlay();
                 Swal.fire({

@@ -98,7 +98,7 @@
                             <label for="example-text-input" class="col-2 col-form-label text-right">分成比例</label>
                             <div class="col-10">
                                 <div class="slidecontainer">
-                                    <input type="range" min="1" max="100" value="{{$doctor[0]->doctor_ratio}}" class="slider" id="myRange">
+                                    <input type="range" min="0" max="100" value="{{$doctor[0]->doctor_ratio}}" class="slider" id="myRange">
                                     <p>医生: <span id="doctor_value"></span>&nbsp;医院:<span id="hospital_value"></span></p>
                                 </div>
                                 <input type="hidden" value="" name='doctor_ratio' id="doctor_ratio" value="{{$doctor[0]->doctor_ratio}}"/>

@@ -380,7 +380,7 @@ function drawMedicine(data,inquiry=false,appendable,inquiry_detail=false) {
                 "        <button type=\"button\" class=\"btn btn-default\" data-toggle=\"tooltip\" title=\"删除\" data-index=\""+selectedMedicine_id+"\" onclick=\"removeMedicineQA(" + data[i].id + ", this,"+inquiry+","+appendable+");\"><i class=\"fas fa-times\"></i> </button> &nbsp;"+selectedMedicine_name+
                 "<input type='hidden' name='medicine_id[]' value='"+selectedMedicine_id+"' /><input type='hidden' name='medicine_name[]' value='"+selectedMedicine_name+"' /></label>\n" +
                 "    <div class=\"col-2\">\n" +
-                "        <input class=\"form-control\" type=\"number\" value=\""+weight+"\"  min=\"1\"  name=\"weight[]\" min=\"0\" onchange='setWeight(" + data[i].id + ",this,"+dbmedicines[j].medicine_id+","+inquiry+","+appendable+")'  id=\"weight"+selectedMedicine_id+"\" " + disabled + ">\n" +
+                "        <input class=\"form-control\" type=\"number\" value=\""+weight+"\"  name=\"weight[]\" onchange='setWeight(" + data[i].id + ",this,"+dbmedicines[j].medicine_id+","+inquiry+","+appendable+")'  id=\"weight"+selectedMedicine_id+"\" " + disabled + ">\n" +
                 "    </div>\n" +
                 "<div class=\"col-4 text-left\">\n" +
                 "    <label id=\"price_"+selectedMedicine_id+"\" style=\"line-height: 38px;\">"+price+" "+unitLable+" (最小："+min_weight+", 最大："+ max_weight+") </label><input type='hidden' name='price[]' value='"+price+"' /> \n" +
@@ -429,11 +429,12 @@ function drawMedicine(data,inquiry=false,appendable,inquiry_detail=false) {
                 '    </div>\n' +
                 '</div>' ;
             html+=eatingHtml;
+            var ban = data[i].ban=='null'||data[i].ban=='undefined'?'':data[i].ban;
             banHtml = '<div class="row mt-3">\n' +
                 '   <div class="col-sm-1"></div> \n' +
                 '   <label class="col-2 col-form-label text-right mt-3">禁忌</label>\n' +
                 '    <div class="col-7">\n' +
-                '        <textarea class="form-control" type="text" disabled rows="3">'+data[i].ban+'</textarea>\n' +
+                '        <textarea class="form-control" type="text" disabled rows="3">'+ban+'</textarea>\n' +
                 '    </div>\n' +
                 '</div>' ;
             html+=banHtml;

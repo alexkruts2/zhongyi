@@ -432,7 +432,7 @@ class DoctorController extends Controller{
             $temp['guahao'] = $data->guahao;
             $temp['patient_name'] = $data->patient->name;
             $temp['doctor_name'] = $data->doctor->name;
-            $temp['disease_name'] = '$data->disease_name';
+            $temp['disease_name'] = '';
             $temp['number'] = $i;
             $temp['date'] = $data->treat_start;
             $original_recipe = $data->original_recipe;

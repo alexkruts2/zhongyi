@@ -183,6 +183,7 @@ $('#recipe-form').submit(function (e) {
                     showConfirmButton: false,
                     timer: 1500
                 });
+                window.location.href = "/doctor/recipe/view"
             } else {
                 hideOverlay();
                 Swal.fire({

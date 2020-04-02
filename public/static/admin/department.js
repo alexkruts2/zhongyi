@@ -29,6 +29,9 @@ function saveDepartment(obj) {
                     timer: 1500
                 });
                 $("#immi_"+id+' td').first().html(name);
+                $("#immi_"+id+' td:nth-child(2) button').data('name',name);
+                $('#editModal').modal('hide');
+
             } else {
                 hideOverlay();
                 Swal.fire({

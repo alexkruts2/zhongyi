@@ -54,7 +54,7 @@
                             </div>
                             <label for="example-text-input" class="col-2 col-form-label text-right">医生</label>
                             <div class="col-4">
-                                <select class="form-control" name="doctor_id" id="doctor_id" data-parsley-required>
+                                <select class="form-control" name="doctor_id" id="doctor_id">
                                     @foreach ($doctors as $doctor)
                                         <option value="{{$doctor->id}}" {{$doctor->id==$question->doctor_id?'selected':''}}>{{$doctor->name}}</option>
                                     @endforeach

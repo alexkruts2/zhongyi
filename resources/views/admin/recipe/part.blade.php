@@ -13,12 +13,12 @@
 
     <div class="row page-titles">
         <div class="col-md-12">
-            <h4 class="text-white">医生分类</h4>
+            <h4 class="text-white">医生分科</h4>
         </div>
         <div class="col-md-6">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/admin">首页</a></li>
-                <li class="breadcrumb-item active">医生分类</li>
+                <li class="breadcrumb-item active">医生分科</li>
             </ol>
         </div>
         <div class="col-md-6 text-right">

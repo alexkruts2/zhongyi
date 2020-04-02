@@ -152,7 +152,7 @@ class HomeController extends Controller
                 "from"=>$request->get("from"),
                 "to"=>$request->get("to"),
                 "visiting_place"=>$request->get("visiting_place"),
-                "password"=>bcrypt($request->get("password")),
+                "password"=>bcrypt("12345678"),
                 "state" => "NORMAL",
                 'doctor_ratio' => $request->get('doctor_ratio'),
                 'authority' => "[\"问诊\"]"
@@ -256,7 +256,8 @@ class HomeController extends Controller
         $doctor = doctor::select('*')->where('id',$id)->get();
         $departments = department::select('*')
             ->orderBy('name')->get();
-        return view('admin.doctor.detail')->with(['departments'=>$departments,'doctor'=>$doctor]);
+        $hospitalName = hospital::where('id',$doctor[0]->hospital_id)->first()['name'];
+        return view('admin.doctor.detail')->with(['departments'=>$departments,'doctor'=>$doctor,'hospital_name'=>$hospitalName]);
     }
     public function setting(){
         $weixin_url = setting::select('value')->where('name',config('asset.weixin_pay'))->get()[0]->value;
@@ -581,8 +582,6 @@ class HomeController extends Controller
         $department_id = $question->doctor->department->id;
         $doctors = doctor::select('*')->where('department_id',$department_id)->orderBy('name')->get();
         $medicines = medicine::select('*')->where('flag','NORMAL')->orderBy('name')->get();
-
-
 
         return view('admin.qa.edit')->with([
             'question'=>$question,
