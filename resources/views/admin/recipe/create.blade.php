@@ -126,7 +126,11 @@
             </div>
         </div>
     </div>
-
+<style>
+    .select2{
+        width:100% !important;
+    }
+</style>
 @endsection
 @section('scripts')
     <!--Sky Icons JavaScript -->

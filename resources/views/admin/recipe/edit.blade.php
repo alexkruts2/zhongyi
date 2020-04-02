@@ -158,6 +158,11 @@
             </div>
         </div>
     </div>
+    <style>
+        .select2{
+            width:100% !important;
+        }
+    </style>
     <script>
         currentDiseaseNumber = {{count($conditions)}};
         document.addEventListener("DOMContentLoaded", function(){
