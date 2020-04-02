@@ -1020,7 +1020,7 @@ if (!function_exists('getPrescriptionName')) {
         $recipes = json_decode($strMedicine);
         $strRecipes = '';
         foreach ($recipes as $recipe){
-            if(array_key_exists($recipe,'shifouhefang')){
+            if(array_key_exists('shifouhefang',$recipe)){
                 if($recipe->shifouhefang==true)
                     $strRecipes.= $recipe->prescription_name.",";
             }
