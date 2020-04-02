@@ -177,9 +177,10 @@ function drawAnswerSection(queries) {
 
 $(function(){
 
-    $(".select2").select2({
-        placeholder:"请选择药房"
-    });
+    if($(".select2").length)
+        $(".select2").select2({
+            placeholder:"请选择药房"
+        });
 
 
     qa_table = $('#tbl_qa').DataTable({
@@ -588,6 +589,10 @@ function addMedicineInModal() {
         for(var i=0; i < contraryIds.length; i++){
             $("#medicine option[value='"+contraryIds[i]+"']").attr("disabled","disabled");
         }
+        $(".select2").select2({
+            placeholder:"请选择"
+        });
+
     });
 
 }

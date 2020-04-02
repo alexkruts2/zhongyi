@@ -652,6 +652,10 @@ function addMedicineInModal(inquiry) {
         for(var i=0; i < contraryIds.length; i++){
             $("#medicine option[value='"+contraryIds[i]+"']").attr("disabled","disabled");
         }
+        $(".select2").select2({
+            placeholder:"请选择"
+        });
+
     });
 
 }
