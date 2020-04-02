@@ -18,7 +18,7 @@
             </ol>
         </div>
         <div class="col-md-6 text-right">
-            <button type="button" class="btn btn-info" id="btn_payment" onclick="location.href='/doctor/accept/payment/create'">添加</button>
+            <button type="button" class="btn btn-info" id="btn_payment" onclick="location.href='/doctor/accept/payment/create'">交费</button>
         </div>
     </div>
     <div class="row">

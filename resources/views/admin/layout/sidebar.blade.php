@@ -51,7 +51,7 @@
                         <li class="menu {{(strpos(request()->path(),'doctor/qa')!==false ) ?'active':'' }}">
                             <a href="javascript:void(0)">问诊单管理<i class="fa fa-angle-left float-right"></i></a>
                             <ul class="sub-menu" style="display:{{(strpos(request()->path(),'doctor/qa')!==false) ?'block':'none' }}">
-                                <li class="{{request()->path() == 'doctor/qa/create' ? 'active' : ''}}"><a class="{{strpos(request()->path() ,'doctor/qa/create')!==false ? 'active' : ''}}" href="/doctor/qa/create">新问诊单</a></li>
+                                <li class="{{request()->path() == 'doctor/qa/create' ? 'active' : ''}}"><a class="{{strpos(request()->path() ,'doctor/qa/create')!==false ? 'active' : ''}}" href="/doctor/qa/create">新建问诊单</a></li>
                                 <li class="{{request()->path() == 'doctor/qa/view' ? 'active' : ''}}"><a class="{{strpos(request()->path() ,'doctor/qa/view')!==false ? 'active' : ''}}" href="/doctor/qa/view">查看问诊单</a></li>
                             </ul>
                         </li>
@@ -60,8 +60,8 @@
                         <li class="menu {{(strpos(request()->path(),'doctor/accept/patient/create')!==false ||strpos(request()->path(),'doctor/accept/guahao/view')!==false || strpos(request()->path(),'doctor/accept/guahao/edit')!==false ) ?'active':'' }}">
                             <a href="javascript:void(0)">挂号管理<i class="fa fa-angle-left float-right"></i></a>
                             <ul class="sub-menu" style="display:{{(strpos(request()->path(),'doctor/accept/patient/create')!==false || request()->path()=='doctor/accept/guahao/view' || strpos(request()->path(),'doctor/accept/guahao/edit')!==false) ?'block':'none' }}">
-                                <li class="{{request()->path() == '/doctor/accept/patient/create' ? 'active' : ''}}"><a class="{{request()->path() == 'doctor/accept/patient/create' ? 'active' : ''}}" href="/doctor/accept/patient/create">新挂号</a></li>
-                                <li class="{{request()->path() == '/doctor/accept/guahao/view' ? 'active' : ''}}"><a class="{{request()->path() == 'doctor/accept/guahao/view' ? 'active' : ''}}" href="/doctor/accept/guahao/view">挂号列表</a></li>
+                                <li class="{{request()->path() == '/doctor/accept/patient/create' ? 'active' : ''}}"><a class="{{request()->path() == 'doctor/accept/patient/create' ? 'active' : ''}}" href="/doctor/accept/patient/create">交费</a></li>
+                                <li class="{{request()->path() == '/doctor/accept/guahao/view' ? 'active' : ''}}"><a class="{{request()->path() == 'doctor/accept/guahao/view' ? 'active' : ''}}" href="/doctor/accept/guahao/view">挂号列表(未付费)</a></li>
                             </ul>
                         </li>
                         <li class="menu {{(strpos(request()->path(),'doctor/accept/payment/create')!==false ||strpos(request()->path(),'doctor/accept/payment/list')!==false  ) ?'active':'' }}">
