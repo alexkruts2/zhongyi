@@ -354,6 +354,9 @@ function drawMedicine(data,inquiry=false,appendable,inquiry_detail=false) {
         if(data[i].shifouhefang!=true&&inquiry_detail==true){
             continue;
         }
+        if(data[i].shifouhefang==undefined&&inquiry_detail==true){
+            continue;
+        }
 
         if (appendable)
             plusButton ='<button type="button" class="btn btn-circle btn-warning p-0-0"  title="添加药材" onclick="setRecipeId('+ data[i].id + ');"><i class="fas fa-plus"></i></button>';
