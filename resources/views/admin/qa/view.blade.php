@@ -40,7 +40,6 @@
                                 <th class="text-center">档案名称</th>
                                 <th class="text-center">档案部分</th>
                                 <th class="text-center">档案日期</th>
-                                <th class="text-center">医生</th>
                                 <th class="text-center">操作</th>
                             </tr>
                             </thead>

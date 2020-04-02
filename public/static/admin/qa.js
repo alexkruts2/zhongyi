@@ -201,7 +201,6 @@ $(function(){
             {data: 'title'},
             {data: 'department',orderable:false},
             {data: 'created_at'},
-            {data:'doctor_name',orderable:false},
             {data:'id'}
             ],
         "language": {
@@ -209,7 +208,7 @@ $(function(){
         },
         "aoColumnDefs": [
             {
-                "aTargets":[5],
+                "aTargets":[4],
                 'orderable':false,
                 "mRender":function(data,type,full) {
                     return '<button class="btn btn-sm btn-success m-l-5" onclick="location.href=\'/doctor/qa/edit/'+data+'\'"><i class="ti-pencil-alt"></i>修改</button>'+
