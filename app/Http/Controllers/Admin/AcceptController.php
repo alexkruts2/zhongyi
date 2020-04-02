@@ -252,12 +252,14 @@ class AcceptController extends Controller
         $accept_price = setting::where('name','ACCEPT_PRICE')->first()->value;
 
         $state = $treatment->state;
-        $fuNumber = $treatment->fuNumber;
+        $recipes = json_decode($treatment->recipe);
 
-        $question_id = $treatment->question_id;
-        $question = question::where('id',$question_id)->first();
-        $fuDaiNumberInQuestion = json_decode($question->fuDaiNumber);
-        $daiNumber = $fuDaiNumberInQuestion[$treatment->original_recipe];
+//        $fuNumber = $treatment->fuNumber;
+//
+//        $question_id = $treatment->question_id;
+//        $question = question::where('id',$question_id)->first();
+//        $fuDaiNumberInQuestion = json_decode($question->fuDaiNumber);
+//        $daiNumber = $fuDaiNumberInQuestion[$treatment->original_recipe];
 
         if($state==config('constant.treat_state.before_treating_pay')){
             $result = array(
@@ -266,8 +268,8 @@ class AcceptController extends Controller
                 "patient_name" => $treatment->patient->name,
                 "recipe" => getPrescriptionName($treatment->recipe),
                 "price" => $treatment->price - $accept_price,
-                'fuNumber' => $fuNumber,
-                'daiNumber' => $daiNumber
+//                'fuNumber' => $fuNumber,
+//                'daiNumber' => $daiNumber
             );
             return success($result);
         }else
