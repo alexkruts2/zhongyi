@@ -139,7 +139,7 @@
                         <div class="row bg-gray">
                             <label for="example-text-input" style="font-size: 27px;" class="col-2 col-form-label text-left">药方
                             </label>
-                            <div class="col-sm-2"><button type="button" class="btn btn-info m-t-10" onclick="searchRecipes();"><i class="ti-search"></i> 搜索</button></div>
+                            <div class="col-sm-2"><button type="button" class="btn btn-info m-t-10" onclick="searchRecipes();"><i class="ti-search"></i> 出方</button></div>
                         </div>
 
                         <div class="form-group mt-3 row">
