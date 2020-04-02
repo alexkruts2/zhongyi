@@ -438,14 +438,15 @@ class DoctorController extends Controller{
             $temp['date'] = $data->treat_start;
             $original_recipe = $data->original_recipe;
             $arr_recipe = explode(',',$original_recipe);
-            $recipe_name = '';
-            foreach($arr_recipe as $recipe_id){
-                $db_recipe = recipe::where('id',$recipe_id)->first();
-                if(empty($db_recipe))
-                    continue;
-                $recipe_name .= $db_recipe->prescription_name.',';
-            }
-            $temp['recipe'] = rtrim($recipe_name,',');
+            $temp['recipe'] = getPrescriptionName($data->recipe);
+//            $recipe_name = '';
+//            foreach($arr_recipe as $recipe_id){
+//                $db_recipe = recipe::where('id',$recipe_id)->first();
+//                if(empty($db_recipe))
+//                    continue;
+//                $recipe_name .= $db_recipe->prescription_name.',';
+//            }
+//            $temp['recipe'] = rtrim($recipe_name,',');
 
             array_push($guahaoDatas,$temp);
             $i++;
