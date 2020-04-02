@@ -133,9 +133,11 @@ function deleteRecipe(id, obj) {
     });
 }
 $(function () {
-    $(".select2").select2({
-        placeholder:"请选择"
-    });
+
+    if($(".select2").length)
+        $(".select2").select2({
+            placeholder:"请选择"
+        });
 
     drawTable();
 });

@@ -179,6 +179,7 @@
     <script src="{{ asset('static/plugin/prism/prism.js')}}"></script>
     <script src="{{ asset('static/plugin/sticky-kit-master/dist/sticky-kit.min.js')}}"></script>
     <script src="{{ asset('static/plugin/sparkline/jquery.sparkline.min.js')}}"></script>
+    <script src="{{ asset('static/plugin/select2/dist/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('static/admin/recipe.js') }}"></script>
     <script src="{{ asset('static/plugin/sweetalert2/sweetalert2.js') }}"></script>
     <script src="{{ asset('static/plugin/parsley/parsley.min.js') }}"></script>

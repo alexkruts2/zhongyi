@@ -134,6 +134,7 @@
     <!--morris JavaScript -->
     <script src="{{asset('static/plugin/raphael/raphael-min.js')}}"></script>
     <script src="{{asset('static/plugin/morrisjs/morris.min.js')}}"></script>
+
     <!-- Chart JS -->
     {{--    <script src="{{asset('static/js/dashboard4.js')}}"></script>--}}
     <script src="{{asset('static/plugin/datatables/datatables.min.js')}}"></script>
@@ -143,6 +144,8 @@
     <script src="{{ asset('static/plugin/prism/prism.js')}}"></script>
     <script src="{{ asset('static/plugin/sticky-kit-master/dist/sticky-kit.min.js')}}"></script>
     <script src="{{ asset('static/plugin/sparkline/jquery.sparkline.min.js')}}"></script>
+    <script src="{{ asset('static/plugin/select2/dist/js/select2.full.min.js') }}"></script>
+
     <script src="{{ asset('static/admin/recipe.js') }}"></script>
     <script src="{{ asset('static/plugin/sweetalert2/sweetalert2.js') }}"></script>
     <script src="{{ asset('static/plugin/clockpicker/dist/bootstrap-clockpicker.min.js') }}"></script>

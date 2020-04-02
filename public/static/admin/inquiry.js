@@ -160,6 +160,8 @@ $(function () {
         $("#recipe").prepend("<option></option>").select2({
             placeholder:"请选择"
         });
+    if($("#medicine").length)
+        $("#medicine").select2();
 
     if($("#myVideo").length)
         startVideoCamera();
