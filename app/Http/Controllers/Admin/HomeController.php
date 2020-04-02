@@ -561,7 +561,7 @@ class HomeController extends Controller
             $obj["id"] = $data->id;
             $obj["number"] = $data->number;
             $obj["title"] = $data->title;
-            $obj["department"] = $data->doctor->department->name;
+            $obj["department"] = $data->department->name;
             $obj["doctor_name"] = $data->doctor->name;
             array_push($qaData,$obj);
         }

@@ -12,5 +12,8 @@ class department extends Model
     public function hospital(){
         $this->belongsTo(hospital::class);
     }
+    public function question(){
+        $this->belongsTo(question::class);
+    }
 
 }
