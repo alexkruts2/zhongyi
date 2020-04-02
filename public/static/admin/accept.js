@@ -322,9 +322,10 @@ function payAccept() {
             if (resp.code == 0) {
                 hideOverlay();
                 print(resp.data.guahao,function(){
-                     window.location.href='/doctor/accept/guahao/view';
                 });
                 $("#payModal").modal('hide');
+                window.location.href='/doctor/accept/guahao/view';
+
             } else {
                 hideOverlay();
                 Swal.fire({
