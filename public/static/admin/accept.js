@@ -4,10 +4,14 @@ var snapshotel;
 var imgFile = '';
 var guhaoTable;
 var treatment;
+var printFlag = false;
 $(function () {
     // $("#myModal").modal('show');
     $('#myModal').modal({backdrop: 'static', keyboard: false});
 
+    $("#main-wrapper").focus(function(){
+       window.location.href = "/doctor/accept/guahao/view";
+    });
 
     $("#doctor_id").on("change",function(){
         var doctor_id = $(this).val();
@@ -322,10 +326,10 @@ function payAccept() {
             if (resp.code == 0) {
                 hideOverlay();
                 print(resp.data.guahao,function(){
+                    window.location.href='/doctor/accept/guahao/view';
                 });
-                $("#payModal").modal('hide');
-                window.location.href='/doctor/accept/guahao/view';
-
+                // $("#payModal").modal('hide');
+                printFlag = true;
             } else {
                 hideOverlay();
                 Swal.fire({
