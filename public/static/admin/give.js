@@ -21,7 +21,7 @@ function getGuahaoData(){
                 // var houfang = JSON.parse(resp.data.houfang);
                 $("#medicines").val(resp.data.recipe);
 
-                drawMedicine(JSON.parse(resp.data.recipe),true,true);
+                drawMedicine(JSON.parse(resp.data.recipe),true,false,true);
                 // (recipe, houfang);
                 calcPriceTotal();
 
