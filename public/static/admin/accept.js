@@ -328,7 +328,7 @@ function payAccept() {
                 print(resp.data.guahao,function(){
                     window.location.href='/doctor/accept/guahao/view';
                 });
-                // $("#payModal").modal('hide');
+                $("#payModal").modal('hide');
                 printFlag = true;
             } else {
                 hideOverlay();
