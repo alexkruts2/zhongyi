@@ -151,7 +151,7 @@ function snapshot() {
     // Draws current image from the video element into the canvas
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
     var img = new Image();
-    img.src = canvas.toDataURL("image/png");
+    img.src = canvas.toDataURL("image/jpeg",0.7);
     img.width = 600;
     img.name = 'photo';
     snapshotel.innerHTML = '';

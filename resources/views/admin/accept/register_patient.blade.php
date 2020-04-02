@@ -148,18 +148,19 @@
         </div>
     </div>
     <div id="payModal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
+        <div class="modal-dialog" style="max-width: 700px;">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="font-weight-bold">请扫描。</h4>
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-12">
+                        <div class="col-5">
                             <h4 class="card-title">微信二维码：</h4>
                             <img src="{{$weixin_url}}" alt="微信二维码" class="w-100">
                         </div>
-                        <div class="col-12">
+                        <div class="col-2"></div>
+                        <div class="col-5">
                             <h4 class="card-title">支付宝二维码：</h4>
                             <img src="{{$zhifubao_url}}" alt="支付宝二维码" class="w-100">
                         </div>
