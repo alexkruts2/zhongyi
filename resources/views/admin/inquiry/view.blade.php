@@ -55,7 +55,6 @@
                                 <thead>
                                 <tr>
                                     <th class="text-center">患者名</th>
-                                    <th class="text-center">病名</th>
                                     <th class="text-center">问诊次数</th>
                                     <th class="text-center">问诊日期</th>
                                     <th class="text-center">处方</th>

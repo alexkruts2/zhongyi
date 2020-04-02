@@ -104,7 +104,6 @@ function drawInquiryTable(treat_id){
         },
         columns: [
             {data: 'patient_name'},
-            {data: 'disease_name'},
             {data: 'number'},
             {data: 'date'},
             {data: 'recipe'},
@@ -115,13 +114,13 @@ function drawInquiryTable(treat_id){
         },
         "aoColumnDefs": [
             {
-                "aTargets": [3],
+                "aTargets": [2],
                 'orderable': false,
                 "mRender": function (data, type, full) {
                     return data==null||data==''||data==undefined?data:data.substring(0, 10);;
                 }
             },{
-                "aTargets": [5],
+                "aTargets": [4],
                 'orderable': false,
                 "mRender": function (data, type, full) {
                     return '<button class="btn btn-sm btn-success m-l-5" onclick="location.href=\'/doctor/history/detail/' + data+ '\'"><i class="ti-pencil-alt"></i>详情</button>';
