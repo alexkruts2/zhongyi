@@ -84,7 +84,7 @@ function drawDoctorProfitTable() {
                 "targets": 0
             },
             {
-                "aTargets":[6],
+                "aTargets":[5],
                 'orderable':false,
                 "mRender":function(data,type,full) {
                     return data==null?full.updated_at:data;
