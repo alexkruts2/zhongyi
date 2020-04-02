@@ -12,7 +12,7 @@
                             <ul class="sub-menu" style="display:{{(strpos(request()->path(),'admin/doctor/department')!==false || request()->path()=='admin/doctor/create' || request()->path()=='admin/doctor/view' || strpos(request()->path(),'admin/doctor/edit')!==false|| strpos(request()->path(),'admin/doctor/detail')!==false) ?'block':'none' }}">
                                 <li class="{{request()->path() == 'admin/doctor/create' ? 'active' : ''}}"><a class="{{request()->path() == 'admin/doctor/create' ? 'active' : ''}}" href="/admin/doctor/create">新医生</a></li>
                                 <li class="{{request()->path() == 'admin/doctor/view' || strpos(request()->path(),'admin/doctor/edit')!==false || strpos(request()->path(),'admin/doctor/detail')!==false ? 'active' : ''}}"><a class="{{strpos(request()->path() ,'admin/doctor/view')!==false || strpos(request()->path(),'admin/doctor/edit')!==false || strpos(request()->path(),'admin/doctor/detail')!==false  ? 'active' : ''}}" href="/admin/doctor/view">查看医生</a></li>
-                                <li class="{{request()->path() == 'admin/doctor/department' ? 'active' : ''}}"><a class="{{request()->path() == 'admin/doctor/department' ? 'active' : ''}}" href="/admin/doctor/department">医生分科</a></li>
+                                <li class="{{request()->path() == 'admin/doctor/department' ? 'active' : ''}}"><a class="{{request()->path() == 'admin/doctor/department' ? 'active' : ''}}" href="/admin/doctor/department">医院分科</a></li>
                             </ul>
                         </li>
                         <li class="menu {{(strpos(request()->path(),'admin/setting')!==false||strpos(request()->path(),'admin/hospital')!==false ) ?'active':'' }}">

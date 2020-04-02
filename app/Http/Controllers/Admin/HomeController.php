@@ -135,7 +135,7 @@ class HomeController extends Controller
             'from' => 'required',
             'to' => 'required'
         ]);
-        $doctor = doctor::where('name',$request->get('name'))->first();
+        $doctor = doctor::where('name',$request->get('name'))->where('state','NORMAL')->first();
 
         if(empty($request->get('id'))){
             if(!empty($doctor)){
