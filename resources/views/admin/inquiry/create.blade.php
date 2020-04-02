@@ -102,25 +102,25 @@
                             <label for="example-text-input" style="font-size: 27px;" class="col-2 col-form-label text-left">表症
                             </label>
                         </div>
-                        <div class="mt-3" id="biaozhengSection" style="max-height: 300px; overflow-y: auto">
+                        <div class="mt-3" id="biaozhengSection">
                         </div>
                         <div class="row bg-gray">
                             <label for="example-text-input" style="font-size: 27px;" class="col-2 col-form-label text-left">里症
                             </label>
                         </div>
-                        <div class="mt-3" id="lizhengSection" style="max-height: 300px; overflow-y: auto">
+                        <div class="mt-3" id="lizhengSection" >
                         </div>
                         <div class="row bg-gray">
                             <label for="example-text-input" style="font-size: 27px;" class="col-2 col-form-label text-left">半表半里
                             </label>
                         </div>
-                        <div class="mt-3" id="biaoliSection" style="max-height: 300px; overflow-y: auto">
+                        <div class="mt-3" id="biaoliSection" >
                         </div>
                         <div class="row bg-gray">
                             <label for="example-text-input" style="font-size: 27px;" class="col-2 col-form-label text-left">脉症
                             </label>
                         </div>
-                        <div class="mt-3" id="maizhengSection" style="max-height: 330px; overflow-y: auto">
+                        <div class="mt-3" id="maizhengSection">
                         </div>
 
                         <div class="row bg-gray">
