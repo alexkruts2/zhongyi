@@ -215,6 +215,13 @@ function drawHospitalTable() {
                 "orderable": false,
                 "targets": 0
             },
+            {
+                "aTargets":[6],
+                'orderable':false,
+                "mRender":function(data,type,full) {
+                    return data==null?full.updated_at:data;
+                }
+            },
             {"className": "text-center", "targets": "_all"}
         ],
         "fnRowCallback": function (nRow, aData, iDisplayIndex) {

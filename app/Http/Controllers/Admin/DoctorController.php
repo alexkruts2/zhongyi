@@ -1073,7 +1073,7 @@ class DoctorController extends Controller{
 
 
         $sql = "SELECT  treatments.`id`,treatments.`hospital_profit` as price,patients.`name` AS patient_name,patients.`ID_Number`,
-                    departments.`name` AS department_name,doctors.`name` AS doctor_name,treatments.`treat_start`  FROM treatments
+                    departments.`name` AS department_name,doctors.`name` AS doctor_name,treatments.`treat_start`,treatments.updated_at  FROM treatments
                  LEFT JOIN doctors ON treatments.`doctor_id`=doctors.`id`
                  LEFT JOIN patients ON treatments.`patient_id` = patients.id
                  LEFT JOIN departments ON doctors.`department_id` = departments.`id`
@@ -1154,7 +1154,7 @@ class DoctorController extends Controller{
         }
 
         $sql = "SELECT  treatments.`id`,treatments.`doctor_profit` as price,patients.`name` AS patient_name,patients.`ID_Number`,
-                    departments.`name` AS department_name,doctors.`name` AS doctor_name,treatments.`treat_start`  FROM treatments
+                    departments.`name` AS department_name,doctors.`name` AS doctor_name,treatments.`treat_start`,treatments.updated_at  FROM treatments
                  LEFT JOIN doctors ON treatments.`doctor_id`=doctors.`id`
                  LEFT JOIN patients ON treatments.`patient_id` = patients.id
                  LEFT JOIN departments ON doctors.`department_id` = departments.`id`
