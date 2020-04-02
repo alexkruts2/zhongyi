@@ -856,7 +856,11 @@ if (!function_exists('getMedicineDatas')) {
         foreach($split_strings as  $split_string){
             if (preg_match('/（(.*?)）/', $split_string, $match) == 1) {
                 $option = $match[1];
-                $item = preg_replace('/（(.*?)）/','',$split_string);
+            }else{
+                $option = '';
+            }
+
+            $item = preg_replace('/（(.*?)）/','',$split_string);
                 $reg = '/((0|[1-9]\d*)(\.\d+)?)|(零|一|二|三|四|五|六|七|八|九|十)(百|十|零)?(一|二|三|四|五|六|七|八|九)?(百|十|零)?(一|二|三|四|五|六|七|八|九)?/';
 
                 if (preg_match($reg, $item, $matches)){
@@ -866,6 +870,10 @@ if (!function_exists('getMedicineDatas')) {
                     $unit = $medicines[1];
                     if($unit=='g'||$unit=='gram')
                         $unit = '公克';
+                    if($unit=='两'){
+                        $unit = '公克';
+                        $weight = 50*checkNatInt($weight);
+                    }
 
                     $temp = array(
                         'prescription_name' => $medicin,
@@ -875,7 +883,6 @@ if (!function_exists('getMedicineDatas')) {
                     );
                     array_push($recipe,$temp);
                 }
-            }
         }
         return $recipe;
     }

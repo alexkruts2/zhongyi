@@ -49,6 +49,7 @@ class DoctorController extends Controller{
 
             $medicines = getMedicineDatas($strMedicine);
 
+
             $dbMedicines = array();
             foreach($medicines as $each){
                 if(!empty($each)){
