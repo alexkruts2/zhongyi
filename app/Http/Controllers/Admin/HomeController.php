@@ -770,7 +770,65 @@ class HomeController extends Controller
     }
 
     public function giveMedicineView(){
-        return view('admin.recipe.give');
+        $weixin_url = setting::select('value')->where('name',config('asset.weixin_pay'))->get()[0]->value;
+        $zhifubao_url = setting::select('value')->where('name',config('asset.zhifubao_pay'))->get()[0]->value;
+
+        return view('admin.recipe.give')->with([
+            "weixin_url" => $weixin_url,
+            "zhifubao_url" => $zhifubao_url
+        ]);
+    }
+    public function getMedicineData(Request $request){
+        validate($request->all(), [
+            'length'=>'required'
+        ]);
+        $columns = $request->get('columns');
+        $length = $request->get('length');
+        $start = $request->get('start');
+        $order = $request->get('order');
+        $search = $request->get('search');
+        $searchValue = $search['value'];
+        $orderColumnIndex = $order[0]['column'];
+        $orderColumn = $columns[$orderColumnIndex]['data'];
+        $orderDirection = $order[0]['dir'];
+        $accept_price = setting::where('name','ACCEPT_PRICE')->first()->value;
+
+        $datas = treatment::select('treatments.*')->where('treatments.state',config('constant.treat_state.after_treating_pay'))
+            ->where(function($query) use ($searchValue) {
+                $query->where('patients.name','like','%'.$searchValue.'%')
+                    ->orWhere('patients.phone_number','like','%'.$searchValue.'%');
+            })
+            ->join('patients', 'treatments.patient_id', '=', 'patients.id')
+            ->orderBy($orderColumn, $orderDirection)->skip($start)->take($length)->get();
+        $availableDatas =treatment::select('treatments.*')->where('treatments.state',config('constant.treat_state.after_treating_pay'))
+            ->where(function($query) use ($searchValue) {
+                $query->where('patients.name','like','%'.$searchValue.'%')
+                    ->orWhere('patients.phone_number','like','%'.$searchValue.'%');
+            })
+            ->join('patients', 'treatments.patient_id', '=', 'patients.id')
+            ->get();
+        $arrayDatas = [];
+        foreach($datas as $data){
+            $temp['id'] = $data->id;
+            $temp['treat_start'] = $data->treat_start;
+            $temp['guahao'] = $data->guahao;
+            $temp['patient_name'] = $data->patient->name;
+            $temp['phone_number'] = $data->patient->phone_number;
+            $strRecipes = getPrescriptionName($data->recipe);
+            $temp['recipe_name'] = $strRecipes;
+            $temp['price'] = $data->price-$accept_price;
+            $temp['doctor_name'] = $data->doctor->name;
+            $temp['department_name'] = $data->doctor->department->name;
+            array_push($arrayDatas,$temp);
+        }
+        $totalCount = count($availableDatas);
+        $result = array(
+            "aaData"=>$arrayDatas,
+            "iTotalRecords"=>$totalCount,
+            "iTotalDisplayRecords"=>count($datas)
+        );
+
+        return json_encode($result);
     }
     public function checkGuahao(Request $request){
         validate($request->all(), [

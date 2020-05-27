@@ -355,7 +355,13 @@ class AcceptController extends Controller
             })
             ->join('patients', 'treatments.patient_id', '=', 'patients.id')
             ->orderBy($orderColumn, $orderDirection)->skip($start)->take($length)->get();
-        $availableDatas =treatment::select('treatments.*')->where('treatments.state',config('constant.treat_state.before_treating_pay'))->get();
+        $availableDatas =treatment::select('treatments.*')->where('treatments.state',config('constant.treat_state.before_treating_pay'))
+            ->where(function($query) use ($searchValue) {
+                $query->where('patients.name','like','%'.$searchValue.'%')
+                    ->orWhere('patients.phone_number','like','%'.$searchValue.'%');
+            })
+            ->join('patients', 'treatments.patient_id', '=', 'patients.id')
+            ->get();
         $arrayDatas = [];
         foreach($datas as $data){
             $temp['id'] = $data->id;

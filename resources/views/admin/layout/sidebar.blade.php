@@ -68,7 +68,7 @@
                             <a href="javascript:void(0)">付费管理<i class="fa fa-angle-left float-right"></i></a>
                             <ul class="sub-menu" style="display:{{(strpos(request()->path(),'doctor/accept/payment/create')!==false || request()->path()=='doctor/accept/payment/list') ?'block':'none' }}">
                                 <li class="{{request()->path() == '/doctor/accept/payment/create' ? 'active' : ''}}"><a class="{{request()->path() == 'doctor/accept/payment/create' ? 'active' : ''}}" href="/doctor/accept/payment/create">交费</a></li>
-                                <li class="{{request()->path() == '/doctor/accept/payment/list' ? 'active' : ''}}"><a class="{{request()->path() == 'doctor/accept/payment/list' ? 'active' : ''}}" href="/doctor/accept/payment/list">挂号列表(未付费)</a></li>
+{{--                                <li class="{{request()->path() == '/doctor/accept/payment/list' ? 'active' : ''}}"><a class="{{request()->path() == 'doctor/accept/payment/list' ? 'active' : ''}}" href="/doctor/accept/payment/list">挂号列表(未付费)</a></li>--}}
                             </ul>
                         </li>
                     @endif
