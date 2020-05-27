@@ -383,7 +383,7 @@ function drawMedicine(data,inquiry=false,appendable,inquiry_detail=false) {
                 "        <button type=\"button\" class=\"btn btn-default\" data-toggle=\"tooltip\" title=\"删除\" data-index=\""+selectedMedicine_id+"\" onclick=\"removeMedicineQA(" + data[i].id + ", this,"+inquiry+","+appendable+");\"><i class=\"fas fa-times\"></i> </button> &nbsp;"+selectedMedicine_name+
                 "<input type='hidden' name='medicine_id[]' value='"+selectedMedicine_id+"' /><input type='hidden' name='medicine_name[]' value='"+selectedMedicine_name+"' /></label>\n" +
                 "    <div class=\"col-2\">\n" +
-                "        <input class=\"form-control\" type=\"number\" value=\""+weight+"\"  name=\"weight[]\" onchange='setWeight(" + data[i].id + ",this,"+dbmedicines[j].medicine_id+","+inquiry+","+appendable+")'  id=\"weight"+selectedMedicine_id+"\" " + disabled + ">\n" +
+                "        <input class=\"form-control\" type=\"number\" value=\""+weight+"\" max='"+max_weight+"' min='"+min_weight+"' name=\"weight[]\" onchange='setWeight(" + data[i].id + ",this,"+dbmedicines[j].medicine_id+","+inquiry+","+appendable+")'  id=\"weight"+selectedMedicine_id+"\" " + disabled + ">\n" +
                 "    </div>\n" +
                 "<div class=\"col-4 text-left\">\n" +
                 "    <label id=\"price_"+selectedMedicine_id+"\" style=\"line-height: 38px;\">"+price+" "+unitLable+" (最小："+min_weight+", 最大："+ max_weight+") </label><input type='hidden' name='price[]' value='"+price+"' /> \n" +

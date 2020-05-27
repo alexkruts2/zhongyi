@@ -170,3 +170,4 @@ Route::group(['prefix' => 'doctor'], function () {
 
 
 Route::get('logout', 'Admin\UserController@logout')->name('admin.logout');
+                                                                                                                  

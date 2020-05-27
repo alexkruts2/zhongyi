@@ -38,12 +38,12 @@
                             <thead>
                             <tr>
                                 <th class="text-center">药材名称</th>
-                                <th class="text-center">用处</th>
-                                <th class="text-center">数量（单元）</th>
-                                <th class="text-center">价格（￥/单元）</th>
+                                <th class="text-center">使用方法</th>
+                                <th class="text-center">数量（单位）</th>
+                                <th class="text-center">价格（￥/单位）</th>
                                 <th class="text-center">最少使用量</th>
                                 <th class="text-center">最多使用量</th>
-                                <th class="text-center">单元</th>
+                                <th class="text-center">单位</th>
                                 <th class="text-center">操作</th>
                             </tr>
                             </thead>
@@ -74,7 +74,7 @@
                             </div>
                         </div>
                         <div class="form-group mt-3 row">
-                            <label for="example-text-input" class="col-4 col-form-label text-right">用处</label>
+                            <label for="example-text-input" class="col-4 col-form-label text-right">使用方法</label>
                             <div class="col-8">
                                 <textarea class="form-control" rows="4" cols="50"  name='usage' id="usage" >它的补气功效是大家都比较清楚的，参有着极大的药用价值。</textarea>
                             </div>
@@ -104,10 +104,10 @@
                             </div>
                         </div>
                         <div class="form-group mt-3 row">
-                            <label for="example-text-input" class="col-4 col-form-label text-right">单元</label>
+                            <label for="example-text-input" class="col-4 col-form-label text-right">单位</label>
                             <div class="col-8">
                                 <select id="unit" name="unit" class="form-control">
-                                    <option value="">--请选择单元--</option>
+                                    <option value="">--请选择单位--</option>
                                     <option value="公克">公克</option>
                                     <option value="两">两</option>
                                     <option value="枚">枚</option>

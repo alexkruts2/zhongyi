@@ -206,16 +206,20 @@ class DoctorController extends Controller{
         validate($request->all(), [
             'medicine_id'=>'required'
         ]);
+        $unit = $request->get('unit');
         $id = $request->get('medicine_id');
         $medicine = medicine::where('id',$id)->first();
+        if(empty($unit))
+            $unit = $medicine->unit;
+
         $medicine->update([
-           'name'=>$request->get('medicine_name'),
-           'usage'=>$request->get('usage'),
-           'weight'=>$request->get('weight'),
-           'price'=>$request->get('price'),
-           'min_weight'=>$request->get('min_weight'),
-           'max_weight'=>$request->get('max_weight'),
-            'unit' => $request->get('unit'),
+            'name'=>$request->get('medicine_name'),
+            'usage'=>$request->get('usage'),
+            'weight'=>$request->get('weight'),
+            'price'=>$request->get('price'),
+            'min_weight'=>$request->get('min_weight'),
+            'max_weight'=>$request->get('max_weight'),
+            'unit' => $unit,
             'flag' => 'NORMAL'
         ]);
         updateRecipesByMedicinePrice($id,$request->get('price'));

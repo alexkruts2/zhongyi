@@ -1,8 +1,12 @@
-var paymentTable;
+var paymentTable,jiaoFeiTable;
 $(function(){
-    $('#myModal').modal({backdrop: 'static', keyboard: false});
     if($("#tbl_payment").length)
         drawPaymentTable();
+    if($("#tbl_jiaofei").length){
+        drawJiaoFeiTable();
+        $("#myModal").modal('hide');
+    }
+
 
     $('#tbl_payment tbody').on( 'click', 'tr', function () {
         paymentTable.$('tr.selected').removeClass('selected');
@@ -84,7 +88,8 @@ function payTreatment() {
                     showConfirmButton: false,
                     timer: 3000
                 });
-                window.location.href = '/doctor/accept/payment/list';
+                drawJiaoFeiTable();
+                $("#myModal").modal('hide');
             } else {
                 Swal.fire({
                     type: 'error',
@@ -167,5 +172,58 @@ function drawPaymentTable() {
     });
 
 }
+function drawJiaoFeiTable() {
+    if(jiaoFeiTable)
+        jiaoFeiTable.destroy();
+    jiaoFeiTable = $('#tbl_jiaofei').DataTable({
+        "processing":true,
+        'fnCreatedRow': function (nRow, aData, iDataIndex) {
+            $(nRow).attr('id', 'payment_' + aData.id); // or whatever you choose to set as the id
+        },
+        "serverSide":true,
+        "order": [[0, "desc"]],
+        info: false,
+        "pageLength":10,
+        "aLengthMenu":[10,20,50],
+        "ajax":{
+            "type":"POST",
+            "url": '/doctor/accept/payment/create',
+            "dataType":"json"
+        },
+        columns: [
+            {data: 'treat_start'},
+            {data: 'guahao'},
+            {data: 'patient_name'},
+            {data:'phone_number'},
+            {data:'price'},
+            {data:'department_name'},
+            {data:'doctor_name'}
+        ],
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Chinese.json"
+        },
+        "aoColumnDefs": [
+            {
+                "aTargets": [7],
+                'orderable': false,
+                "mRender": function (data, type, full) {
+                    return '<button class="btn btn-sm btn-info m-l-5" onclick="showPayModal('+full.id+')"><i class="fab fa-amazon-pay"></i>付款</button>'+
+                        '<button class="btn btn-sm btn-success m-l-5" onclick="location.href=\'/doctor/history/detail/' + full.id+ '\'"><i class="ti-pencil-alt"></i>详情</button>';
+                }
 
+            },
 
+            {"className": "text-center", "targets": "_all"}
+        ],
+        "drawCallback":function(settings){
+            if(settings.aoData.length)
+                $( "#tbl_guahao tbody tr:first-child" ).trigger('click');
+        }
+    });
+
+}
+
+function showPayModal (id) {
+    $("#treat_id").val(id);
+    $("#myModal").modal('show');
+}
