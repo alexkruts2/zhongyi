@@ -165,6 +165,13 @@
                             </div>
                             <input type="hidden" id="total_price" name="total_price" ></input>
                         </div>
+                        <div class="form-group mt-3 row">
+                            <div class="col-3">
+                                <button type="button" class="btn btn-info" onclick="getHefang()"><i class="fas fa-certificate"></i> 自动合方</button>
+                            </div>
+                        </div>
+                        <div id="hefangSection" class="mt-3">
+                        </div>
 
                         <div class="row mt-3">
                             <div class="col-md-12 text-center m-t-30">
@@ -199,7 +206,7 @@
                     <div class="row">
                         <div class="col-2 text-right" style="line-height: 38px;">药材名称</div>
                         <div class="col-10">
-                            <select class="select2 form-control" name='medicine' id="medicine">
+                            <select class="select2 form-control" name='medicine' id="medicine"  style="width:100%;">
                                 @foreach ($medicines as $medicine)
                                     <option value="{{$medicine->id}}" data-min="{{$medicine->min_weight}}" data-max="{{$medicine->max_weight}}" data-price="{{$medicine->price}}">{{$medicine->name}}</option>
                                 @endforeach

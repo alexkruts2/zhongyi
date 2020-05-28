@@ -450,7 +450,7 @@ function drawMedicine(data,inquiry=false,appendable,inquiry_detail=false) {
             '<div class="col-sm-2"><input type="number" onchange="changeDaiNumber(this)" name="daiNumber_'+data[i].id+'" id="daiNumber_'+data[i].id+'" class="form-control" '+disabled+' min="1" value="' + (data[i].daiNumber==undefined||data[i].daiNumber==null||data[i].daiNumber<1?1:data[i].daiNumber) + '" /></div>' +
             '<div class="col-sm-2 col-form-label p-l-0"><label style="line-height: 25px;">代</label></div></div>';
         html += '<div class="row"><div class="col-sm-3 p-r-0 text-right col-form-label">总价</div> ' +
-            '<div class="col-sm-2"><input type="number" disabled name="totalPrice_'+data[i].id+'" id="totalPrice_'+data[i].id+'" class="form-control" value="' + data[i].price + '" /><label></label></div>' +
+            '<div class="col-sm-2"><input type="text" disabled name="totalPrice_'+data[i].id+'" id="totalPrice_'+data[i].id+'" class="form-control" value="' + data[i].price + '" /><label></label></div>' +
             '</div>';
     }
     $("#medicineSection").html(html);
