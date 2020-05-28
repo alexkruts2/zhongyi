@@ -788,10 +788,10 @@ function getHefang() {
         if(recipeDatas[i].shifouhefang==true){
             var tempMedicines = JSON.parse(recipeDatas[i].medicine);
             temp = temp.concat(tempMedicines);
+            otherCondition += recipeDatas[i].other_condition==null?'':recipeDatas[i].other_condition+"\n";
+            eatting_method += recipeDatas[i].eating_method==null?'':recipeDatas[i].eating_method + "\n";
+            ban += recipeDatas[i].ban==null?'':recipeDatas[i].ban + "\n";
         }
-        otherCondition += recipeDatas[i].other_condition==null?'':recipeDatas[i].other_condition+"\n";
-        eatting_method += recipeDatas[i].eating_method==null?'':recipeDatas[i].eating_method + "\n";
-        ban += recipeDatas[i].ban==null?'':recipeDatas[i].ban + "\n";
     }
     for(var i=0; i < temp.length; i++) {
         for (var j = 0; j < hefangMedicines.length; j++) {
@@ -804,14 +804,31 @@ function getHefang() {
         if (j == hefangMedicines.length)
             hefangMedicines = hefangMedicines.concat(temp[i]);
     }
+    strHefangMedicines = JSON.stringify(hefangMedicines);
     hefangRecipe = {
+        id:"hefang",
+        prescription_name:"合方",
         ban:ban,
         eating_method:eatting_method,
-        medicine:JSON.stringify(hefangMedicines),
+        medicine:strHefangMedicines,
         other_condition:otherCondition,
+        price:calcPrice(strHefangMedicines),
         daiNumber:1
     }
-    drawHeFang(hefangRecipe);
+    for(var i = 0 ; i < recipeDatas.length; i++){
+        if(recipeDatas[i].id=='hefang'){
+            recipeDatas[i] = hefangRecipe;
+            break;
+        }
+    }
+    if(i==recipeDatas.length)
+        recipeDatas.push(hefangRecipe);
+    drawMedicine(recipeDatas,true,true);
+    // nowRecipes = getMedicineList();
+    $("#medicines").val(JSON.stringify(recipeDatas));
+
+
+    // drawHeFang(hefangRecipe);
 }
 function drawHeFang(data,inquiry=false,appendable=true,inquiry_detail=false){
     var html = '';
@@ -847,10 +864,7 @@ function drawHeFang(data,inquiry=false,appendable=true,inquiry_detail=false){
                 "<input class=\"form-control\" type=\"hidden\" value=\""+min_weight+"\" name=\"min_weight[]\" id=\"min_weight_"+selectedMedicine_id+"\">\n" +
                 "</div></div>\n"
             html +='</div>';
-
         }
-
-
         if(inquiry==true)
             fuhtml = '<div class="col-sm-1"></div> <div class="col-sm-2 text-right"><input type="number" class="form-control text-right" onchange="changeFuNumber(this)" name="fuNumber_' +"hefang"+'" id="fuNumber_'+"hefang"+'" min="1" value="'+(data.fuNumber==undefined||data.fuNumber==null?1:data.fuNumber)+'"/></div><div class="text-left col-form-label">副</div>' ;
         else
@@ -883,10 +897,6 @@ function drawHeFang(data,inquiry=false,appendable=true,inquiry_detail=false){
             '    </div>\n' +
             '</div>' ;
         html+=banHtml;
-        // }
-
-
-
         html+='<div class="row mt-3">' + fuhtml +
             '<div class="col-sm-2"><input type="number" onchange="changeDaiNumber(this)" name="daiNumber_'+"hefang"+'" id="daiNumber_'+"hefang"+'" class="form-control" '+disabled+' min="1" value="' + (data.daiNumber==undefined||data.daiNumber==null||data.daiNumber<1?1:data.daiNumber) + '" /></div>' +
             '<div class="col-sm-2 col-form-label p-l-0"><label style="line-height: 25px;">代</label></div></div>';

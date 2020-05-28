@@ -28,6 +28,7 @@
                         <input type="hidden" id="video_url" name="video_url"/>
                         <input type="hidden" id="question_string" name="question_string"/>
                         <input type="hidden" id="medicines" name="medicines"/>
+                        <input type="hidden" id="heFang" name="heFang"/>
                         <div class="mt-3 row">
                             <div class="col-md-4 form-inline">
                                 <label for="guahao" >病历号&nbsp;&nbsp; </label>
@@ -157,6 +158,15 @@
 
                         <div id="medicineSection" class="mt-3">
                         </div>
+
+                        <div class="form-group mt-3 row">
+                            <div class="col-3">
+                                <button type="button" class="btn btn-info" onclick="getHefang()"><i class="fas fa-certificate"></i> 合方</button>
+                            </div>
+                        </div>
+                        <div id="hefangSection" class="mt-3">
+                        </div>
+
                         <hr>
                         <div class="form-group mt-3 row">
                             <label class="col-2 text-right">总价: </label>
@@ -164,13 +174,6 @@
                                 <span id="total_price_span" ></span>元
                             </div>
                             <input type="hidden" id="total_price" name="total_price" ></input>
-                        </div>
-                        <div class="form-group mt-3 row">
-                            <div class="col-3">
-                                <button type="button" class="btn btn-info" onclick="getHefang()"><i class="fas fa-certificate"></i> 自动合方</button>
-                            </div>
-                        </div>
-                        <div id="hefangSection" class="mt-3">
                         </div>
 
                         <div class="row mt-3">

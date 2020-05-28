@@ -526,7 +526,7 @@ function drawRecipeSections(recipes,inquiry) {
     });
 }
 function getDrawData(orginalRecipes,newRecipes){
-    if(newRecipes.length>orginalRecipes.length){
+    if(newRecipes.length>=orginalRecipes.length){//add a recipe
         var result = orginalRecipes;
         for(var i=0; i < newRecipes.length; i++){
             if(!checkMedicineContain(newRecipes[i].id,orginalRecipes)){
@@ -540,12 +540,20 @@ function getDrawData(orginalRecipes,newRecipes){
                 }
                 newRecipes[i].medicine = JSON.stringify(tempMedicine);
                 newRecipes[i].price = calcPrice(newRecipes[i].medicine);
-
-                result.push(newRecipes[i]);
+                if(orginalRecipes.length>0){
+                    if(orginalRecipes[orginalRecipes.length-1].id=='hefang'){
+                        temp = orginalRecipes[orginalRecipes.length-1];
+                        result.pop();
+                        result.push(newRecipes[i]);
+                        result.push(temp);
+                    }else
+                        result.push(newRecipes[i]);
+                }else
+                    result.push(newRecipes[i]);
                 break;
             }
         }
-    }else{
+    }else {//delete a recipe
         var result = [];
         for(var i=0; i<orginalRecipes.length; i++){
             if(checkMedicineContain(orginalRecipes[i].id,newRecipes)){
@@ -668,7 +676,7 @@ function calcPriceTotal(){
     var recipeDatas = JSON.parse($("#medicines").val());
     for(var i=0; i < recipeDatas.length; i++){
         var fuNumber = recipeDatas[i].fuNumber!=undefined&&recipeDatas[i].fuNumber!=null&&recipeDatas[i].fuNumber!=''?recipeDatas[i].fuNumber:1;
-        if(recipeDatas[i].shifouhefang==true)
+        if(recipeDatas[i].shifouhefang!=true)
             totalPrice += calcPrice(recipeDatas[i].medicine)*fuNumber;
     }
     $("#total_price").val(totalPrice);
