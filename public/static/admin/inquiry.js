@@ -588,7 +588,7 @@ $('#question-form').submit(function (e) {
     }
 
     var form = $(this);
-    if(!form.parsley().validate()){
+    if(!form.parsley({'excluded': ':disabled'}).validate()){
         return ;
     }
 
@@ -696,6 +696,7 @@ function sethoufang(obj) {
          }
     }
     $("#medicines").val(JSON.stringify(recipeDatas));
+    drawMedicine(recipeDatas,true,true);
     calcPriceTotal();
 }
 
@@ -729,6 +730,7 @@ function changeFuNumber(obj) {
 }
 
 function searchRecipes(){
+    $("#recipe").prop('disabled',false);
     if ($("#question_title").length > 0) {
         var data = $("#question_title").val();
         if(data==''||data==null||data==undefined) {
@@ -784,7 +786,9 @@ function getHefang() {
     var hefangMedicines =temp = [];
     var strMedicins = $("#medicines").val();
     var recipeDatas = JSON.parse(strMedicins);
+    var recipeIds = '';
     for(var i = 0 ; i < recipeDatas.length; i++){
+        recipeIds +=recipeDatas[i].id+',';
         if(recipeDatas[i].shifouhefang==true){
             var tempMedicines = JSON.parse(recipeDatas[i].medicine);
             temp = temp.concat(tempMedicines);
@@ -793,6 +797,8 @@ function getHefang() {
             ban += recipeDatas[i].ban==null?'':recipeDatas[i].ban + "\n";
         }
     }
+    recipeIds = recipeIds.replace(/,\s*$/, "");
+
     for(var i=0; i < temp.length; i++) {
         for (var j = 0; j < hefangMedicines.length; j++) {
             if (hefangMedicines[j].medicine_id == temp[i].medicine_id) {
@@ -807,6 +813,7 @@ function getHefang() {
     strHefangMedicines = JSON.stringify(hefangMedicines);
     hefangRecipe = {
         id:"hefang",
+        ids:recipeIds,
         prescription_name:"合方",
         ban:ban,
         eating_method:eatting_method,
@@ -824,84 +831,8 @@ function getHefang() {
     if(i==recipeDatas.length)
         recipeDatas.push(hefangRecipe);
     drawMedicine(recipeDatas,true,true);
-    // nowRecipes = getMedicineList();
     $("#medicines").val(JSON.stringify(recipeDatas));
-
+    calcPriceTotal();
 
     // drawHeFang(hefangRecipe);
-}
-function drawHeFang(data,inquiry=false,appendable=true,inquiry_detail=false){
-    var html = '';
-    plusButton = '';
-        html += ' <h4 class="text-bold">合方 </h4><hr>'
-        var dbmedicines = JSON.parse(data.medicine);
-        for(var j=0; j<dbmedicines.length; j++){
-            html+='<div id="recipe_medicine_' + dbmedicines[j].medicine_id + '_hefang" class="recipe_medicine_hefang">';
-            var min_weight =  dbmedicines[j].min_weight;
-            var max_weight =  dbmedicines[j].max_weight;
-            var weight = dbmedicines[j].weight==undefined?0:dbmedicines[j].weight;
-            if(dbmedicines[j].weight==undefined&&dbmedicines[j].min_weight==dbmedicines[j].max_weight)
-                weight = dbmedicines[j].max_weight;
-            var price = dbmedicines[j].price;
-            var unit = dbmedicines[j].unit;
-            selectedMedicine_id = dbmedicines[j].medicine_id;
-            selectedMedicine_name = dbmedicines[j].medicine;
-            var disabled = appendable==false?"disabled='disabled'":"";
-            var unitLable = unit==null||unit==''||unit==undefined||unit=='公克'?' 元/10g':unit=='两'?' 元/两':('元/'+unit);
-
-            html+="<div class=\"row\">\n" +
-                "   <div class='col-sm-1'></div> <label class=\"col-2 col-form-label text-right\">\n" +
-                "        "+selectedMedicine_name+
-                "<input type='hidden' name='medicine_id[]' value='"+selectedMedicine_id+"' /><input type='hidden' name='medicine_name[]' value='"+selectedMedicine_name+"' /></label>\n" +
-                "    <div class=\"col-2\">\n" +
-                "        <input class=\"form-control\" type=\"number\" value=\""+weight+"\" max='"+max_weight+"' min='"+min_weight+"' name=\"weight[]\" onchange='setWeight(" + "\"hefang\"" + ",this,"+dbmedicines[j].medicine_id+","+inquiry+","+appendable+")'  id=\"weight"+selectedMedicine_id+"\" " + disabled + ">\n" +
-                "    </div>\n" +
-                "<div class=\"col-4 text-left\">\n" +
-                "    <label id=\"price_"+selectedMedicine_id+"\" style=\"line-height: 38px;\">"+price+" "+unitLable+" (最小："+min_weight+", 最大："+ max_weight+") </label><input type='hidden' name='price[]' value='"+price+"' /> \n" +
-                "<input type='hidden' name='unit[]' value='"+dbmedicines[j].unit+"' />"+
-                "</div>\n"+
-                "<input class=\"form-control\" type=\"hidden\" value=\""+max_weight+"\" name=\"max_weight[]\" id=\"max_weight_"+selectedMedicine_id+"\">\n" +
-                "<input class=\"form-control\" type=\"hidden\" value=\""+min_weight+"\" name=\"min_weight[]\" id=\"min_weight_"+selectedMedicine_id+"\">\n" +
-                "</div></div>\n"
-            html +='</div>';
-        }
-        if(inquiry==true)
-            fuhtml = '<div class="col-sm-1"></div> <div class="col-sm-2 text-right"><input type="number" class="form-control text-right" onchange="changeFuNumber(this)" name="fuNumber_' +"hefang"+'" id="fuNumber_'+"hefang"+'" min="1" value="'+(data.fuNumber==undefined||data.fuNumber==null?1:data.fuNumber)+'"/></div><div class="text-left col-form-label">副</div>' ;
-        else
-            fuhtml = '<div class="col-sm-3 p-r-0 text-right col-form-label">1副</div>';
-
-        // if(inquiry==true){
-        otherHtml = '<div class="row mt-3">\n' +
-            '   <div class="col-sm-1"></div> \n' +
-            '   <label class="col-2 col-form-label text-right mt-3">其他病症</label>\n' +
-            '    <div class="col-7">\n' +
-            '        <textarea class="form-control" type="text" disabled rows="3">'+data.other_condition+'</textarea>\n' +
-            '    </div>\n' +
-            '</div>' ;
-        html+=otherHtml;
-        eatingHtml = '<div class="row mt-3">\n' +
-            '   <div class="col-sm-1"></div> \n' +
-            '   <label class="col-2 col-form-label text-right mt-3">煎服法</label>\n' +
-            '    <div class="col-7">\n' +
-            '        <textarea class="form-control" type="text" disabled rows="3">'+data.eating_method+'</textarea>\n' +
-            '    </div>\n' +
-            '</div>' ;
-        html+=eatingHtml;
-        var ban = data.ban=='null'||data.ban=='undefined'?'':data.ban;
-        ban = ban==null?'':ban;
-        banHtml = '<div class="row mt-3">\n' +
-            '   <div class="col-sm-1"></div> \n' +
-            '   <label class="col-2 col-form-label text-right mt-3">禁忌</label>\n' +
-            '    <div class="col-7">\n' +
-            '        <textarea class="form-control" type="text" disabled rows="3">'+ban+'</textarea>\n' +
-            '    </div>\n' +
-            '</div>' ;
-        html+=banHtml;
-        html+='<div class="row mt-3">' + fuhtml +
-            '<div class="col-sm-2"><input type="number" onchange="changeDaiNumber(this)" name="daiNumber_'+"hefang"+'" id="daiNumber_'+"hefang"+'" class="form-control" '+disabled+' min="1" value="' + (data.daiNumber==undefined||data.daiNumber==null||data.daiNumber<1?1:data.daiNumber) + '" /></div>' +
-            '<div class="col-sm-2 col-form-label p-l-0"><label style="line-height: 25px;">代</label></div></div>';
-        html += '<div class="row"><div class="col-sm-3 p-r-0 text-right col-form-label">总价</div> ' +
-            '<div class="col-sm-2"><input type="text" disabled name="totalPrice_'+"hefang"+'" id="totalPrice_'+"hefang"+'" class="form-control" value="' + data.price + '" /><label></label></div>' +
-            '</div>';
-    $("#hefangSection").html(html);
 }

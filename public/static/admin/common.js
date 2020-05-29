@@ -351,12 +351,6 @@ function drawMedicine(data,inquiry=false,appendable,inquiry_detail=false) {
     var html = '';
     for(var i=0; i < data.length; i++){
         var shifouhefangChecked = data[i].shifouhefang?'checked':'';
-        if(data[i].shifouhefang!=true&&inquiry_detail==true){
-            continue;
-        }
-        if(data[i].shifouhefang==undefined&&inquiry_detail==true){
-            continue;
-        }
 
         if (appendable)
             plusButton ='<button type="button" class="btn btn-circle btn-warning p-0-0"  title="添加药材" onclick="setRecipeId('+ data[i].id + ');"><i class="fas fa-plus"></i></button>';
@@ -378,12 +372,13 @@ function drawMedicine(data,inquiry=false,appendable,inquiry_detail=false) {
             var disabled = appendable==false?"disabled='disabled'":"";
             var unitLable = unit==null||unit==''||unit==undefined||unit=='公克'?' 元/10g':unit=='两'?' 元/两':('元/'+unit);
 
+            var maxMin = data[i].shifouhefang!=true?"max='"+max_weight+"' min='"+min_weight+"'":'';
             html+="<div class=\"row\">\n" +
                 "   <div class='col-sm-1'></div> <label class=\"col-2 col-form-label text-right\">\n" +
                 "        <button type=\"button\" class=\"btn btn-default\" data-toggle=\"tooltip\" title=\"删除\" data-index=\""+selectedMedicine_id+"\" onclick=\"removeMedicineQA(" + data[i].id + ", this,"+inquiry+","+appendable+");\"><i class=\"fas fa-times\"></i> </button> &nbsp;"+selectedMedicine_name+
                 "<input type='hidden' name='medicine_id[]' value='"+selectedMedicine_id+"' /><input type='hidden' name='medicine_name[]' value='"+selectedMedicine_name+"' /></label>\n" +
                 "    <div class=\"col-2\">\n" +
-                "        <input class=\"form-control\" type=\"number\" value=\""+weight+"\" max='"+max_weight+"' min='"+min_weight+"' name=\"weight[]\" onchange='setWeight(" + data[i].id + ",this,"+dbmedicines[j].medicine_id+","+inquiry+","+appendable+")'  id=\"weight"+selectedMedicine_id+"\" " + disabled + ">\n" +
+                "        <input class=\"form-control\" type=\"number\" value=\""+weight+"\" "+maxMin+" name=\"weight[]\" onchange='setWeight(\"" + data[i].id + "\",this,"+dbmedicines[j].medicine_id+","+inquiry+","+appendable+")'  id=\"weight"+data[i].id+'_'+selectedMedicine_id+"\" " + disabled + " >\n" +
                 "    </div>\n" +
                 "<div class=\"col-4 text-left\">\n" +
                 "    <label id=\"price_"+selectedMedicine_id+"\" style=\"line-height: 38px;\">"+price+" "+unitLable+" (最小："+min_weight+", 最大："+ max_weight+") </label><input type='hidden' name='price[]' value='"+price+"' /> \n" +
@@ -396,12 +391,15 @@ function drawMedicine(data,inquiry=false,appendable,inquiry_detail=false) {
 
         }
 
+        if(data[i].id=='hefang')
+            hefangdisable = 'disabled';
+        else hefangdisable = '';
         var shifouhefangHtml = '<div class="row">\n' +
             '   <div class="col-sm-3"></div>\n' +
             '   <div class="col-8">\n' +
             '        <div class="custom-control custom-checkbox">\n' +
             '\t\t<input type="hidden" class="custom-control-input" name="houfang[]" value="'+data[i].shifouhefang+'">\n' +
-            '\t\t<input type="checkbox" class="custom-control-input" id="houfang_'+data[i].id+'"'+shifouhefangChecked+' onclick="sethoufang(this)">\n' +
+            '\t\t<input type="checkbox" class="custom-control-input" id="houfang_'+data[i].id+'"'+shifouhefangChecked+' onclick="sethoufang(this)" '+hefangdisable+'>\n' +
             '\t\t<label class="custom-control-label" for="houfang_'+data[i].id+'">是否合方</label>\n' +
             '\t\t</div>\n' +
             '    </div>\n' +

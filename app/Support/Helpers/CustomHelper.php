@@ -988,11 +988,25 @@ if (!function_exists('getRecipeJSON')) {
         $recipes = json_decode($strMedicine);
         $result = [];
         foreach($recipes as $recipe){
-            $tempRecipe = recipe::where('id',$recipe->id)->first();
-            $recipe->medicine = getMedicineJSON($recipe->medicine);
-            $recipe->other_condition = $tempRecipe->other_condition;
-            $recipe->eating_method =  $tempRecipe->eating_method;
-            $recipe->ban = $tempRecipe->ban;
+            if($recipe->id!='hefang'){
+                $tempRecipe = recipe::where('id',$recipe->id)->first();
+                $recipe->medicine = getMedicineJSON($recipe->medicine);
+                $recipe->other_condition = $tempRecipe->other_condition;
+                $recipe->eating_method =  $tempRecipe->eating_method;
+                $recipe->ban = $tempRecipe->ban;
+            }else{
+                $tempRecipes = recipe::where('id',"IN",$recipe->ids)->get();
+                $recipe->medicine = getMedicineJSON($recipe->medicine);
+
+                foreach($tempRecipes as $tempRecipe){
+                    $recipe->other_condition.= $tempRecipe->other_condition."\n";
+                    $recipe->eating_method .=  $tempRecipe->eating_method."\n";
+                    $recipe->ban .= $tempRecipe->ban."\n";
+                }
+                $recipe->other_condition = rtrim($recipe->other_condition,"\n");
+                $recipe->eating_method = rtrim($recipe->eating_method,"\n");
+                $recipe->ban = rtrim($recipe->ban,"\n");
+            }
             array_push($result,$recipe);
         }
         return json_encode($result);
