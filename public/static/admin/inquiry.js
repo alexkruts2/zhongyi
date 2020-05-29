@@ -299,7 +299,7 @@ function startVideoCamera(){
                 video: true,
                 maxLength: videoMaxLengthInSeconds,
                 debug: true,
-                videoMimeType: "video/webm;codecs=H264"
+                videoMimeType: "video/mp4"
             }
         }
     }, function(){
