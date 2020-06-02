@@ -85,10 +85,11 @@
                         </li>
                     @endif
                     @if(!empty(auth()->guard('admin')->id()) || checkAuthority(auth()->guard('doctor')->id(),'/doctor/inquiry'))
-                        <li class="menu {{(strpos(request()->path(),'doctor/inquiry/view')!==false ||strpos(request()->path(),'doctor/inquiry/create')!==false||strpos(request()->path(),'doctor/history/detail')!==false  ) ?'active':'' }}">
+                        <li class="menu {{(strpos(request()->path(),'doctor/inquiry/view')!==false|| strpos(request()->path(),'doctor/inquiry/editView')!==false ||strpos(request()->path(),'doctor/inquiry/create')!==false||strpos(request()->path(),'doctor/history/detail')!==false  ) ?'active':'' }}">
                             <a href="javascript:void(0)">问诊管理<i class="fa fa-angle-left float-right"></i></a>
-                            <ul class="sub-menu" style="display:{{(strpos(request()->path(),'doctor/inquiry/view')!==false || strpos(request()->path(),'doctor/inquiry/create')!==false|| strpos(request()->path(),'doctor/history/detail')!==false) ?'block':'none' }}">
+                            <ul class="sub-menu" style="display:{{(strpos(request()->path(),'doctor/inquiry/view')!==false || strpos(request()->path(),'doctor/inquiry/editView')!==false || strpos(request()->path(),'doctor/inquiry/create')!==false|| strpos(request()->path(),'doctor/history/detail')!==false) ?'block':'none' }}">
                                 <li class="{{request()->path() == '/doctor/inquiry/view' ? 'active' : ''}}"><a class="{{request()->path() == 'doctor/inquiry/view' ? 'active' : ''}}" href="/doctor/inquiry/view">查看问诊</a></li>
+                                <li class="{{request()->path() == '/doctor/inquiry/editView' ? 'active' : ''}}"><a class="{{request()->path() == 'doctor/inquiry/editView' ? 'active' : ''}}" href="/doctor/inquiry/editView">修改问诊</a></li>
                             </ul>
                         </li>
                     @endif

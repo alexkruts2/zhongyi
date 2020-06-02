@@ -212,27 +212,28 @@ function dataURItoBlob( dataURI ) {
 function print(data,callbackFunc) {
     someJSONdata = [
         {
-            属性: '患者姓名',
+            属性: '挂号时间',
+            值: data.updated_at,
+        },
+        {
+            属性: '姓名',
             值: data.patient_name,
         },
         {
-            属性: '患者电话号码',
+            属性: '电话号',
             值: data.patient_phone,
-        },
-        {
-            属性: '医生姓名',
-            值: data.doctor.name,
         },
         {
             属性: '科室',
             值: data.doctor.department.name,
         },
         {
+            属性: '医生姓名',
+            值: data.doctor.name,
+        },
+        {
             属性: '挂号费',
             值: data.accept_fee,
-        },{
-            属性: '挂号时间',
-            值: data.updated_at,
         }
     ]
 
