@@ -209,12 +209,39 @@ function dataURItoBlob( dataURI ) {
     return new Blob( [ buffer ], { type: mimeString } );
 }
 
-function print(guahao,callbackFunc) {
+function print(data,callbackFunc) {
+    someJSONdata = [
+        {
+            属性: '患者姓名',
+            值: data.patient_name,
+        },
+        {
+            属性: '患者电话号码',
+            值: data.patient_phone,
+        },
+        {
+            属性: '医生姓名',
+            值: data.doctor.name,
+        },
+        {
+            属性: '科室',
+            值: data.doctor.department.name,
+        },
+        {
+            属性: '挂号费',
+            值: data.accept_fee,
+        },{
+            属性: '挂号时间',
+            值: data.updated_at,
+        }
+    ]
 
-    JsBarcode("#barcode", guahao);
+    // JsBarcode("#barcode", guahao);
     printJS({
-        printable: 'print',
-        type: 'html',
+        printable: someJSONdata,
+        properties: ['属性', '值'],
+        header:null,
+        type: 'json',
         onPrintDialogClose:callbackFunc
     });
 }
@@ -325,8 +352,9 @@ function payAccept() {
             hideOverlay();
             if (resp.code == 0) {
                 hideOverlay();
-                window.location.href='/doctor/accept/guahao/view';
-                $("#payModal").modal('hide');
+                print(resp.data,function(){
+                    window.location.href='/doctor/accept/guahao/view';
+                });                $("#payModal").modal('hide');
                 printFlag = true;
             } else {
                 hideOverlay();

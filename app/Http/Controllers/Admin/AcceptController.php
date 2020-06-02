@@ -229,6 +229,10 @@ class AcceptController extends Controller
             'hospital_profit' => $hospital_profit,
             'doctor_profit' => $doctor_profit
         ]);
+        $treatment->patient_name = $treatment->patient->name;
+        $treatment->patient_phone = $treatment->patient->phone_number;
+        $treatment->department_name = $treatment->doctor->department->name;
+        $treatment->accept_fee = $accept_price;
 
         return success($treatment);
     }

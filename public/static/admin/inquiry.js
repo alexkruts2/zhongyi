@@ -797,6 +797,15 @@ function getHefang() {
             ban += recipeDatas[i].ban==null?'':recipeDatas[i].ban + "\n";
         }
     }
+    if(temp.length<1){
+        Swal.fire({
+            type: 'info',
+            title: '请选择至少一个是否合方。',
+            showConfirmButton: false,
+            timer: 3000
+        });
+        return;
+    }
     recipeIds = recipeIds.replace(/,\s*$/, "");
 
     for(var i=0; i < temp.length; i++) {

@@ -353,7 +353,7 @@ function drawMedicine(data,inquiry=false,appendable,inquiry_detail=false) {
         var shifouhefangChecked = data[i].shifouhefang?'checked':'';
 
         if (appendable)
-            plusButton ='<button type="button" class="btn btn-circle btn-warning p-0-0"  title="添加药材" onclick="setRecipeId('+ data[i].id + ');"><i class="fas fa-plus"></i></button>';
+            plusButton ='<button type="button" class="btn btn-circle btn-warning p-0-0"  title="添加药材" onclick="setRecipeId(\''+ data[i].id + '\');"><i class="fas fa-plus"></i></button>';
         else
             plusButton = '';
         html += ' <h4 class="text-bold">'+data[i].prescription_name+plusButton+' </h4><hr>'
@@ -370,17 +370,18 @@ function drawMedicine(data,inquiry=false,appendable,inquiry_detail=false) {
             selectedMedicine_id = dbmedicines[j].medicine_id;
             selectedMedicine_name = dbmedicines[j].medicine;
             var disabled = appendable==false?"disabled='disabled'":"";
-            var unitLable = unit==null||unit==''||unit==undefined||unit=='公克'?' 元/10g':unit=='两'?' 元/两':('元/'+unit);
+            var unitLable = unit==null||unit==''||unit==undefined||unit=='公克'?' 元/1g':unit=='两'?' 元/两':('元/'+unit);
+            price = unit=='公克'?price/10:price;
 
             var maxMin = data[i].shifouhefang!=true?"max='"+max_weight+"' min='"+min_weight+"'":'';
             html+="<div class=\"row\">\n" +
                 "   <div class='col-sm-1'></div> <label class=\"col-2 col-form-label text-right\">\n" +
-                "        <button type=\"button\" class=\"btn btn-default\" data-toggle=\"tooltip\" title=\"删除\" data-index=\""+selectedMedicine_id+"\" onclick=\"removeMedicineQA(" + data[i].id + ", this,"+inquiry+","+appendable+");\"><i class=\"fas fa-times\"></i> </button> &nbsp;"+selectedMedicine_name+
+                "        <button type=\"button\" class=\"btn btn-default\" data-toggle=\"tooltip\" title=\"删除\" data-index=\""+selectedMedicine_id+"\" onclick=\"removeMedicineQA('" + data[i].id + "', this,"+inquiry+","+appendable+");\"><i class=\"fas fa-times\"></i> </button> &nbsp;"+selectedMedicine_name+
                 "<input type='hidden' name='medicine_id[]' value='"+selectedMedicine_id+"' /><input type='hidden' name='medicine_name[]' value='"+selectedMedicine_name+"' /></label>\n" +
                 "    <div class=\"col-2\">\n" +
                 "        <input class=\"form-control\" type=\"number\" value=\""+weight+"\" "+maxMin+" name=\"weight[]\" onchange='setWeight(\"" + data[i].id + "\",this,"+dbmedicines[j].medicine_id+","+inquiry+","+appendable+")'  id=\"weight"+data[i].id+'_'+selectedMedicine_id+"\" " + disabled + " >\n" +
                 "    </div>\n" +
-                "<div class=\"col-4 text-left\">\n" +
+                "<div class=\"col-6 text-left\">\n" +
                 "    <label id=\"price_"+selectedMedicine_id+"\" style=\"line-height: 38px;\">"+price+" "+unitLable+" (最小："+min_weight+", 最大："+ max_weight+") </label><input type='hidden' name='price[]' value='"+price+"' /> \n" +
                 "<input type='hidden' name='unit[]' value='"+dbmedicines[j].unit+"' />"+
                 "</div>\n"+
@@ -455,6 +456,9 @@ function drawMedicine(data,inquiry=false,appendable,inquiry_detail=false) {
 }
 function calcPrice(strMedicines) {
     if(strMedicines==undefined||strMedicines==''||strMedicines==null)
+        return 0;
+
+    if(strMedicines=='hefang')
         return 0;
     var totalPrice = 0;
     var tempMedicines = JSON.parse(strMedicines);
