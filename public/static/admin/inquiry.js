@@ -424,123 +424,7 @@ function drawRecipe(questions, recipes){
     $("#recipe").html(html);
 }
 
-function drawRecipeOther(recipes){
-    var html = '',
-        recipe_list = [];
-    if (recipes.length > 0)
-        recipe_list = recipes;
-    for (var i = 0; i < recipe_list.length; i ++) {
-        html += '<option value="' + recipe_list[i].id+'" data-medicine=\'' + recipe_list[i].medicine + '\' data-otherCondition=\'' +
-            recipe_list[i].other_condition + '\' data-eating_method=\'' + recipe_list[i].eating_method + '\' data-ban=\'' + recipe_list[i].ban + '\'>'+recipe_list[i].prescription_name+'</option>';
-    }
-    $("#recipe").html(html);
-}
 
-function drawRecipeSectionsOther(selrecipes, medicines, eating_method, ban, othercondition) {
-    var temp = medicines;
-    var html = "";
-    if(medicines==''||medicines==null||medicines==undefined){
-        temp = medicines= [];
-        $("#medicineSection").html("");
-        return;
-    }
-
-    var recipes = (selrecipes);
-    for(var i=0; i < recipes.length; i++){
-        var dbmedicines = (medicines[i]);
-        html += ' <h4 class="text-bold">'+recipes[i].prescription_name+' <button type="button" class="btn btn-circle btn-warning p-0-0"  title="添加药材" onclick="setRecipeId('+ recipes[i].id + ');"><i class="fas fa-plus"></i></button></h4><hr>';
-        for(var j=0; j<dbmedicines.length; j++){
-            html+='<div id="recipe_medicine_' + recipes[i].id + '" class="recipe_medicine_' + recipes[i].id + '">';
-            var min_weight =  dbmedicines[j].min_weight;
-            var max_weight =  dbmedicines[j].max_weight;
-            var weight = dbmedicines[j].weight==undefined?0:dbmedicines[j].weight;
-            if(dbmedicines[j].weight==undefined&&dbmedicines[j].min_weight==dbmedicines[j].max_weight)
-                weight = dbmedicines[j].max_weight;
-            var price = dbmedicines[j].price;
-            var unit = dbmedicines[j].unit;
-            selectedMedicine_id = dbmedicines[j].medicine_id;
-            selectedMedicine_name = dbmedicines[j].medicine;
-
-            var unitLable = unit==null || unit=="null" ||unit==''||unit==undefined||unit=='公克'?' 元/10g':unit=='两'?' 元/两':('元/'+unit);
-
-            html+="<div class=\"row\">\n" +
-                "   <div class='col-sm-2'></div> <label class=\"col-1 col-form-label text-right\">\n" +
-                "        <button type=\"button\" class=\"btn btn-default\" data-toggle=\"tooltip\" title=\"删除\" data-index=\""+selectedMedicine_id+"\" onclick=\"removeMedicineInq(" + recipes[i].id + ", this);\"><i class=\"fas fa-times\"></i> </button> &nbsp;" + selectedMedicine_name +
-                "<input type='hidden' name='medicine_id[]' value='"+selectedMedicine_id+"' /><input type='hidden' name='medicine_name[]' value='"+selectedMedicine_name+"' /></label>\n" +
-                "    <div class=\"col-2\">\n" +
-                "        <input class=\"form-control\" type=\"number\" value=\""+weight+"\" name=\"mass[]\" min=\"0\" onchange='calcPriceOther(" + recipes[i].id + ")'  id=\"weight"+selectedMedicine_id+"\">\n" +
-                "    </div>\n" +
-                "<div class=\"col-4 text-left\">\n" +
-                "    <label id=\"price_"+selectedMedicine_id+"\" style=\"line-height: 38px;\">"+price+" "+unitLable+" (最小："+min_weight+", 最大："+ max_weight+") </label><input type='hidden' name='price[]' value='"+price+"' /> \n" +
-                "<input type='hidden' name='unit[]' value='"+dbmedicines[j].unit+"' />"+
-                "</div>\n"+
-                "<input class=\"form-control\" type=\"hidden\" value=\""+max_weight+"\" name=\"max_weight[]\" id=\"max_weight_"+selectedMedicine_id+"\">\n" +
-                "<input class=\"form-control\" type=\"hidden\" value=\""+min_weight+"\" name=\"min_weight[]\" id=\"min_weight_"+selectedMedicine_id+"\">\n" +
-                "</div>" +
-                "</div>\n"
-            html +='</div>';
-
-        }
-
-        html += '<div id="recipe_medicine_' + recipes[i].id + '">' +
-            "<div class=\"row\">\n" +
-            "   <div class='col-sm-2'></div> <label class=\"col-1 col-form-label text-right\">\n其他症状</label>\n" +
-            "    <div class=\"col-8\">\n" +
-            "        <textarea class=\"form-control\" type=\"text\" disabled>" + othercondition[i] + "</textarea>\n" +
-            "    </div>\n" +
-            "</div>\n" +
-            "</div>\n";
-
-        html += '<div id="recipe_medicine_' + recipes[i].id + '">' +
-            "<div class=\"row\">\n" +
-            "   <div class='col-sm-2'></div> <label class=\"col-1 col-form-label text-right\">\n禁忌</label>\n" +
-            "    <div class=\"col-8\">\n" +
-            "        <textarea class=\"form-control\" type=\"text\" disabled>" + ban[i] + "</textarea>\n" +
-            "    </div>\n" +
-            "</div>\n" +
-            "</div>\n";
-
-        html += '<div id="recipe_medicine_' + recipes[i].id + '">' +
-            "<div class=\"row\">\n" +
-            "   <div class='col-sm-2'></div> <label class=\"col-1 col-form-label text-right\">\n煎服方法</label>\n" +
-            "    <div class=\"col-8\">\n" +
-            "        <textarea class=\"form-control\" type=\"text\" disabled>" + eating_method[i] + "</textarea>\n" +
-            "    </div>\n" +
-            "</div>\n" +
-            "</div>\n";
-
-        html += '<div id="recipe_medicine_' + recipes[i].id + '">' +
-            "<div class=\"row\">\n" +
-            "   <div class='col-sm-2'></div><div class=\"col-sm-1\"></div>" +
-            "    <div class=\"col-8\">\n" +
-            "        <div class=\"custom-control custom-checkbox\">" +
-            "           <input type=\"hidden\" class=\"custom-control-input\" name=\"houfang[]\" value=\"0\">" +
-            "           <input type=\"checkbox\" class=\"custom-control-input\" id=\"houfang_" + recipes[i].id + "\" onclick=\"sethoufang(this)\">" +
-            "           <label class=\"custom-control-label\" for=\"houfang_" + recipes[i].id + "\">\n是否合方</label>" +
-            "        </div>\n" +
-            "    </div>\n" +
-            "</div>\n" +
-            "</div>\n";
-
-        html += "<div class='row mt-3 fuPrice fuPrice_" + recipes[i].id + "\'>" +
-            "<div class='col-sm-2'></div>" +
-            "<div class='col-sm-1' style='margin-left: 3.5%'>" +
-            "<input class=\"form-control\" type=\"hidden\" value=\"0"+"\" name=\"totalPrice[]\" id=\"totalPrice_"+recipes[i].id+"\">\n" +
-            "<input class=\"form-control\" type=\"hidden\" value=\"0"+"\" name=\"daiNumber[]\" id=\"daiNumber_"+recipes[i].id+"\">\n" +
-            "<input type='number' id='fuNumber_" + recipes[i].id + "' name='fuNumber[]' min='0' class='text-center form-control' onchange='changeFuNumber(" + recipes[i].id + ", this);' value='1'/></div>" +
-            "<div class='text-left col-form-label'>副</div>" +
-            "<div class='col-sm-2'><input type='number' class='text-center form-control' id='fudaiNumber_" + recipes[i].id + "' name='fudaiNumber[]' value='0'/></div>" +
-            "<div class='col-form-label'>代</div>" +
-            "<div class='col-sm-2'><input type='number' class='text-center form-control fuPriceVal' id='fuPrice_" + recipes[i].id + "' name='fuPrice[]' value='" + recipes[i].total + "'disabled/></div>" +
-            "<div class='col-sm-1 col-form-label'>元</div>" +
-            "</div>";
-    }
-    $("#medicineSection").html(html);
-
-    for(var i=0; i < recipes.length; i++){
-        calcPriceOther(recipes[i].id);
-    }
-}
 
 function drawSlide(questions) {
     var html = '';
@@ -729,58 +613,58 @@ function changeFuNumber(obj) {
     calcPriceTotal();
 }
 
-function searchRecipes(){
-    $("#recipe").prop('disabled',false);
-    if ($("#question_title").length > 0) {
-        var data = $("#question_title").val();
-        if(data==''||data==null||data==undefined) {
-
-            drawRecipeSections([], [], [], [], []);
-            drawRecipeSectionsOther([], [], [], [], []);
-
-            var forms = new FormData($("#question-form")[0]);
-
-            showOverlay();
-            $.ajax({
-                url: '/doctor/inquiry/getRecipeOther',
-                data: forms,
-                type: 'POST',
-                cache: false,
-                contentType: false,
-                processData: false,
-                success: function (resp) {
-                    hideOverlay();
-                    if (resp.code == 0) {
-                        drawRecipeOther(resp.data);
-                    } else {
-                        hideOverlay();
-                        Swal.fire({
-                            type: 'error',
-                            text: resp.message,
-                            title: '错误',
-                            showConfirmButton: false,
-                            timer: 3000
-                        });
-                    }
-                },
-                error: function (e) {
-                    hideOverlay();
-                    Swal.fire({
-                        type: 'error',
-                        text: 'Internal Error ' + e.status + ' - ' + e.responseJSON.message,
-                        title: '错误',
-                        showConfirmButton: false,
-                        timer: 3000
-                    });
-                }
-            });
-
-        } else {
-            return;
-        }
-    }
-
-}
+// function searchRecipes(){
+//     $("#recipe").prop('disabled',false);
+//     if ($("#question_title").length > 0) {
+//         var data = $("#question_title").val();
+//         if(data==''||data==null||data==undefined) {
+//
+//             drawRecipeSections([], [], [], [], []);
+//             drawRecipeSectionsOther([], [], [], [], []);
+//
+//             var forms = new FormData($("#question-form")[0]);
+//
+//             showOverlay();
+//             $.ajax({
+//                 url: '/doctor/inquiry/getRecipeOther',
+//                 data: forms,
+//                 type: 'POST',
+//                 cache: false,
+//                 contentType: false,
+//                 processData: false,
+//                 success: function (resp) {
+//                     hideOverlay();
+//                     if (resp.code == 0) {
+//                         drawRecipeOther(resp.data);
+//                     } else {
+//                         hideOverlay();
+//                         Swal.fire({
+//                             type: 'error',
+//                             text: resp.message,
+//                             title: '错误',
+//                             showConfirmButton: false,
+//                             timer: 3000
+//                         });
+//                     }
+//                 },
+//                 error: function (e) {
+//                     hideOverlay();
+//                     Swal.fire({
+//                         type: 'error',
+//                         text: 'Internal Error ' + e.status + ' - ' + e.responseJSON.message,
+//                         title: '错误',
+//                         showConfirmButton: false,
+//                         timer: 3000
+//                     });
+//                 }
+//             });
+//
+//         } else {
+//             return;
+//         }
+//     }
+//
+// }
 function getHefang() {
     var otherCondition=eatting_method=ban='';
     var hefangMedicines =temp = [];

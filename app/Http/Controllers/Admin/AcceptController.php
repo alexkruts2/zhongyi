@@ -352,8 +352,6 @@ class AcceptController extends Controller
         $orderDirection = $order[0]['dir'];
         $accept_price = setting::where('name','ACCEPT_PRICE')->first()->value;
 
-
-
         $datas = treatment::select('treatments.*')->where('treatments.state',config('constant.treat_state.before_treating_pay'))
             ->where(function($query) use ($searchValue) {
                 $query->where('patients.name','like','%'.$searchValue.'%')
