@@ -70,11 +70,23 @@ function inputGuahao() {
     });
 }
 function payTreatment() {
+
+    var pay_type = $("#pay_type").val();
+    if(pay_type==''||pay_type==undefined||pay_type==null){
+        Swal.fire({
+            type: 'error',
+            title: '请选择付款方式。',
+            showConfirmButton: false,
+            timer: 3000
+        });
+        return;
+    }
+
     var treat_id = $("#treat_id").val();
     showOverlay();
     $.ajax({
         url: '/doctor/accept/payment/done',
-        data: "id=" + treat_id,
+        data: "id=" + treat_id+'&pay_type='+pay_type,
         cache: false,
         dataType: 'json',
         processData: false,

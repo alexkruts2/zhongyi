@@ -155,6 +155,17 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
+                        <div class="col-3 text-right col-form-label">付款方式</div>
+                        <div class="col-8">
+                            <select class="form-control" id="pay_type">
+                                <option value="">－－－请选择付款方式－－－</option>
+                                <option value="支付宝">支付宝</option>
+                                <option value="微信支付">微信支付</option>
+                                <option value="现金支付">现金支付</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
                         <div class="col-5">
                             <h4 class="card-title">微信二维码：</h4>
                             <img src="{{$weixin_url}}" alt="微信二维码" class="w-100">

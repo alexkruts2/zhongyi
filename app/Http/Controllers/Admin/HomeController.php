@@ -849,9 +849,15 @@ class HomeController extends Controller
     }
     public function giveMedicine(Request $request){
         validate($request->all(), [
-            'guahao'=>'required'
+            'guahao'=>'required',
+            'shippingType'=>'required'
         ]);
         $guahao = $request->get('guahao');
+        $shippingType = $request->get('shippingType');
+        $kuaidiCompany = $request->get('kuaidiCompany');
+        $kuaidiNumber = $request->get('kuaidiNumber');
+
+
         $treatData = treatment::where('guahao',$guahao)->first();
         if(empty($treatData))
             return error('无效挂号');
@@ -859,7 +865,10 @@ class HomeController extends Controller
         if($state!=config('constant.treat_state.after_treating_pay'))
             return error('无效挂号');
         $treatData->update([
-           'state' => config('constant.treat_state.close')
+            'shippingType'=>$shippingType,
+            'kuaidiCompany' => $kuaidiCompany,
+            'kuaidiNumber' => $kuaidiNumber,
+            'state' => config('constant.treat_state.close')
         ]);
         return success();
     }

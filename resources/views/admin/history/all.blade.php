@@ -33,7 +33,7 @@
                                     <th class="text-center">病名</th>
                                     <th class="text-center">问诊次数</th>
                                     <th class="text-center">问诊日期</th>
-                                    <th class="text-center">处方</th>
+                                    <th class="text-center">发药方式</th>
                                     <th class="text-center">操作</th>
                                 </tr>
                             </thead>

@@ -214,10 +214,12 @@ class AcceptController extends Controller
     public function updateTreatment(Request $request){
         validate($request->all(), [
             'id' => 'required',
-            'state' => 'required'
+            'state' => 'required',
+            'pay_type'=>'required'
         ]);
         $id = $request->get('id');
         $state = $request->get('state');
+        $pay_type = $request->get('pay_type');
         $treatment = treatment::where('id',$id)->first();
         $accept_price = setting::where('name','ACCEPT_PRICE')->first()->value;
         $doctor_ratio = $treatment->doctor->doctor_ratio;
@@ -226,8 +228,10 @@ class AcceptController extends Controller
         $treatment->update([
             'state' => $state,
             'price' => $accept_price,
+            'price_guahao' => $accept_price,
             'hospital_profit' => $hospital_profit,
-            'doctor_profit' => $doctor_profit
+            'doctor_profit' => $doctor_profit,
+            'pay_type_guahao'=>$pay_type
         ]);
         $treatment->patient_name = $treatment->patient->name;
         $treatment->patient_phone = $treatment->patient->phone_number;
@@ -281,9 +285,11 @@ class AcceptController extends Controller
     }
     public function donePayment(Request $request){
         validate($request->all(), [
-            'id' => 'required'
+            'id' => 'required',
+            'pay_type'=>'required'
         ]);
         $id = $request->get('id');
+        $pay_type = $request->get('pay_type');
         $treatment = treatment::where('id',$id)->first();
         $price = $treatment->price;
         $ratio = $treatment->doctor->doctor_ratio;
@@ -292,6 +298,7 @@ class AcceptController extends Controller
         $treatment->update([
             'hospital_profit' => $hospital_profit,
             'doctor_profit' => $doctor_profit,
+            'pay_type_medicine'=>$pay_type,
             "state" => config('constant.treat_state.after_treating_pay')
         ]);
         return success("OK");

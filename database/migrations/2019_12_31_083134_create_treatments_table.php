@@ -30,6 +30,11 @@ class CreateTreatmentsTable extends Migration
             $table->dateTime('treat_end')->nullable();
             $table->string('disease_name')->nullable();
             $table->double('price')->nullable();
+            $table->double('price')->nullable();
+            $table->double('price_medicine')->nullable();
+            $table->double('price_guahao')->nullable();
+            $table->string('pay_type_guahao',32)->nullable();
+            $table->string('pay_type_medicine',32)->nullable();
             $table->double('doctor_profit')->nullable();
             $table->double('hospital_profit')->nullable();
             $table->string('original_recipe')->nullable();
@@ -39,6 +44,9 @@ class CreateTreatmentsTable extends Migration
             $table->string('mai',256);
             $table->text('doctor_question');
             $table->string('houfang',8);
+            $table->string('shippingType',8);
+            $table->string('kuaidiCompany',128);
+            $table->string('kuaidiNumber',128);
             $table->integer('fuNumber');
             $table->timestamps();
         });

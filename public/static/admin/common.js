@@ -908,6 +908,7 @@ function getHefang() {
             if (hefangMedicines[j].medicine_id == temp[i].medicine_id) {
                 hefangMedicines[j].max_weight = hefangMedicines[j].max_weight > temp[i].max_weight ? hefangMedicines[j].max_weight : temp[i].max_weight;
                 hefangMedicines[j].min_weight = hefangMedicines[j].min_weight < temp[i].min_weight ? hefangMedicines[j].min_weight : temp[i].min_weight;
+                hefangMedicines[j].weight = hefangMedicines[j].weight > temp[i].weight ? hefangMedicines[j].weight : temp[i].weight;
                 break;
             }
         }

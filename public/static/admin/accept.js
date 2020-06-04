@@ -339,12 +339,22 @@ function viewTreatment (id,obj) {
     });
 }
 function payAccept() {
+    var pay_type = $("#pay_type").val();
+    if(pay_type==''||pay_type==undefined||pay_type==null){
+        Swal.fire({
+            type: 'error',
+            title: '请选择付款方式。',
+            showConfirmButton: false,
+            timer: 3000
+        });
+        return;
+    }
     var treatment_id = treatment.id;
     var state = "WAITING_TREATMENT";
     showOverlay();
     $.ajax({
         url: '/doctor/accept/treatment/update',
-        data: "id="+treatment_id+"&state="+ state,
+        data: "id="+treatment_id+"&state="+ state+"&pay_type="+pay_type,
         type: 'get',
         cache: false,
         contentType: false,

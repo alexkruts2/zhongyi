@@ -62,50 +62,50 @@
                 </div>
                 <div class="modal-body">
                         <div class="form-group mt-3 row">
-                            <label for="example-text-input" class="col-2 col-form-label text-right">科室</label>
-                            <div class="col-10">
+                            <label for="example-text-input" class="col-3 col-form-label text-right">科室</label>
+                            <div class="col-9">
                                 <label class="col-form-label" id="department"></label>
                             </div>
                         </div>
                         <div class="form-group mt-3 row">
-                            <label for="example-text-input" class="col-2 col-form-label text-right">医生</label>
-                            <div class="col-10">
+                            <label for="example-text-input" class="col-3 col-form-label text-right">医生</label>
+                            <div class="col-9">
                                 <label class="col-form-label" id="doctor_name"></label>
                             </div>
                         </div>
                         <div class="form-group mt-3 row">
-                            <label for="example-text-input" class="col-2 col-form-label text-right">工作时间</label>
-                            <div class="col-10">
+                            <label for="example-text-input" class="col-3 col-form-label text-right">工作时间</label>
+                            <div class="col-9">
                                 <label class="col-form-label" id="working_time"></label>
                             </div>
                         </div>
                         <div class="form-group mt-3 row">
-                            <label for="example-text-input" class="col-2 col-form-label text-right">姓名</label>
-                            <div class="col-10">
+                            <label for="example-text-input" class="col-3 col-form-label text-right">姓名</label>
+                            <div class="col-9">
                                 <label class="col-form-label" id="patient_name"></label>
                             </div>
                         </div>
                         <div class="form-group mt-3 row">
-                            <label for="example-text-input" class="col-2 col-form-label text-right">性别</label>
-                            <div class="col-10">
+                            <label for="example-text-input" class="col-3 col-form-label text-right">性别</label>
+                            <div class="col-9">
                                 <label class="col-form-label" id="sex"></label>
                             </div>
                         </div>
                         <div class="form-group mt-3 row">
-                            <label for="example-text-input" class="col-2 col-form-label text-right">身份证号码</label>
-                            <div class="col-10">
+                            <label for="example-text-input" class="col-3 col-form-label text-right">身份证号码</label>
+                            <div class="col-9">
                                 <label class="col-form-label" id="ID_Number"></label>
                             </div>
                         </div>
                         <div class="form-group mt-3 row">
-                            <label for="example-text-input" class="col-2 col-form-label text-right">手机号码</label>
-                            <div class="col-10">
+                            <label for="example-text-input" class="col-3 col-form-label text-right">手机号码</label>
+                            <div class="col-9">
                                 <label class="col-form-label" id="patient_phone"></label>
                             </div>
                         </div>
                         <div class="form-group mt-3 row">
-                            <label for="example-text-input" class="col-2 col-form-label text-right">挂号</label>
-                            <div class="col-10">
+                            <label for="example-text-input" class="col-3 col-form-label text-right">挂号</label>
+                            <div class="col-9">
                                 <label class="col-form-label" id="guahao"></label>
                             </div>
                         </div>

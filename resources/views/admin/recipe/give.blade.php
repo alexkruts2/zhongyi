@@ -61,7 +61,32 @@
                     <div id="medicineSection" class="mt-3 w-100">
 
                     </div>
+                    <div class="row mt-3 w-100">
+                        <div class="col-sm-1"></div>
+                        <label class="col-2 col-form-label text-right">方式</label>
+                        <div class="col-7">
+                            <select class="form-control" id="shipMode">
+                                <option value="自取">自取</option>
+                                <option value="邮寄">邮寄</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-3 w-100" id="kuaidiCompanyDiv" style="display: none">
+                        <div class="col-sm-1"></div>
+                        <label class="col-2 col-form-label text-right">快递公司</label>
+                        <div class="col-7">
+                            <input type="text" class="form-control" id="kuaidiCompany"/>
+                        </div>
+                    </div>
+                    <div class="row mt-3 w-100" id="kuaidiNumberDiv" style="display: none">
+                        <div class="col-sm-1"></div>
+                        <label class="col-2 col-form-label text-right">快递单号</label>
+                        <div class="col-7">
+                            <input type="text" class="form-control" id="kuaidiNumber"/>
+                        </div>
+                    </div>
                 </div>
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-info" onclick="giveMedicine()"><i class="ti-wand"></i>发药 </button>
                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="ti-pencil"></i> 取消</button>

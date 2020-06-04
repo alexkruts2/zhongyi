@@ -1,6 +1,15 @@
 var medicineTable,global_guahao;
 $(function(){
     drawMedicineTable();
+    $("#shipMode").on("change",function(){
+        if($(this).val()=='自取'){
+            $("#kuaidiCompanyDiv").fadeOut();
+            $("#kuaidiNumberDiv").fadeOut();
+        }else{
+            $("#kuaidiCompanyDiv").fadeIn();
+            $("#kuaidiNumberDiv").fadeIn();
+        }
+    })
 })
 
 function giveMedicine () {
@@ -13,10 +22,31 @@ function giveMedicine () {
         });
         return;
     }
+    var shippingType = $("#shipMode").val();
+    var kuaidiCompany = $("#kuaidiCompany").val();
+    var kuaidiNumber = $("#kuaidiNumber").val();
+    if(shippingType=='邮寄'){
+        if($("#kuaidiCompany").val()==''){
+            Swal.fire({
+                type: 'error',
+                title: '错误',
+                text: '请输入快递公司名'
+            });
+            return;
+        }
+        if($("#kuaidiNumber").val()==''){
+            Swal.fire({
+                type: 'error',
+                title: '错误',
+                text: '请输入快递单号'
+            });
+            return;
+        }
+    }
     showOverlay();
     $.ajax({
         url: '/doctor/recipe/giveMedicine',
-        data: "guahao=" + guahao,
+        data: "guahao=" + guahao+"&shippingType="+shippingType+"&kuaidiCompany="+kuaidiCompany+"&kuaidiNumber="+kuaidiNumber,
         type: 'POST',
         success: function (resp) {
             hideOverlay();

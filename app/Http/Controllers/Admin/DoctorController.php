@@ -440,6 +440,7 @@ class DoctorController extends Controller{
             $temp['disease_name'] = '';
             $temp['number'] = $i;
             $temp['date'] = $data->treat_start;
+            $temp['shippingType'] = $data->shippingType;
             $original_recipe = $data->original_recipe;
             $arr_recipe = explode(',',$original_recipe);
             $temp['recipe'] = getPrescriptionName($data->recipe);
@@ -796,6 +797,7 @@ class DoctorController extends Controller{
             $temp['disease_name'] = $data->disease_name;
             $temp['number'] = $i;
             $temp['date'] = $data->treat_start;
+            $temp['shippingType'] = $data->shippingType;
             $original_recipe = $data->original_recipe;
             $arr_recipe = explode(',',$original_recipe);
             $recipe_name = '';

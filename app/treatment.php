@@ -22,6 +22,10 @@ class treatment extends Model
         'record_video',
         'disease_name',
         'price',
+        'price_medicine',
+        'price_guahao',
+        'pay_type_guahao',
+        'pay_type_medicine',
         'doctor_profit',
         'hospital_profit',
         'original_recipe',
@@ -31,7 +35,10 @@ class treatment extends Model
         'mai',
         'doctor_question',
         'houfang',
-        'fuNumber'
+        'fuNumber',
+        'shippingType',
+        'kuaidiCompany',
+        'kuaidiNumber'
     ];
 
     public function patient(){

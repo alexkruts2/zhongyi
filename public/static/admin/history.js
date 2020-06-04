@@ -28,7 +28,7 @@ function drawAllTable() {
             {data: 'disease_name'},
             {data: 'number'},
             {data: 'date'},
-            {data: 'recipe'},
+            {data: 'shippingType'},
             {data: 'id'}
         ],
         "language": {
@@ -76,6 +76,7 @@ function drawIndividualTable() {
             {data: 'date'},
             {data: 'recipe'},
             {data: 'doctor_name'},
+            {data: 'shippingType'},
             {data: 'id'}
         ],
         "language": {
@@ -89,7 +90,7 @@ function drawIndividualTable() {
                     return data==null||data==''||data==undefined?data:data.substring(0, 10);;
                 }
             }, {
-                "aTargets": [3],
+                "aTargets": [4],
                 'orderable': false,
                 "mRender": function (data, type, full) {
                     return '<button class="btn btn-sm btn-success m-l-5" onclick="location.href=\'/doctor/history/detail/' + data+ '\'"><i class="ti-pencil-alt"></i>详情</button>';

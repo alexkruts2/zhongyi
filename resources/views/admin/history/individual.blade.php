@@ -51,6 +51,7 @@
                                 <th class="text-center">看诊时间</th>
                                 <th class="text-center">药方</th>
                                 <th class="text-center">医生</th>
+                                <th class="text-center">发药方式</th>
                                 <th class="text-center">操作</th>
                             </tr>
                             </thead>

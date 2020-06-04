@@ -36,7 +36,7 @@ $(function () {
                     "aTargets": [7],
                     'orderable': false,
                     "mRender": function (data, type, full) {
-                        return '<button class="btn btn-sm btn-info m-l-5" onclick="location.href=\'/doctor/inquiry/edit/' + full.id + '\'"><i class="ti ti-pencil"></i>修改药房</button>' +
+                        return '<button class="btn btn-sm btn-info m-l-5" onclick="location.href=\'/doctor/inquiry/edit/' + full.id + '\'"><i class="ti ti-pencil"></i>修改药方</button>' +
                             '<button class="btn btn-sm btn-success m-l-5" onclick="location.href=\'/doctor/history/detail/' + full.id + '\'"><i class="ti-pencil-alt"></i>详情</button>';
                     }
 
