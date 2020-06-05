@@ -4,6 +4,7 @@
     <link href="{{asset('static/plugin/datatables/media/css/dataTables.bootstrap4.css')}}" rel="stylesheet">
     <link href="{{asset('static/plugin/datatables/media/css/jquery.dataTables.min.css')}}" rel="stylesheet">
     <link href="{{ asset('static/plugin/sweetalert/sweetalert.css') }}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="{{ asset('static/plugin/print/print.min.css')}}">
 
 @endsection
 
@@ -92,6 +93,9 @@
     </div>
 
 @endsection
+<form method="post" action="#" id="printJS-form" style="position:absolute">
+
+</form>
 
 @section('scripts')
     <!--morris JavaScript -->
@@ -100,4 +104,6 @@
     <script src="{{ asset('static/plugin/sweetalert/jquery.sweet-alert.custom.js') }}"></script>
     <script src="{{ asset('static/plugin/sweetalert/sweetalert.min.js') }}"></script>
     <script src="{{ asset('static/plugin/sweetalert2/sweetalert2.js') }}"></script>
+    <script src="{{ asset('static/plugin/print/print.min.js') }}"></script>
+
 @endsection

@@ -78,7 +78,7 @@
                                             <th class="text-center">医院分科</th>
                                             <th class="text-center">医生</th>
                                             <th class="text-center">患者姓名</th>
-                                            <th class="text-center">消费金额</th>
+                                            <th class="text-center">医院收入</th>
                                             <th class="text-center">日期</th>
                                         </tr>
                                         </thead>

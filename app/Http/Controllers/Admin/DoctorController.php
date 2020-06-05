@@ -675,6 +675,7 @@ class DoctorController extends Controller{
             'treat_end' => $treat_end,
             'state' => $state,
             'price' => $total_price + $accept_price*1.0,
+            'price_medicine' => $total_price,
             'disease_name' => $disease_name,
             'recipe' => ($recipes_detail),
             'biaozheng' => $strbiaozheng,
@@ -1127,8 +1128,9 @@ class DoctorController extends Controller{
                 $orderColumn = "treatments.`treat_start`";
         }
 
+        $accept_price = setting::select('value')->where('name',config('asset.ACCEPT_PRICE'))->get()[0]->value;
 
-        $sql = "SELECT  treatments.`id`,treatments.`hospital_profit` as price,patients.`name` AS patient_name,patients.`ID_Number`,
+        $sql = "SELECT  treatments.`id`,treatments.`hospital_profit` as price,patients.`name` AS patient_name,patients.`ID_Number`,treatments.`pay_type_guahao`,treatments.`pay_type_medicine`,
                     departments.`name` AS department_name,doctors.`name` AS doctor_name,treatments.`treat_start`,treatments.updated_at  FROM treatments
                  LEFT JOIN doctors ON treatments.`doctor_id`=doctors.`id`
                  LEFT JOIN patients ON treatments.`patient_id` = patients.id
@@ -1149,6 +1151,10 @@ class DoctorController extends Controller{
         $sql .= " order by ".$orderColumn." ".$orderDirection;
 
         $datas = \DB::select($sql);
+
+        foreach($datas as $data){
+            $data->accept_price = $accept_price;
+        }
 
         $result = array(
             "aaData"=>$datas,

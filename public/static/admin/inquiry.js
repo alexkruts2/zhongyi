@@ -568,21 +568,6 @@ function init_recipeSection() {
     drawRecipeSectionsOther([], [], [], [], []);
 }
 
-function sethoufang(obj) {
-    var houfang = $(obj).prop('checked');
-    var recipeId = $(obj)[0].id.replace('houfang_','');
-    var strMedicins = $("#medicines").val();
-    var recipeDatas = JSON.parse(strMedicins);
-    for(var i = 0 ; i < recipeDatas.length; i++){
-         if(recipeDatas[i].id==recipeId){
-             recipeDatas[i].shifouhefang = houfang;
-             break;
-         }
-    }
-    $("#medicines").val(JSON.stringify(recipeDatas));
-    drawMedicine(recipeDatas,true,true);
-    calcPriceTotal();
-}
 
 function removeMedicineInq(recipeId, obj) {
     var id = $(obj).data("index");

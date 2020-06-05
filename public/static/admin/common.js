@@ -634,7 +634,7 @@ function addMedicineInModal(inquiry) {
     var min_weight =  $("#medicine option:selected").data("min");
     var max_weight =  $("#medicine option:selected").data("max");
     var price = $("#medicine option:selected").data("price");
-    var unit = $("#medicine option:selected").data("unit");
+    var unit  = $("#medicine option:selected").data("unit");
     var weight = max_weight==min_weight?max_weight:0;
 
     medicine_detail_item = {
@@ -940,4 +940,19 @@ function getHefang() {
     calcPriceTotal();
 
     // drawHeFang(hefangRecipe);
+}
+function sethoufang(obj) {
+    var houfang = $(obj).prop('checked');
+    var recipeId = $(obj)[0].id.replace('houfang_','');
+    var strMedicins = $("#medicines").val();
+    var recipeDatas = JSON.parse(strMedicins);
+    for(var i = 0 ; i < recipeDatas.length; i++){
+        if(recipeDatas[i].id==recipeId){
+            recipeDatas[i].shifouhefang = houfang;
+            break;
+        }
+    }
+    $("#medicines").val(JSON.stringify(recipeDatas));
+    drawMedicine(recipeDatas,true,true);
+    calcPriceTotal();
 }

@@ -66,6 +66,13 @@ class AcceptController extends Controller
                 'name'=>$name,
                 'img_url'=>$photo
             ]);
+        }else{
+            $patient->update([
+                'phone_number'=>$phone_number,
+                'sex' => $sex,
+                'name'=>$name,
+                'img_url'=>$photo
+            ]);
         }
         $acceptId = doctor()->id;
 
@@ -301,7 +308,7 @@ class AcceptController extends Controller
             'pay_type_medicine'=>$pay_type,
             "state" => config('constant.treat_state.after_treating_pay')
         ]);
-        return success("OK");
+        return success($treatment);
     }
     public function listPayment(){
         return view('admin.accept.payment_list');

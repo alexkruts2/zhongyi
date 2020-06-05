@@ -6,8 +6,6 @@ $(function(){
         drawJiaoFeiTable();
         $("#myModal").modal('hide');
     }
-
-
     $('#tbl_payment tbody').on( 'click', 'tr', function () {
         paymentTable.$('tr.selected').removeClass('selected');
         $(this).addClass('selected');
@@ -102,6 +100,10 @@ function payTreatment() {
                 });
                 drawJiaoFeiTable();
                 $("#myModal").modal('hide');
+                drawPrintForm(resp.data.recipe);
+                printJS('printJS-form', 'html')
+
+
             } else {
                 Swal.fire({
                     type: 'error',
@@ -216,6 +218,12 @@ function drawJiaoFeiTable() {
         },
         "aoColumnDefs": [
             {
+                "aTargets": [4],
+                "mRender": function (data, type, full) {
+                    return data.toFixed(2);
+                }
+            },
+            {
                 "aTargets": [7],
                 'orderable': false,
                 "mRender": function (data, type, full) {
@@ -238,4 +246,24 @@ function drawJiaoFeiTable() {
 function showPayModal (id) {
     $("#treat_id").val(id);
     $("#myModal").modal('show');
+}
+
+function drawPrintForm(strRecipe){
+    var recipes = JSON.parse(strRecipe);
+    var html = '';
+    for(var i =0 ; i < recipes.length; i++){
+        html +='<h4 class="text-bold">'+recipes[i].prescription_name+' </h4>';
+        html+='<div><table>';
+        var medicines = JSON.parse(recipes[i].medicine);
+        for(var j=0; j<medicines.length;j++){
+            html+="<tr>" +
+                "<td>" +medicines[j].medicine+
+                ": </td>"+
+                "<td>" +medicines[j].weight+"("+medicines[j].unit+")"+
+                "</td>"+
+                "</tr>"
+        }
+        html+='</table></div>';
+    }
+    $("#printJS-form").html(html);
 }

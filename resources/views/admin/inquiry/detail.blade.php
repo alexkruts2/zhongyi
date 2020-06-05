@@ -116,13 +116,13 @@
 
                         <div class="form-group mt-3 row">
                             <label for="example-text-input" class="col-5 offset-1 col-form-label">主诉
-                                <button data-toggle="collapse" class="btn btn-default" data-target="#annotationSection" aria-expanded="false">
+                                <button data-toggle="collapse" class="btn btn-default" data-target="#annotationSection" aria-expanded="true">
                                     <i class="fas fa-angle-right"></i>
                                     <i class="fas fa-angle-down"></i>
                                 </button>
                             </label>
                         </div>
-                        <div id = "annotationSection" class="collapse">
+                        <div id = "annotationSection" class="collapse show">
                             @php
                                 $i = 0
                             @endphp
