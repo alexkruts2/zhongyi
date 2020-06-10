@@ -1407,7 +1407,7 @@ class DoctorController extends Controller{
             'lizheng' => $lizheng,
             'biaoli' => $biaoli,
             'maizheng' => $maizheng,
-            'history_number' => count($datas)*1+1,
+            'history_number' => count($datas)*1,
             'daiNumber' => $daiNumber,
             'medicines' =>$medicines
         ]);
