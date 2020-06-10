@@ -1022,6 +1022,7 @@ if (!function_exists('getMedicineJSON')) {
                 $medicine->price = $tempMedicine->price;
                 $medicine->max_weight =  $tempMedicine->max_weight;
                 $medicine->min_weight =  $tempMedicine->min_weight;
+                $medicine->unit =  $tempMedicine->unit;
                 array_push($medicinesForArray,$medicine);
             }
 
