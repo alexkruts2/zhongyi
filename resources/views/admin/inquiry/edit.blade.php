@@ -260,6 +260,33 @@
         }
 
     </style>
+
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-2 text-right" style="line-height: 38px;">药材名称</div>
+                        <div class="col-10">
+                            <select class="select2 form-control" name='medicine' id="medicine"  style="width:100%;">
+                                @foreach ($medicines as $medicine)
+                                    <option value="{{$medicine->id}}" data-min="{{$medicine->min_weight}}" data-unit="{{$medicine->unit}}" data-max="{{$medicine->max_weight}}" data-price="{{$medicine->price}}">{{$medicine->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" onclick="addMedicineInModal(true)"><i class=" ti-plus"></i> 确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @section('scripts')

@@ -14,6 +14,7 @@ class treatment extends Model
         'question_id',
         'question',
         'comment',
+        'comment1',
         'recipe',
         'guahao',
         'state',

@@ -373,6 +373,7 @@ function drawMedicine(data,inquiry=false,appendable,inquiry_detail=false) {
             var unitLable = unit==null||unit==''||unit==undefined||unit=='公克'?' 元/1g':unit=='两'?' 元/两':('元/'+unit);
             price = unit=='公克'?price/10:price;
 
+
             var maxMin = data[i].shifouhefang!=true?"max='"+max_weight+"' min='"+min_weight+"'":'';
             html+="<div class=\"row\">\n" +
                 "   <div class='col-sm-1'></div> <label class=\"col-2 col-form-label text-right\">\n" +
@@ -622,6 +623,16 @@ function setRecipeId(id){
             var tempMedicine = JSON.parse(recipeDatas[i].medicine);
             for(var j = 0 ; j < tempMedicine.length;j++){
                 $("#medicine option[value='"+tempMedicine[j].medicine_id+"']").attr("disabled",true);
+                getContraryIds(tempMedicine[j].medicine_id,function(contraryIds){
+                    for(var i=0; i < contraryIds.length; i++){
+                        $("#medicine option[value='"+contraryIds[i]+"']").attr("disabled","disabled");
+                    }
+                    $(".select2").select2({
+                        placeholder:"请选择"
+                    });
+
+                });
+
             }
         }
     }

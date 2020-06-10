@@ -115,7 +115,7 @@
 
 
                         <div class="form-group mt-3 row">
-                            <label for="example-text-input" class="col-5 offset-1 col-form-label">主诉
+                            <label for="example-text-input" class="col-5 offset-1 col-form-label">问诊
                                 <button data-toggle="collapse" class="btn btn-default" data-target="#annotationSection" aria-expanded="true">
                                     <i class="fas fa-angle-right"></i>
                                     <i class="fas fa-angle-down"></i>
@@ -142,6 +142,24 @@
                                 @endphp
                             @endwhile
                         </div>
+                        <div class="form-group mt-3 row">
+                            <label for="example-text-input" class="col-5 offset-1 col-form-label">主诉
+                                <button data-toggle="collapse" class="btn btn-default" data-target="#commentSection" aria-expanded="true">
+                                    <i class="fas fa-angle-right"></i>
+                                    <i class="fas fa-angle-down"></i>
+                                </button>
+                            </label>
+                        </div>
+                        <div id = "commentSection" class="collapse show">
+                            <div class="row">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-10">
+                                    <textarea rows="4" id="comment" name="comment" class="form-control" disabled>{{$historyData->comment1}}</textarea>
+                                </div>
+                            </div>
+                        </div>
+
+
                         <div class="form-group mt-3 row">
                             <label for="example-text-input" class="col-8 offset-1 col-form-label">医生嘱托 : <b>{{$historyData->doctor_question}}</b></label>
                         </div>

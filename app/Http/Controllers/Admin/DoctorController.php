@@ -622,6 +622,7 @@ class DoctorController extends Controller{
         $annotation_values = $request->get('annotation_value');
         $total_price = $request->get('total_price');
         $disease_name = $request->get('disease_name');
+        $comments = $request->get('comment');
 
         $strbiaozheng = '';
         $biaozheng = $request->get('biaozheng');
@@ -671,6 +672,7 @@ class DoctorController extends Controller{
             'record_video' => $video_url,
             'question' => $question_string,
             'comment' => json_encode($annotations),
+            'comment1' => $comments,
 //            'original_recipe' => implode(',', $recipe_id),
             'treat_end' => $treat_end,
             'state' => $state,
@@ -1395,6 +1397,7 @@ class DoctorController extends Controller{
         $patient_id = $treatment->patient_id;
         $datas = treatment::select('*')->where('treatments.patient_id',$patient_id)->where('state','!=',config('constant.treat_state.close'))
             ->join('patients', 'treatments.patient_id', '=', 'patients.id')->get();
+        $medicines = medicine::select('*')->where('flag','NORMAL')->orderBy('name')->get();
 
         array_push($historyData,$temp);
         $daiNumber = 0;
@@ -1405,7 +1408,8 @@ class DoctorController extends Controller{
             'biaoli' => $biaoli,
             'maizheng' => $maizheng,
             'history_number' => count($datas)*1+1,
-            'daiNumber' => $daiNumber
+            'daiNumber' => $daiNumber,
+            'medicines' =>$medicines
         ]);
     }
 }

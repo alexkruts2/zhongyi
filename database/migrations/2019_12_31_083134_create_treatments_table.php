@@ -22,6 +22,7 @@ class CreateTreatmentsTable extends Migration
             $table->integer('question_id')->nullable();
             $table->text('question')->nullable();
             $table->text('comment')->nullable();
+            $table->text('comment1')->nullable();
             $table->text('recipe')->nullable();
             $table->string('guahao');
             $table->string('state',64);

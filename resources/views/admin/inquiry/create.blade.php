@@ -93,11 +93,24 @@
                             </div>
                         </div>
                         <div class="row bg-gray">
+                            <label for="example-text-input" style="font-size: 27px;" class="col-2 col-form-label text-left">问诊
+                                <button type="button" title="添加问诊" onclick="appendAnnotation()" class="btn btn-circle btn-md btn-success p-0-0"><i class="fas fa-plus"></i></button>
+                            </label>
+                        </div>
+                        <div id = "annotationSection">
+                        </div>
+                        <div class="row bg-gray">
                             <label for="example-text-input" style="font-size: 27px;" class="col-2 col-form-label text-left">主诉
                                 <button type="button" title="添加主诉" onclick="appendAnnotation()" class="btn btn-circle btn-md btn-success p-0-0"><i class="fas fa-plus"></i></button>
                             </label>
                         </div>
-                        <div id = "annotationSection">
+                        <div id = "commentSection">
+                            <div class="row">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-10">
+                                    <textarea rows="4" id="comment" name="comment" class="form-control"></textarea>
+                                </div>
+                            </div>
                         </div>
                         <div class="row bg-gray">
                             <label for="example-text-input" style="font-size: 27px;" class="col-2 col-form-label text-left">表症
