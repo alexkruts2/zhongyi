@@ -476,7 +476,7 @@ class DoctorController extends Controller{
 
         return view('admin.inquiry.create')->with([
             'treatment'=>$treatment,
-            'history_number' => count($datas)*1+1,
+            'history_number' => count($datas)*1,
             'medicines' => $medicines
             ]);
     }
