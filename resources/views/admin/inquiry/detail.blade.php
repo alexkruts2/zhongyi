@@ -1,6 +1,7 @@
 @extends('admin.layout.admin')
 <link href="{{ asset('static/plugin/horizontal-timeline/css/horizontal-timeline.css') }}" rel="stylesheet" type="text/css">
 <link href="{{ asset('static/plugin/horizontal-timeline/css/horizontal-timeline.css') }}" rel="stylesheet" type="text/css">
+<link href="{{asset('static/plugin/video-record/css/video-js.min.css')}}" rel="stylesheet">
 
 @section('styles')
 
@@ -238,6 +239,8 @@
 @endsection
 
 @section('scripts')
+    <script src="{{ asset('static/plugin/video-record/js/video.js') }}"></script>
+
     <script src="{{ asset('static/plugin/select2/dist/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('static/admin/inquiry_detail.js') }}"></script>
 
