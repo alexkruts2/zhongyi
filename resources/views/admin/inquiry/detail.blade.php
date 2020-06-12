@@ -82,7 +82,7 @@
                                 @endwhile
                             </div>
                             <div class="col-lg-6">
-                                <video width="100%" height="auto" controls  >
+                                <video class="video-js" width="100%" height="auto" controls    preload="auto" >
                                     <source src="/uploads/videos/{{$historyData->record_video}}" type="video/webm">
                                 </video>
                             </div>

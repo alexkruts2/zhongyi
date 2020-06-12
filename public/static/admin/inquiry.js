@@ -289,8 +289,8 @@ function startVideoCamera(){
     // Inialize the video player
     var player = videojs("myVideo", {
         controls: true,
-        width: 320,
-        height: 180,
+        width: 160,
+        height: 90,
         fluid: false,
         autoplay:false,
         plugins: {

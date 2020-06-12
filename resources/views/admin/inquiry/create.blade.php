@@ -101,7 +101,6 @@
                         </div>
                         <div class="row bg-gray">
                             <label for="example-text-input" style="font-size: 27px;" class="col-2 col-form-label text-left">主诉
-                                <button type="button" title="添加主诉" onclick="appendAnnotation()" class="btn btn-circle btn-md btn-success p-0-0"><i class="fas fa-plus"></i></button>
                             </label>
                         </div>
                         <div id = "commentSection">
