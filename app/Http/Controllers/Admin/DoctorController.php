@@ -19,6 +19,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 use PhpParser\Node\Stmt\Return_;
+use FFMpeg\FFMpeg;
+use FFMpeg\Format\Video\X264;
 
 class DoctorController extends Controller{
     public function dashboard(){
@@ -482,9 +484,11 @@ class DoctorController extends Controller{
     }
     public function uploadVideo(Request $request){
         if(isset($_FILES["video"])) {
-            $videoName = str_random(10) . '.' . 'webm';
-            move_uploaded_file($_FILES["video"]["tmp_name"], public_path() . '/uploads/videos/' . $videoName);
-            return success($videoName);
+            $videoName = str_random(10) . '.' ;
+            move_uploaded_file($_FILES["video"]["tmp_name"], public_path() . '/uploads/videos/' . $videoName. 'webm');
+            exec("ffmpeg -i ".public_path() . '/uploads/videos/' . $videoName. 'webm'." ".$videoName."mp4");
+
+            return success($videoName. 'mp4');
         }else{
             return error('Invalid parameter');
         }

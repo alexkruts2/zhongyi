@@ -13,16 +13,21 @@ $(function(){
         calcPriceTotal();
         $("input").prop("disabled",true);
     }
-    videojs('player').ready(function() {
-        var player = this;
-        player.controlBar.progressControl.seekBar.on('mouseup', function(event) {
-            var seekBarEl = this.el();
-            var seekBarRect = videojs.dom.getBoundingClientRect(seekBarEl);
-            var seekBarPoint = videojs.dom.getPointerPosition(seekBarEl, event).x;
-            var duration = player.duration();
-            var seekBarClickedTime = videojs.formatTime(seekBarPoint * duration, duration);
-            console.log('Seekbar clicked time: ', seekBarClickedTime);
-        });
-    });
+
+    // videojs('player').ready(function() {
+    //     var player = this;
+    //     player.controlBar.progressControl.seekBar.on('mouseup', function(event) {
+    //         var seekBarEl = this.el();
+    //         var seekBarRect = videojs.dom.getBoundingClientRect(seekBarEl);
+    //         var seekBarPoint = videojs.dom.getPointerPosition(seekBarEl, event).x;
+    //         var duration = player.duration();
+    //         var seekBarClickedTime = videojs.formatTime(seekBarPoint * duration, duration);
+    //         console.log('Seekbar clicked time: ', seekBarClickedTime);
+    //
+    //         // setTimeout(() => player.pause(), 0);
+    //
+    //         console.log(player.pause());
+    //     });
+    // });
 
 });

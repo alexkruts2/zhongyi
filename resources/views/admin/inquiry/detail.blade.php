@@ -1,7 +1,6 @@
 @extends('admin.layout.admin')
 <link href="{{ asset('static/plugin/horizontal-timeline/css/horizontal-timeline.css') }}" rel="stylesheet" type="text/css">
 <link href="{{ asset('static/plugin/horizontal-timeline/css/horizontal-timeline.css') }}" rel="stylesheet" type="text/css">
-<link href="{{asset('static/plugin/video-record/css/video-js.min.css')}}" rel="stylesheet">
 
 @section('styles')
 
@@ -83,8 +82,9 @@
                                 @endwhile
                             </div>
                             <div class="col-lg-6">
-                                <video class="video-js" id="player" controls    preload="auto"　width="640" height="264"  >
-                                    <source src="/uploads/videos/{{$historyData->record_video}}" type="video/webm">
+                                <video width="100%" height="auto" controls  >
+{{--                                    <source src="/uploads/videos/{{$historyData->record_video}}" type="video/mp4">--}}
+                                    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
                                 </video>
                             </div>
                         </div>
@@ -239,8 +239,6 @@
 @endsection
 
 @section('scripts')
-    <script src="{{ asset('static/plugin/video-record/js/video.js') }}"></script>
-
     <script src="{{ asset('static/plugin/select2/dist/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('static/admin/inquiry_detail.js') }}"></script>
 

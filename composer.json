@@ -18,6 +18,7 @@
         "maatwebsite/excel": "^3.1",
         "markrogoyski/math-php": "0.*",
         "overtrue/laravel-wechat": "~5.0",
+        "php-ffmpeg/php-ffmpeg": "^0.16.0",
         "qcloud/cos-sdk-v5": "1.*",
         "shenjian/shenjian-sdk-php": "^1.3"
     },
