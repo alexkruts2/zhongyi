@@ -117,7 +117,7 @@
                             </div>
                             <div class="col-lg-6">
                                 <video width="100%" height="auto" controls  >
-                                    <source src="/uploads/videos/{{$historyData->record_video}}" type="video/webm">
+                                    <source src="/uploads/videos/{{$historyData->record_video}}" type="video/mp4">
                                 </video>
                             </div>
                         </div>

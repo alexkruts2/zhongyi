@@ -486,8 +486,7 @@ class DoctorController extends Controller{
         if(isset($_FILES["video"])) {
             $videoName = str_random(10) . '.' ;
             move_uploaded_file($_FILES["video"]["tmp_name"], public_path() . '/uploads/videos/' . $videoName. 'webm');
-            exec("ffmpeg -i ".public_path() . '/uploads/videos/' . $videoName. 'webm'." ".$videoName."mp4");
-
+            exec("ffmpeg -i ".public_path() . '/uploads/videos/' . $videoName. 'webm'." ".public_path() . '/uploads/videos/'.$videoName."mp4",$out);
             return success($videoName. 'mp4');
         }else{
             return error('Invalid parameter');
