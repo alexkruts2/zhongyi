@@ -72,6 +72,8 @@ function drawDoctorProfitTable() {
             {data: 'doctor_name'},
             {data: 'patient_name'},
             {data: 'price'},
+            {data: 'price_guahao'},
+            {data: 'price_medicine'},
             {data:'treat_start'}
         ],
         "language": {
@@ -84,7 +86,7 @@ function drawDoctorProfitTable() {
                 "targets": 0
             },
             {
-                "aTargets":[5],
+                "aTargets":[7],
                 'orderable':false,
                 "mRender":function(data,type,full) {
                     return data==null?full.updated_at:data;
@@ -103,6 +105,7 @@ function drawDoctorProfitTable() {
             for(var i = 0 ; i<settings.aoData.length;i++){
                 sum += 1.0*settings.aoData[i]._aData.price;
             }
+             sum = sum.toFixed(2);
             $("#totalSum").html(sum);
             console.log(sum);
         }

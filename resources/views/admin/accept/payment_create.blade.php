@@ -66,6 +66,7 @@
                                 <option value="支付宝">支付宝</option>
                                 <option value="微信支付">微信支付</option>
                                 <option value="现金支付">现金支付</option>
+                                <option value="POS机">POS机</option>
                             </select>
                         </div>
                     </div>

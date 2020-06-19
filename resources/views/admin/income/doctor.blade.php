@@ -66,7 +66,26 @@
                                 <div class="col-md-3 text-center">
                                     <button class="btn-md btn btn-success" type="button" onclick="drawDoctorProfitTable();">提交</button>
                                 </div>
-
+                            </div>
+                            <div class="row mt-3 ">
+                                <table id="tbl_analytics" class="display nowrap table table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">支付宝</th>
+                                            <th class="text-center">微信支付</th>
+                                            <th class="text-center">现金支付</th>
+                                            <th class="text-center">POS机</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td id="zhifu_analytics"></td>
+                                            <td id="weixin_analytics"></td>
+                                            <td id="cach_analytics"></td>
+                                            <td id="pos_analytics"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
 
                             <div class="row mt-3 ">
@@ -79,6 +98,8 @@
                                             <th class="text-center">医生</th>
                                             <th class="text-center">患者姓名</th>
                                             <th class="text-center">医生收入</th>
+                                            <th class="text-center">挂号金额</th>
+                                            <th class="text-center">药品金额</th>
                                             <th class="text-center">日期</th>
                                         </tr>
                                         </thead>

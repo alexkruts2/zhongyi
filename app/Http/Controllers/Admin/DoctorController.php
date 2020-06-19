@@ -485,8 +485,8 @@ class DoctorController extends Controller{
     public function uploadVideo(Request $request){
         if(isset($_FILES["video"])) {
             $videoName = str_random(10) . '.' ;
-            move_uploaded_file($_FILES["video"]["tmp_name"], public_path() . '/uploads/videos/' . $videoName. 'webm');
-            exec("ffmpeg -i ".public_path() . '/uploads/videos/' . $videoName. 'webm'." ".public_path() . '/uploads/videos/'.$videoName."mp4",$out);
+            move_uploaded_file($_FILES["video"]["tmp_name"], public_path() . '/uploads/videos/' . $videoName. 'mp4');
+//            exec("ffmpeg -i ".public_path() . '/uploads/videos/' . $videoName. 'webm'." ".public_path() . '/uploads/videos/'.$videoName."mp4",$out);
             return success($videoName. 'mp4');
         }else{
             return error('Invalid parameter');
@@ -1136,6 +1136,7 @@ class DoctorController extends Controller{
         $accept_price = setting::select('value')->where('name',config('asset.ACCEPT_PRICE'))->get()[0]->value;
 
         $sql = "SELECT  treatments.`id`,treatments.`hospital_profit` as price,patients.`name` AS patient_name,patients.`ID_Number`,treatments.`pay_type_guahao`,treatments.`pay_type_medicine`,
+                        treatments.price_guahao,treatments.price_medicine,
                     departments.`name` AS department_name,doctors.`name` AS doctor_name,treatments.`treat_start`,treatments.updated_at  FROM treatments
                  LEFT JOIN doctors ON treatments.`doctor_id`=doctors.`id`
                  LEFT JOIN patients ON treatments.`patient_id` = patients.id
@@ -1221,6 +1222,7 @@ class DoctorController extends Controller{
         }
 
         $sql = "SELECT  treatments.`id`,treatments.`doctor_profit` as price,patients.`name` AS patient_name,patients.`ID_Number`,
+                        treatments.price_guahao,treatments.price_medicine,,treatments.
                     departments.`name` AS department_name,doctors.`name` AS doctor_name,treatments.`treat_start`,treatments.updated_at  FROM treatments
                  LEFT JOIN doctors ON treatments.`doctor_id`=doctors.`id`
                  LEFT JOIN patients ON treatments.`patient_id` = patients.id

@@ -249,6 +249,7 @@
     <script src="{{ asset('static/plugin/video-record/js/RecordRTC.js') }}"></script>
     <script src="{{ asset('static/plugin/video-record/js/adapter.js') }}"></script>
     <script src="{{ asset('static/plugin/video-record/js/videojs.record.min.js') }}"></script>
+    <script src="{{ asset('static/plugin/cos/cos-js-sdk-v5.min.js') }}"></script>
 
     <script src="{{ asset('static/admin/inquiry.js') }}"></script>
     <script src="{{ asset('static/plugin/parsley/parsley.min.js') }}"></script>

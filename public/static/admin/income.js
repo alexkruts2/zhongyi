@@ -203,6 +203,8 @@ function drawHospitalTable() {
             {data: 'doctor_name'},
             {data: 'patient_name'},
             {data: 'price'},
+            {data: 'price_guahao'},
+            {data: 'price_medicine'},
             {data:'treat_start'}
         ],
         "language": {
@@ -215,14 +217,7 @@ function drawHospitalTable() {
                 "targets": 0
             },
             {
-                "aTargets":[5],
-                'orderable':false,
-                "mRender":function(data,type,full) {
-                    return data==null?full.updated_at:data;
-                }
-            },
-            {
-                "aTargets":[5],
+                "aTargets":[7],
                 'orderable':false,
                 "mRender":function(data,type,full) {
                     return data==null?full.updated_at:data;
