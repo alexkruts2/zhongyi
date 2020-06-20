@@ -217,6 +217,18 @@ function drawHospitalTable() {
                 "targets": 0
             },
             {
+                "aTargets":[5],
+                "mRender":function(data,type,full) {
+                    return full.pay_type_guahao==null?(data==null?0:data):data+"("+full.pay_type_guahao+")";
+                }
+            },
+            {
+                "aTargets":[6],
+                "mRender":function(data,type,full) {
+                    return full.pay_type_medicine==null?(data==null?0:data):data+"("+full.pay_type_medicine+")";
+                }
+            },
+            {
                 "aTargets":[7],
                 'orderable':false,
                 "mRender":function(data,type,full) {
@@ -232,10 +244,49 @@ function drawHospitalTable() {
         fnDrawCallback:function(settings){
             console.log(settings.aoData);
             var sum = 0.0;
+            var zhifuTotal = weixinTotal = cacheTotal = posTotal = 0;
             for(var i = 0 ; i<settings.aoData.length;i++){
                 sum += 1.0*settings.aoData[i]._aData.price;
+                switch (settings.aoData[i]._aData.pay_type_guahao) {
+                    case '支付宝':
+                        zhifuTotal += 1.0*settings.aoData[i]._aData.price_guahao;
+                        break;
+                    case '微信支付':
+                        weixinTotal += 1.0*settings.aoData[i]._aData.price_guahao;
+                        break;
+                    case '现金支付':
+                        cacheTotal +=  1.0*settings.aoData[i]._aData.price_guahao;
+                        break;
+                    case 'POS机':
+                        posTotal +=  1.0*settings.aoData[i]._aData.price_guahao;
+                        break;
+                    default:
+                        break;
+                }
+                switch (settings.aoData[i]._aData.pay_type_medicine) {
+                    case '支付宝':
+                        zhifuTotal += 1.0*settings.aoData[i]._aData.price_medicine;
+                        break;
+                    case '微信支付':
+                        weixinTotal += 1.0*settings.aoData[i]._aData.price_medicine;
+                        break;
+                    case '现金支付':
+                        cacheTotal +=  1.0*settings.aoData[i]._aData.price_medicine;
+                        break;
+                    case 'POS机':
+                        posTotal +=  1.0*settings.aoData[i]._aData.price_medicine;
+                        break;
+                    default:
+                        break;
+                }
             }
             $("#totalSum").html(sum);
+            $("#zhifubaoText").html(zhifuTotal);
+            $("#weixinText").html(weixinTotal);
+            $("#cacheText").html(cacheTotal);
+            $("#posText").html(posTotal);
+
+
             console.log(sum);
         }
     });

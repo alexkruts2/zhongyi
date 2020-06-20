@@ -1136,7 +1136,7 @@ class DoctorController extends Controller{
         $accept_price = setting::select('value')->where('name',config('asset.ACCEPT_PRICE'))->get()[0]->value;
 
         $sql = "SELECT  treatments.`id`,treatments.`hospital_profit` as price,patients.`name` AS patient_name,patients.`ID_Number`,treatments.`pay_type_guahao`,treatments.`pay_type_medicine`,
-                        treatments.price_guahao,treatments.price_medicine,
+                        treatments.price_guahao,treatments.price_medicine,treatments.pay_type_guahao,treatments.pay_type_medicine,
                     departments.`name` AS department_name,doctors.`name` AS doctor_name,treatments.`treat_start`,treatments.updated_at  FROM treatments
                  LEFT JOIN doctors ON treatments.`doctor_id`=doctors.`id`
                  LEFT JOIN patients ON treatments.`patient_id` = patients.id
@@ -1222,7 +1222,7 @@ class DoctorController extends Controller{
         }
 
         $sql = "SELECT  treatments.`id`,treatments.`doctor_profit` as price,patients.`name` AS patient_name,patients.`ID_Number`,
-                        treatments.price_guahao,treatments.price_medicine,,treatments.
+                        treatments.price_guahao,treatments.price_medicine,treatments.pay_type_guahao,treatments.pay_type_medicine,
                     departments.`name` AS department_name,doctors.`name` AS doctor_name,treatments.`treat_start`,treatments.updated_at  FROM treatments
                  LEFT JOIN doctors ON treatments.`doctor_id`=doctors.`id`
                  LEFT JOIN patients ON treatments.`patient_id` = patients.id
@@ -1250,6 +1250,7 @@ class DoctorController extends Controller{
         $sql .=" 1=1 ";
         $sql .= " order by ".$orderColumn." ".$orderDirection;
 
+//        echo $sql;
         $datas = \DB::select($sql);
 
         $result = array(

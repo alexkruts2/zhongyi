@@ -52,7 +52,27 @@
                                 <div class="col-md-1">
                                     <button class="btn-md btn btn-success" type="button" onclick="drawHospitalTable();">提交</button>
                                 </div>
-                        </div>
+                            </div>
+                            <div class="row mt-3 ">
+                                <table id="tbl_analytics" class="display nowrap table table-striped table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-center">支付宝</th>
+                                        <th class="text-center">微信支付</th>
+                                        <th class="text-center">现金支付</th>
+                                        <th class="text-center">POS机</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td id="zhifubaoText" class="text-center"></td>
+                                        <td id="weixinText" class="text-center"></td>
+                                        <td id="cacheText" class="text-center"></td>
+                                        <td id="posText"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                             <div class="row mt-3 ">
                                 <div class="table-responsive">
                                     <table id="tbl_hospital" class="display nowrap table table-striped table-bordered">
@@ -76,6 +96,7 @@
                             <div class="row mt-3">
                                 总计:<b id="totalSum">0</b> ¥
                             </div>
+                        </div>
                     </div>
                 </div>
             </div>

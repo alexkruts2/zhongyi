@@ -79,10 +79,10 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td id="zhifu_analytics"></td>
-                                            <td id="weixin_analytics"></td>
-                                            <td id="cach_analytics"></td>
-                                            <td id="pos_analytics"></td>
+                                            <td id="zhifubaoText"></td>
+                                            <td id="weixinText"></td>
+                                            <td id="cacheText"></td>
+                                            <td id="posText"></td>
                                         </tr>
                                     </tbody>
                                 </table>
