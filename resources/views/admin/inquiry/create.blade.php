@@ -24,6 +24,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
+
                     <form id="question-form" method="post" data-parsley-validate="">
                         <input type="hidden" id="video_url" name="video_url"/>
                         <input type="hidden" id="question_string" name="question_string"/>
@@ -157,7 +158,7 @@
 
                         <div class="form-group mt-3 row">
                             <label for="example-text-input" class="col-2 col-form-label text-right"></label>
-                            <div class="col-6">
+                            <div class="col-4">
                                 <select class="m-b-10 form-control select2 select2-multiple" style="width: 100%" data-placeholder="Choose" multiple="multiple" name="recipe[]" id="recipe">
                                 </select>
                             </div>
@@ -236,6 +237,44 @@
         </div>
     </div>
 
+    <div id="tipModal" class="modal fade" role="dialog" >
+        <div class="modal-dialog" style="margin-right:0px;">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-2 text-right" style="line-height: 38px;">药房名</div>
+                        <div class="col-10" id="modal_recipe_name">
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-2 text-right" style="line-height: 38px;">方药</div>
+                        <div class="col-10" id="modal_medicines">
+                        </div>
+                    </div><hr>
+                    <div class="row">
+                        <div class="col-2 text-right" style="line-height: 38px;">其他病症</div>
+                        <div class="col-10" id="modal_other_condition">
+                        </div>
+                    </div><hr>
+                    <div class="row">
+                        <div class="col-2 text-right" style="line-height: 38px;">煎服法</div>
+                        <div class="col-10" id="modal_eatting_method">
+                        </div>
+                    </div><hr>
+                    <div class="row">
+                        <div class="col-2 text-right" style="line-height: 38px;">禁忌</div>
+                        <div class="col-10" id="modal_ban">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('scripts')
@@ -249,8 +288,6 @@
     <script src="{{ asset('static/plugin/video-record/js/RecordRTC.js') }}"></script>
     <script src="{{ asset('static/plugin/video-record/js/adapter.js') }}"></script>
     <script src="{{ asset('static/plugin/video-record/js/videojs.record.min.js') }}"></script>
-    <script src="{{ asset('static/plugin/cos/cos-js-sdk-v5.min.js') }}"></script>
-
     <script src="{{ asset('static/admin/inquiry.js') }}"></script>
     <script src="{{ asset('static/plugin/parsley/parsley.min.js') }}"></script>
     <script src="{{ asset('static/plugin/parsley/zh_cn.js') }}"></script>

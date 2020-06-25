@@ -156,10 +156,13 @@ $(function () {
             allowClear: true,
             placeholder:"请选择问诊单模板"
         });
-    if($("#recipe").length)
+    if($("#recipe").length){
         $("#recipe").prepend("<option></option>").select2({
-            placeholder:"请选择"
+            placeholder:"请选择",
         });
+
+
+    }
     if($("#medicine").length)
         $("#medicine").select2();
 
@@ -235,6 +238,7 @@ $(function () {
     });
 
     $("#recipe").on("change",function (e) {
+        hideTooltip();
         var recipes = $(this).val();
         drawRecipeSections(recipes,true);
     });
@@ -273,6 +277,7 @@ $(function () {
     });
 
     scrollSidebarTop();
+
 
 
 });

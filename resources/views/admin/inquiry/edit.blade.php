@@ -286,6 +286,44 @@
             </div>
         </div>
     </div>
+    <div id="tipModal" class="modal fade" role="dialog" >
+        <div class="modal-dialog" style="margin-right:0px;">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-2 text-right" style="line-height: 38px;">药房名</div>
+                        <div class="col-10" id="modal_recipe_name">
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-2 text-right" style="line-height: 38px;">方药</div>
+                        <div class="col-10" id="modal_medicines">
+                        </div>
+                    </div><hr>
+                    <div class="row">
+                        <div class="col-2 text-right" style="line-height: 38px;">其他病症</div>
+                        <div class="col-10" id="modal_other_condition">
+                        </div>
+                    </div><hr>
+                    <div class="row">
+                        <div class="col-2 text-right" style="line-height: 38px;">煎服法</div>
+                        <div class="col-10" id="modal_eatting_method">
+                        </div>
+                    </div><hr>
+                    <div class="row">
+                        <div class="col-2 text-right" style="line-height: 38px;">禁忌</div>
+                        <div class="col-10" id="modal_ban">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 @endsection
 
