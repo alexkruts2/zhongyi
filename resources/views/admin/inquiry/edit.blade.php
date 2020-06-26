@@ -150,7 +150,7 @@
 
                         <div class="form-group mt-3 row">
                             <label for="example-text-input" class="col-5 offset-1 col-form-label">主诉
-                                <button data-toggle="collapse" class="btn btn-default" data-target="#annotationSection" aria-expanded="false">
+                                <button type='button' data-toggle="collapse" class="btn btn-default" data-target="#annotationSection" aria-expanded="false">
                                     <i class="fas fa-angle-right"></i>
                                     <i class="fas fa-angle-down"></i>
                                 </button>
@@ -178,6 +178,14 @@
                         </div>
                         <div class="form-group mt-3 row">
                             <label for="example-text-input" class="col-8 offset-1 col-form-label">医生嘱托 : <b>{{$historyData->doctor_question}}</b></label>
+                        </div>
+                        <div class="form-group mt-3 row">
+                            <label for="example-text-input" class="col-8 offset-1 col-form-label">既往病史 : <b>{{$historyData->past_history}}</b></label>
+                        </div>
+                        <div class="form-group mt-3 row">
+                            <div class="col-8 offset-1 col-form-label">
+                                <textarea class="form-control" type="text" name='past_history' id="past_history"></textarea>
+                            </div>
                         </div>
 
 

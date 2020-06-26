@@ -39,6 +39,7 @@ class treatment extends Model
         'fuNumber',
         'shippingType',
         'kuaidiCompany',
+        'past_history',
         'kuaidiNumber'
     ];
 

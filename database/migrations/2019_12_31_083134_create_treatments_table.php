@@ -48,6 +48,7 @@ class CreateTreatmentsTable extends Migration
             $table->string('shippingType',8);
             $table->string('kuaidiCompany',128);
             $table->string('kuaidiNumber',128);
+            $table->text('past_history')->nullable();
             $table->integer('fuNumber');
             $table->timestamps();
         });

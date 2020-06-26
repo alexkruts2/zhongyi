@@ -149,6 +149,16 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row bg-gray">
+                            <label for="example-text-input" style="font-size: 27px;" class="col-2 col-form-label text-left">
+                                既往病史
+                            </label>
+                        </div>
+                        <div class="form-group mt-3 row">
+                            <div class="col-12">
+                                <textarea class="form-control" type="text" name='past_history' id="past_history"></textarea>
+                            </div>
+                        </div>
 
                         <div class="row bg-gray">
                             <label for="example-text-input" style="font-size: 27px;" class="col-2 col-form-label text-left">药方

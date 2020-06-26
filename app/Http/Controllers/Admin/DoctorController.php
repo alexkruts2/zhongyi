@@ -591,6 +591,8 @@ class DoctorController extends Controller{
         $accept_price = setting::where('name','ACCEPT_PRICE')->first()->value;
 
         $recipes_detail = $request->get('medicines');
+        $past_history = $request->get('past_history');
+
         if(empty($recipes_detail)){
             $recipes_detail = '[]';
             $state = config('constant.treat_state.close');
@@ -598,6 +600,8 @@ class DoctorController extends Controller{
             $state = config('constant.treat_state.before_treating_pay');
         $treatment = treatment::where('guahao',$guahao)->first();
         $total_price = $request->get('total_price');
+        $db_past_history = $treatment->past_history;
+        $db_past_history = empty($db_past_history)?$db_past_history:$db_past_history.",";
 
         $treatment->update([
             'state' => $state,
@@ -606,6 +610,7 @@ class DoctorController extends Controller{
             'biaozheng' => $strbiaozheng,
             'lizheng' => $strlizheng,
             'biaoli' => $strbiaoli,
+            'past_history' => $db_past_history.$past_history,
             'mai' => $strmai
         ]);
         return success($treatment);
@@ -650,6 +655,7 @@ class DoctorController extends Controller{
             $strmai = implode (",", $mai);
         }
         $doctor_question = $request->get('doctor_question');
+        $past_history = $request->get('past_history');
         $annotations = [];
         if(!empty($annotation_keys)){
             foreach($annotation_keys as $key=>$annotation_key){
@@ -687,7 +693,8 @@ class DoctorController extends Controller{
             'lizheng' => $strlizheng,
             'biaoli' => $strbiaoli,
             'mai' => $strmai,
-            'doctor_question' =>$doctor_question
+            'doctor_question' =>$doctor_question,
+            'past_history' => $past_history
         ]);
         return success($treatment);
     }
