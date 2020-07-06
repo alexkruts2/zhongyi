@@ -366,7 +366,11 @@ class AcceptController extends Controller
         $orderDirection = $order[0]['dir'];
         $accept_price = setting::where('name','ACCEPT_PRICE')->first()->value;
 
+        $yesterday = date("Y-m-d H:i:s",time()-60*60*24);
+
+
         $datas = treatment::select('treatments.*')->where('treatments.state',config('constant.treat_state.before_treating_pay'))
+            ->where('treatments.treat_start','>',$yesterday)
             ->where(function($query) use ($searchValue) {
                 $query->where('patients.name','like','%'.$searchValue.'%')
                     ->orWhere('patients.phone_number','like','%'.$searchValue.'%');
