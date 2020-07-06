@@ -160,9 +160,12 @@ $(function () {
         $("#recipe").prepend("<option></option>").select2({
             placeholder:"请选择",
         });
-
-
     }
+    $("#search_history").prepend("<option></option>").select2({
+        allowClear: true,
+        placeholder:"请选择问诊单模板"
+    });
+
     if($("#medicine").length)
         $("#medicine").select2();
 

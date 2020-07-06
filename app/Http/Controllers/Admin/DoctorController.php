@@ -472,12 +472,20 @@ class DoctorController extends Controller{
             ->join('patients', 'treatments.patient_id', '=', 'patients.id')
             ->first();
         $patient_id = $treatment->patient_id;
-        $datas = treatment::select('*')->where('treatments.patient_id',$patient_id)
-            ->join('patients', 'treatments.patient_id', '=', 'patients.id')->get();
+        $datas = treatment::select('treatments.*','doctors.name as doctor_name')->where('treatments.patient_id',$patient_id)
+            ->where(function($query){
+                $query->where('treatments.state',config('constant.treat_state.after_treating_pay'));
+                $query->orWhere('treatments.state',config('constant.treat_state.close'));
+            })
+
+//            ->where('treatments.state',config('constant.treat_state.close'))
+            ->join('patients', 'treatments.patient_id', '=', 'patients.id')
+            ->join('doctors', 'treatments.doctor_id', '=', 'doctors.id')->get();
         $medicines = medicine::select('*')->where('flag','NORMAL')->orderBy('name')->get();
 
         return view('admin.inquiry.create')->with([
             'treatment'=>$treatment,
+            'histories' => $datas,
             'history_number' => count($datas)*1,
             'medicines' => $medicines
             ]);

@@ -41,7 +41,7 @@
                             </div>
                             <div class="col-md-4 form-inline">
                                 <label for="ID_Number" >身份证号&nbsp;&nbsp; </label>
-                                <input class="form-control" type="text" value="{{$treatment->ID_Number}}" name='ID_Number' id="ID_Number" readonly>
+                                <input class="form-control w-75" type="text" value="{{$treatment->ID_Number}}" name='ID_Number' id="ID_Number" readonly>
                             </div>
                         </div>
                         <div class="mt-3 row">
@@ -56,6 +56,16 @@
                             <div class="col-md-4 form-inline">
                                 <label for="history_number" >历次(次)&nbsp;&nbsp; </label>
                                 <input class="form-control w-75" type="text" value="{{$history_number}}" name='history_number' id="history_number" readonly>
+                            </div>
+                            <div class="col-md-4 form-inline">
+                                <label for="history_number" >查询病例&nbsp;&nbsp;</label>
+                                <select class="select2 w-75" name='search_history' id="search_history"  style="width:100%;">
+                                    <option value="">查询病例</option>
+                                    @foreach ($histories as $history)
+                                        <option value="{{$history->id}}" data-doctor="{{$history->doctor_name}}" data-treat_start="{{$history->treat_start}}" data-price="{{$history->price}}" >{{$history->treat_start}}(医生：{{$history->doctor_name}})</option>
+                                    @endforeach
+                                </select>
+
                             </div>
                         </div>
                         <div class="mt-3 row">
@@ -251,9 +261,6 @@
         <div class="modal-dialog" style="margin-right:0px;">
             <!-- Modal content-->
             <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-2 text-right" style="line-height: 38px;">药房名</div>
@@ -279,6 +286,38 @@
                     <div class="row">
                         <div class="col-2 text-right" style="line-height: 38px;">禁忌</div>
                         <div class="col-10" id="modal_ban">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="historyModal" class="modal fade" role="dialog" >
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-2 text-right" style="line-height: 38px;">患者姓名:</div>
+                        <div class="col-10" id="patient_name" style="line-height: 38px;">{{$treatment->name}}
+                        </div>
+                    </div><hr>
+                    <div class="row">
+                        <div class="col-2 text-right" style="line-height: 38px;">问诊医生:</div>
+                        <div class="col-10" id="doctor_name" style="line-height: 38px;">
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-2 text-right" style="line-height: 38px;">日期:</div>
+                        <div class="col-10" id="treat_start" style="line-height: 38px;">
+                        </div>
+                    </div><hr>
+                    <div class="row">
+                        <div class="col-2 text-right" style="line-height: 38px;">总价:</div>
+                        <div class="col-10" style="line-height: 38px;" id="total_price_modal">
                         </div>
                     </div>
                 </div>

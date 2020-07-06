@@ -899,59 +899,78 @@ function drawRecipeOther(recipes){
 }
 
 function showToolTip(spanId){
+    var flag = '';
+    if(spanId.startsWith('select2-recipe-result-'))
+        flag='recipe';
+    else if(spanId.startsWith('select2-search_history-result-'))
+        flag='search_history';
     spanId = spanId.replace("select2-recipe-result-", "");
+    spanId = spanId.replace("select2-search_history-result-","");
     arrSpanId = spanId.split("-");
     var id = arrSpanId[1];
     if(Number.isInteger(parseInt(id))!=true)
         return;
-    var medicine = $("#recipe").children('option[value="'+id+'"]').data('medicine');
-    var other_condition = $("#recipe").children('option[value="'+id+'"]').data('othercondition');
-    var eating_method = $("#recipe").children('option[value="'+id+'"]').data('eating_method');
-    var ban = $("#recipe").children('option[value="'+id+'"]').data('ban');
-    var recipe_name = $("#recipe").children('option[value="'+id+'"]').html();
+    if(flag=='recipe'){
+        var medicine = $("#recipe").children('option[value="'+id+'"]').data('medicine');
+        var other_condition = $("#recipe").children('option[value="'+id+'"]').data('othercondition');
+        var eating_method = $("#recipe").children('option[value="'+id+'"]').data('eating_method');
+        var ban = $("#recipe").children('option[value="'+id+'"]').data('ban');
+        var recipe_name = $("#recipe").children('option[value="'+id+'"]').html();
 
 
-    html = '';
-    var dbmedicines = medicine;
-    for(var j=0; j<dbmedicines.length; j++){
-        html+='<div class="recipe_medicine_">';
-        var min_weight =  dbmedicines[j].min_weight;
-        var max_weight =  dbmedicines[j].max_weight;
-        var weight = dbmedicines[j].weight==undefined?0:dbmedicines[j].weight;
-        if(dbmedicines[j].weight==undefined&&dbmedicines[j].min_weight==dbmedicines[j].max_weight)
-            weight = dbmedicines[j].max_weight;
-        var price = dbmedicines[j].price;
-        var unit = dbmedicines[j].unit;
-        selectedMedicine_id = dbmedicines[j].medicine_id;
-        selectedMedicine_name = dbmedicines[j].medicine;
-        var unitLable = unit==null||unit==''||unit==undefined||unit=='公克'?' 元/1g':unit=='两'?' 元/两':('元/'+unit);
-        price = unit=='公克'?price/10:price;
+        html = '';
+        var dbmedicines = medicine;
+        for(var j=0; j<dbmedicines.length; j++){
+            html+='<div class="recipe_medicine_">';
+            var min_weight =  dbmedicines[j].min_weight;
+            var max_weight =  dbmedicines[j].max_weight;
+            var weight = dbmedicines[j].weight==undefined?0:dbmedicines[j].weight;
+            if(dbmedicines[j].weight==undefined&&dbmedicines[j].min_weight==dbmedicines[j].max_weight)
+                weight = dbmedicines[j].max_weight;
+            var price = dbmedicines[j].price;
+            var unit = dbmedicines[j].unit;
+            selectedMedicine_id = dbmedicines[j].medicine_id;
+            selectedMedicine_name = dbmedicines[j].medicine;
+            var unitLable = unit==null||unit==''||unit==undefined||unit=='公克'?' 元/1g':unit=='两'?' 元/两':('元/'+unit);
+            price = unit=='公克'?price/10:price;
 
 
-        html+="<div class=\"row\">\n" +
-            " <label class=\"col-2 col-form-label text-right\">\n" +
-            "         &nbsp;"+selectedMedicine_name+
-            "<input type='hidden' name='medicine_id[]' value='"+selectedMedicine_id+"' /><input type='hidden' name='medicine_name[]' value='"+selectedMedicine_name+"' /></label>\n" +
-            "<div class=\"col-10 text-left\">\n" +
-            "    <label id=\"price_"+selectedMedicine_id+"\" style=\"line-height: 38px;\">"+price+" "+unitLable+" (最小："+min_weight+", 最大："+ max_weight+") </label><input type='hidden' name='price[]' value='"+price+"' /> \n" +
-            "<input type='hidden' name='unit[]' value='"+dbmedicines[j].unit+"' />"+
-            "</div>\n"+
-            "<input class=\"form-control\" type=\"hidden\" value=\""+max_weight+"\" name=\"max_weight[]\" id=\"max_weight_"+selectedMedicine_id+"\">\n" +
-            "<input class=\"form-control\" type=\"hidden\" value=\""+min_weight+"\" name=\"min_weight[]\" id=\"min_weight_"+selectedMedicine_id+"\">\n" +
-            "</div></div>\n"
-        html +='</div>';
+            html+="<div class=\"row\">\n" +
+                " <label class=\"col-2 col-form-label text-right\">\n" +
+                "         &nbsp;"+selectedMedicine_name+
+                "<input type='hidden' name='medicine_id[]' value='"+selectedMedicine_id+"' /><input type='hidden' name='medicine_name[]' value='"+selectedMedicine_name+"' /></label>\n" +
+                "<div class=\"col-10 text-left\">\n" +
+                "    <label id=\"price_"+selectedMedicine_id+"\" style=\"line-height: 38px;\">"+price+" "+unitLable+" (最小："+min_weight+", 最大："+ max_weight+") </label><input type='hidden' name='price[]' value='"+price+"' /> \n" +
+                "<input type='hidden' name='unit[]' value='"+dbmedicines[j].unit+"' />"+
+                "</div>\n"+
+                "<input class=\"form-control\" type=\"hidden\" value=\""+max_weight+"\" name=\"max_weight[]\" id=\"max_weight_"+selectedMedicine_id+"\">\n" +
+                "<input class=\"form-control\" type=\"hidden\" value=\""+min_weight+"\" name=\"min_weight[]\" id=\"min_weight_"+selectedMedicine_id+"\">\n" +
+                "</div></div>\n"
+            html +='</div>';
+
+        }
+
+        $("#modal_recipe_name").html(recipe_name);
+        $("#modal_medicines").html(html);
+        $("#modal_other_condition").html(other_condition);
+        $("#modal_eatting_method").html(eating_method);
+        $("#modal_ban").html(ban);
+        $("#tipModal").modal('show');
+    }else if(flag=='search_history'){
+        $("#historyModal").modal('show');
+        var doctor_name = $("#search_history").children('option[value="'+id+'"]').data('doctor');
+        var treat_start = $("#search_history").children('option[value="'+id+'"]').data('treat_start');
+        var price = $("#search_history").children('option[value="'+id+'"]').data('price');
+        $("#doctor_name").html(doctor_name);
+        $("#treat_start").html(treat_start);
+        $("#total_price_modal").html(price);
 
     }
 
-    $("#modal_recipe_name").html(recipe_name);
-    $("#modal_medicines").html(html);
-    $("#modal_other_condition").html(other_condition);
-    $("#modal_eatting_method").html(eating_method);
-    $("#modal_ban").html(ban);
-    $("#tipModal").modal('show');
 }
 function hideTooltip(){
     $("#tipModal").modal('hide');
+    $("#historyModal").modal('show');
 }
 function getHefang() {
     var otherCondition=eatting_method=ban='';
