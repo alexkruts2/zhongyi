@@ -970,7 +970,7 @@ function showToolTip(spanId){
 }
 function hideTooltip(){
     $("#tipModal").modal('hide');
-    $("#historyModal").modal('show');
+    $("#historyModal").modal('hide');
 }
 function getHefang() {
     var otherCondition=eatting_method=ban='';

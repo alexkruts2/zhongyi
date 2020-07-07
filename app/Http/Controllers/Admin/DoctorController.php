@@ -477,8 +477,6 @@ class DoctorController extends Controller{
                 $query->where('treatments.state',config('constant.treat_state.after_treating_pay'));
                 $query->orWhere('treatments.state',config('constant.treat_state.close'));
             })
-
-//            ->where('treatments.state',config('constant.treat_state.close'))
             ->join('patients', 'treatments.patient_id', '=', 'patients.id')
             ->join('doctors', 'treatments.doctor_id', '=', 'doctors.id')->get();
         $medicines = medicine::select('*')->where('flag','NORMAL')->orderBy('name')->get();
