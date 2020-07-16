@@ -293,6 +293,7 @@ function drawTable() {
             columns: [
                 {data: 'department'},
                 {data: 'prescription_name'},
+                {data: 'price'},
                 {data: 'id'}
             ],
             "language": {
@@ -305,7 +306,7 @@ function drawTable() {
                         return data==''||data==undefined||data==null?'未知':data;
                     }
                 },{
-                    "aTargets":[1],
+                    "aTargets":[2],
                     "mRender":function(data,type,full) {
                         return data==''||data==undefined||data==null?'0':data;
                     }
