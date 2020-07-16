@@ -40,6 +40,7 @@
                             <tr>
                                 <th class="text-center">药方分类</th>
                                 <th class="text-center">药方名称</th>
+                                <th class="text-center">价格</th>
                                 <th class="text-center">操作</th>
                             </tr>
                             </thead>

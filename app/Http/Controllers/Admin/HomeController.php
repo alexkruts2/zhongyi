@@ -394,6 +394,7 @@ class HomeController extends Controller
             $obj["disease_name"] = is_null($data->disease_name) ? '' : $data->disease_name;
             $obj["prescription_name"] = is_null($data->prescription_name) ? '' : $data->prescription_name;
             $obj["department"] = is_null($data->department_id) || $data->department_id < 1 ? '' : $data->department->name;
+            $obj["price"] = is_null($data->price)  ? '0' : $data->price;
             $obj["id"] = $data->id;
             array_push($departmentData,$obj);
         }

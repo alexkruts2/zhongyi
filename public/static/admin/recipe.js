@@ -305,7 +305,12 @@ function drawTable() {
                         return data==''||data==undefined||data==null?'未知':data;
                     }
                 },{
-                    "aTargets":[2],
+                    "aTargets":[1],
+                    "mRender":function(data,type,full) {
+                        return data==''||data==undefined||data==null?'0':data;
+                    }
+                },{
+                    "aTargets":[3],
                     "mRender":function(data,type,full) {
                         return '<button class="btn btn-sm btn-success m-l-5" onclick="location.href=\'/doctor/recipe/edit/'+data+'\'"><i class="ti-pencil"></i>修改</button>'+
                             '<button class="btn btn-sm btn-danger m-l-5" onclick="deleteRecipe(\'' + data+ '\', this)"><i class="ti-trash"></i>删除</button>';
