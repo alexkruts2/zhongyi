@@ -188,11 +188,75 @@
 
 
 
-<div style="position: absolute; bottom:-3000px;">
-    <div id="print"  style="width:300px;height:200px;">
-        <svg id="barcode"></svg>
+    <div  id="printJS-form">
+        <h1 style="text-align: center">修和中医问诊</h1>
+        <h3  style="text-align: center">挂号单</h3>
+        <table style="border: 1px solid #333; cellpadding:3px; width:100%;">
+            <tbody>
+                <tr>
+                    <td style="font-size:9px;padding:5px;">患者编号</td>
+                    <td style="font-size:9px;padding:5px;" id="print_guahao"></td>
+                    <td style="font-size:9px;padding:5px;"></td>
+                    <td style="font-size:9px;padding:5px;"></td>
+                    <td style="font-size:9px;padding:5px;"></td>
+                    <td style="font-size:9px;padding:5px;"></td>
+                </tr>
+                <tr>
+                    <td style="font-size:9px;padding:5px;">姓名</td>
+                    <td style="font-size:9px;padding:5px;" id="print_patient_name"></td>
+                    <td style="font-size:9px;padding:5px;">性别</td>
+                    <td style="font-size:9px;padding:5px;" id="print_sex"></td>
+                    <td style="font-size:9px;padding:5px;">年龄</td>
+                    <td style="font-size:9px;padding:5px;" id="print_age"></td>
+                </tr>
+                <tr>
+                    <td style="font-size:9px;padding:5px;">就诊时间</td>
+                    <td style="font-size:9px;padding:5px;" id="print_time">２０２０／０５／０４</td>
+                    <td style="font-size:9px;padding:5px;"></td>
+                    <td style="font-size:9px;padding:5px;"></td>
+                    <td style="font-size:9px;padding:5px;"></td>
+                    <td style="font-size:9px;padding:5px;"></td>
+                </tr>
+                <tr>
+                    <td style="font-size:9px;padding:5px;">就诊科室</td>
+                    <td style="font-size:9px;padding:5px;" id="print_department"></td>
+                    <td style="font-size:9px;padding:5px;">就诊医生</td>
+                    <td style="font-size:9px;padding:5px;" id="print_doctor"></td>
+                    <td style="font-size:9px;padding:5px;"></td>
+                    <td style="font-size:9px;padding:5px;"></td>
+                </tr>
+                <tr>
+                    <td style="font-size:9px;padding:5px;">问诊地址</td>
+                    <td style="font-size:9px;padding:5px;" id="print_addres"></td>
+                    <td style="font-size:9px;padding:5px;"></td>
+                    <td style="font-size:9px;padding:5px;"></td>
+                    <td style="font-size:9px;padding:5px;"></td>
+                    <td style="font-size:9px;padding:5px;"></td>
+                </tr>
+                <tr>
+                    <td style="font-size:9px;padding:5px;">联系电话</td>
+                    <td style="font-size:9px;padding:5px;" id="print_telephone"></td>
+                    <td style="font-size:9px;padding:5px;"></td>
+                    <td style="font-size:9px;padding:5px;"></td>
+                    <td style="font-size:9px;padding:5px;"></td>
+                    <td style="font-size:9px;padding:5px;"></td>
+                </tr>
+            </tbody>
+        </table>
+        <h3  style="text-align: center;margin-top:10px;">挂号金额: <span id="print_price">２３</span>元</h3>
+        <h3>&nbsp;</h3>
+        <h3  style="text-align: center">前面候诊人数：<span id="man_number"></span></h3>
+        <h3 style="text-align: center">请您在候诊等持候诊！</h3>
+        <h3 style="text-align: center">此单就诊，单日有效，请妥善保存</h3>
+
     </div>
-</div>
+    <style>
+        @media print {
+            @page{
+                size: 140mm 120mm;
+            }
+        }
+    </style>
 @endsection
 
 @section('scripts')

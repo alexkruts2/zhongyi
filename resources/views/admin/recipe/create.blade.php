@@ -47,7 +47,7 @@
                         </div>
 
                         <div id="diseaseSection">
-                            <div class="row">
+                            <div class="row" style="margin-bottom: 7px;">
                                 <label class="col-2 col-form-label text-right">
                                     &nbsp;病症<span id="label_1">1</span></label>
                                 <div class="col-10">
@@ -76,6 +76,12 @@
                             <label for="example-text-input" class="col-2 col-form-label text-right">禁忌</label>
                             <div class="col-10">
                                 <textarea class="form-control" type="text" value="" name='ban' id="ban" placeholder="脉紧、无汗"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group mt-3 row">
+                            <label for="example-text-input" class="col-2 col-form-label text-right">价格</label>
+                            <div class="col-10">
+                                <input class="form-control" type="number" name='recipe-price' id="recipe-price" placeholder="药房价格" data-parsley-required min="0"></input>
                             </div>
                         </div>
                         <hr>

@@ -15,6 +15,8 @@ class recipe extends Model
         'prescription_name',
         'eating_method',
         'ban',
+        'price',
+        'maizheng',
         'flag'
     ];
     public function department(){

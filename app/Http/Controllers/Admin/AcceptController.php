@@ -243,7 +243,16 @@ class AcceptController extends Controller
         $treatment->patient_name = $treatment->patient->name;
         $treatment->patient_phone = $treatment->patient->phone_number;
         $treatment->department_name = $treatment->doctor->department->name;
+        $treatment->doctor_name = $treatment->doctor->name;
         $treatment->accept_fee = $accept_price;
+
+        $yesterday = date("Y-m-d H:i:s",time()-60*60*24);
+        $waiting_number = $treatment::where('doctor_id',$treatment->doctor->id)
+            ->where('state',config('constant.treat_state.waiting_treatment'))
+            ->where('request_time','>',$yesterday)
+            ->count();
+        if($waiting_number>1) $waiting_number--;
+        $treatment->waiting_number = $waiting_number;
 
         return success($treatment);
     }

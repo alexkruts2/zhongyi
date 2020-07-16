@@ -4,6 +4,7 @@
     <link href="{{asset('static/plugin/video-record/css/video-js.min.css')}}" rel="stylesheet">
     <link href="{{asset('static/plugin/video-record/css/videojs.record.min.css')}}" rel="stylesheet">
     <link href="{{ asset('static/plugin/sweetalert/sweetalert.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('static/plugin/bootstrap-tagsinput/dist/bootstrap-tagsinput.css') }}" rel="stylesheet" type="text/css">
 
 @endsection
 
@@ -100,7 +101,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-6">
-                                <video id="myVideo" preload="auto"  class="video-js vjs-default-skin"></video>
+                                <video id="myVideo" preload="auto"  class="video-js vjs-default-skin" ></video>
                             </div>
                         </div>
                         <div class="row bg-gray">
@@ -168,6 +169,13 @@
                             <div class="col-12">
                                 <textarea class="form-control" type="text" name='past_history' id="past_history"></textarea>
                             </div>
+                        </div>
+
+                        <div class="form-group mt-3 row">
+                            <div class="col-md-3"><input type="text" class="form-control" value="" id="total_biaozheng" data-role="tagsinput" placeholder="表症"/> </div>
+                            <div class="col-md-3"><input type="text" class="form-control"  value="" id="total_lizheng" data-role="tagsinput" placeholder="里症"/> </div>
+                            <div class="col-md-3"><input type="text" class="form-control"  value="" id="total_biaoli" data-role="tagsinput" placeholder="半表半里"/> </div>
+                            <div class="col-md-3"><input type="text"  class="form-control" value="" id="total_maizheng" data-role="tagsinput" placeholder="脉症"/> </div>
                         </div>
 
                         <div class="row bg-gray">
@@ -287,6 +295,11 @@
                         <div class="col-2 text-right" style="line-height: 38px;">禁忌</div>
                         <div class="col-10" id="modal_ban">
                         </div>
+                    </div><hr>
+                    <div class="row">
+                        <div class="col-2 text-right">价格</div>
+                        <div class="col-10" id="modal_price">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -341,5 +354,6 @@
     <script src="{{ asset('static/plugin/parsley/parsley.min.js') }}"></script>
     <script src="{{ asset('static/plugin/parsley/zh_cn.js') }}"></script>
     <script src="{{ asset('static/plugin/parsley/zh_cn.extra.js') }}"></script>
+    <script src="{{ asset('static/plugin/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js') }}" ></script>
 
 @endsection

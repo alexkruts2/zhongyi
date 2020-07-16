@@ -6,6 +6,38 @@ var guhaoTable;
 var treatment;
 var printFlag = false;
 $(function () {
+    // $("#print_guahao").html(data.guahao);
+    // $("#print_patient_name").html(data.patient_name);
+    // $("#print_sex").html(data.patient.sex)
+    // $("#print_time").html(data.updated_at);
+    // $("#print_department").html(data.department_name);
+    // $("#print_doctor").html(data.doctor_name);
+    // $("#print_addres").html(data.doctor.visiting_place);
+    // $("#print_telephone").html(data.patient_phone);
+    // $("#print_price").html(data.accept_fee);
+    // $("#man_number").html(data.waiting_number);
+
+    someJSONdata = {
+        guahao:'123321',
+        patient_name:'test patient',
+        patient:{
+            sex:'Man'
+        },
+        updated_at: '2020-09-12 22:02',
+        department_name:'department_name',
+        doctor_name:'doctor',
+        doctor:{
+            visiting_place:'visiting_place'
+        },
+        patient_phone:'12312312312',
+        accept_fee:30,
+        waiting_number:5
+    }
+    print(someJSONdata,function(){
+        window.location.href='/doctor/accept/guahao/view';
+    });
+
+
     // $("#myModal").modal('show');
     $('#myModal').modal({backdrop: 'static', keyboard: false});
 
@@ -210,39 +242,22 @@ function dataURItoBlob( dataURI ) {
 }
 
 function print(data,callbackFunc) {
-    someJSONdata = [
-        {
-            属性: '挂号时间',
-            值: data.updated_at,
-        },
-        {
-            属性: '姓名',
-            值: data.patient_name,
-        },
-        {
-            属性: '电话号',
-            值: data.patient_phone,
-        },
-        {
-            属性: '科室',
-            值: data.doctor.department.name,
-        },
-        {
-            属性: '医生姓名',
-            值: data.doctor.name,
-        },
-        {
-            属性: '挂号费',
-            值: data.accept_fee,
-        }
-    ]
 
-    // JsBarcode("#barcode", guahao);
+    $("#print_guahao").html(data.guahao);
+    $("#print_patient_name").html(data.patient_name);
+    $("#print_sex").html(data.patient.sex)
+    $("#print_time").html(data.updated_at);
+    $("#print_department").html(data.department_name);
+    $("#print_doctor").html(data.doctor_name);
+    $("#print_addres").html(data.doctor.visiting_place);
+    $("#print_telephone").html(data.patient_phone);
+    $("#print_price").html(data.accept_fee);
+    $("#man_number").html(data.waiting_number);
+
+
     printJS({
-        printable: someJSONdata,
-        properties: ['属性', '值'],
-        header:null,
-        type: 'json',
+        printable: "printJS-form",
+        type: 'html',
         onPrintDialogClose:callbackFunc
     });
 }
@@ -365,7 +380,8 @@ function payAccept() {
                 hideOverlay();
                 print(resp.data,function(){
                     window.location.href='/doctor/accept/guahao/view';
-                });                $("#payModal").modal('hide');
+                });
+                $("#payModal").modal('hide');
                 printFlag = true;
             } else {
                 hideOverlay();

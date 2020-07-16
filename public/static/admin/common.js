@@ -240,7 +240,7 @@ function drawItems(type,itemList,selectedList, trigger = true) {
     for(var i=0; i < itemList.length; i++){
         var checked = selectedList.includes(itemList[i])?"checked":'';
         html+='\t<div class="custom-control custom-checkbox">\n' +
-            '\t\t<input type="checkbox" class="custom-control-input" id="'+type+'_'+i+'" name="'+type+'[]" value="'+itemList[i]+'" '+ checked +'>\n' +
+            '\t\t<input type="checkbox" class="custom-control-input '+type+'" id="'+type+'_'+i+'" name="'+type+'[]" onclick="drawTags()" value="'+itemList[i]+'" '+ checked +'>\n' +
             '\t\t<label class="custom-control-label" for="'+type+'_'+i+'">'+itemList[i]+'</label>\n' +
             '\t</div>\n';
         if((Math.floor(itemList.length/4) + remain>0?1:0) ==(i+1)||(2*Math.floor(itemList.length/4) + remain>1?1:0 ==(i+1))||(3*Math.floor(itemList.length/4)+ + remain>2?1:0)==(i+1))
@@ -729,6 +729,7 @@ function removeMedicineQA(recipeId, obj,inquiry,appendable) {
     calcPriceTotal();
 }
 function searchRecipes(callback=null){
+
     $("#recipe").prop('disabled',false);
     var data = $("#question_title").val();
     if(data==''||data==null||data==undefined) {
@@ -893,7 +894,10 @@ function drawRecipeOther(recipes){
         recipe_list = recipes;
     for (var i = 0; i < recipe_list.length; i ++) {
         html += '<option onmouseover="showToolTip()" value="' + recipe_list[i].id+'" data-medicine=\'' + recipe_list[i].medicine + '\' data-otherCondition=\'' +
-            recipe_list[i].other_condition + '\' data-eating_method=\'' + recipe_list[i].eating_method + '\' data-ban=\'' + recipe_list[i].ban + '\'>'+recipe_list[i].prescription_name+'</option>';
+            recipe_list[i].other_condition +
+            '\' data-eating_method=\'' + recipe_list[i].eating_method +
+            '\' data-price=\'' + recipe_list[i].price +
+            '\' data-ban=\'' + recipe_list[i].ban + '\'>'+recipe_list[i].prescription_name+'</option>';
     }
     $("#recipe").html(html);
 }
@@ -915,6 +919,7 @@ function showToolTip(spanId){
         var other_condition = $("#recipe").children('option[value="'+id+'"]').data('othercondition');
         var eating_method = $("#recipe").children('option[value="'+id+'"]').data('eating_method');
         var ban = $("#recipe").children('option[value="'+id+'"]').data('ban');
+        var price = $("#recipe").children('option[value="'+id+'"]').data('price');
         var recipe_name = $("#recipe").children('option[value="'+id+'"]').html();
 
 
@@ -954,6 +959,7 @@ function showToolTip(spanId){
         $("#modal_medicines").html(html);
         $("#modal_other_condition").html(other_condition);
         $("#modal_eatting_method").html(eating_method);
+        $("#modal_price").html(price);
         $("#modal_ban").html(ban);
         $("#tipModal").modal('show');
     }else if(flag=='search_history'){
@@ -1052,3 +1058,58 @@ function sethoufang(obj) {
     drawMedicine(recipeDatas,true,true);
     calcPriceTotal();
 }
+
+function getMaizhengCheckValue(type){
+    var str = '';
+    var elements = document.getElementsByClassName(type);
+    for(var i = 0 ; elements[i];i++){
+        if(elements[i].checked){
+            str += elements[i].value + ',';
+        }
+    }
+    if(str.length>1)
+        str = str.substring(0,str.length-1);
+    return str;
+}
+
+function drawTags(){
+    var strBiaos = getMaizhengCheckValue('biaozheng');
+    var strLis = getMaizhengCheckValue('lizheng');
+    var strBiaoLis = getMaizhengCheckValue('biaoli');
+    var strMais = getMaizhengCheckValue('maizheng');
+    $("#total_biaozheng").tagsinput('removeAll');
+    $("#total_lizheng").tagsinput('removeAll');
+    $("#total_biaoli").tagsinput('removeAll');
+    $("#total_maizheng").tagsinput('removeAll');
+    $("#total_biaozheng").tagsinput('add',strBiaos);
+    $("#total_lizheng").tagsinput('add',strLis);
+    $("#total_biaoli").tagsinput('add',strBiaoLis);
+    $("#total_maizheng").tagsinput('add',strMais);
+}
+
+$('input').on('itemRemoved',function(event){
+    var vals = $(this).val();
+    var id = $(this)[0].id;
+    switch (id) {
+        case 'total_biaozheng':
+            $(".biaozheng").prop('checked',false);
+            break;
+        case 'total_lizheng':
+            $(".lizheng").prop('checked',false);
+            break;
+        case 'total_biaoli':
+            $(".biaoli").prop('checked',false);
+            break;
+        case 'total_maizheng':
+            $(".maizheng").prop('checked',false);
+            break;
+        default:
+            break;
+    }
+
+    var elementValues = vals.split(',');
+    for(var i = 0 ; elementValues[i] ; i ++){
+        $('input[value="'+elementValues[i]+'"]').prop('checked',true);
+    }
+
+})

@@ -38,18 +38,19 @@ class DoctorController extends Controller{
         $failureNumber = 0;
 
         foreach($recipes[0] as $row){
-            if($row[0]=='方名'){
+            if($row[1]=='方名'){
                 $totalNumber--;
                 continue;
             }
-            if(empty($row[0])||empty($row[2])||empty($row[3])){
+            if(empty($row[1])||empty($row[3])||empty($row[4])){
                 $failureNumber++;
                 continue;
             }
 
-            $strMedicine = $row[2];
+            $strMedicine = $row[3];
 
             $medicines = getMedicineDatas($strMedicine);
+            $price = empty($row[7])?0:$row[7];
 
 
             $dbMedicines = array();
@@ -97,25 +98,29 @@ class DoctorController extends Controller{
                 }
             }
 
-            $recipe = recipe::where('prescription_name',$row[0])->first();
+            $recipe = recipe::where('prescription_name',$row[1])->first();
             if(!empty($recipe)){
                 $updatedNumber++;
                 $recipe->update([
-                    'prescription_name'     => $row[0],
-                    'other_condition'  => $row[1],
-                    'eating_method'     => $row[3],
+                    'prescription_name'     => $row[1],
+                    'other_condition'  => $row[2],
+                    'eating_method'     => $row[4],
                     'medicine' => json_encode($dbMedicines),
-                    'ban'     => $row[4],
+                    'ban'     => $row[5],
+                    'maizheng' => $row[6],
+                    'price' => $price,
                     'flag' => 'NORMAL'
                 ]);
             }else{
                 $insertNumber++;
                 recipe::create([
-                    'prescription_name'     => $row[0],
-                    'other_condition'  => $row[1],
-                    'eating_method'     => $row[3],
+                    'prescription_name'     => $row[1],
+                    'other_condition'  => $row[2],
+                    'eating_method'     => $row[4],
                     'medicine' => json_encode($dbMedicines),
-                    'ban'     => $row[4],
+                    'ban'     => $row[5],
+                    'maizheng' => $row[6],
+                    'price' => $price,
                     'flag' => 'NORMAL'
                 ]);
             }
@@ -532,7 +537,7 @@ class DoctorController extends Controller{
         if (!empty($biaozhengs)) {
             $sql .= "( 1 != 1 ";
             for ($i = 0; $i < count($biaozhengs); $i ++) {
-                $sql .= " OR other_condition LIKE '%" . $biaozhengs[$i] . "%'";
+                $sql .= " OR other_condition LIKE '%" . $biaozhengs[$i] . "%' OR maizheng  LIKE '%" . $biaozhengs[$i] . "%'";
             }
             $sql .= ")";
         }
@@ -541,7 +546,7 @@ class DoctorController extends Controller{
                 $sql .= " AND ";
             $sql .= " ( 1 != 1 ";
             for ($i = 0; $i < count($lizhengs); $i ++) {
-                $sql .= " OR other_condition LIKE '%" . $lizhengs[$i] . "%'";
+                $sql .= " OR other_condition LIKE '%" . $lizhengs[$i] . "%' OR maizheng  LIKE '%" . $lizhengs[$i] . "%'";
             }
             $sql .= ")";
         }
@@ -550,7 +555,7 @@ class DoctorController extends Controller{
                 $sql .= " AND ";
             $sql .= " ( 1 != 1 ";
             for ($i = 0; $i < count($biaolis); $i ++) {
-                $sql .= " OR other_condition LIKE '%" . $biaolis[$i] . "%'";
+                $sql .= " OR other_condition LIKE '%" . $biaolis[$i] . "%' OR maizheng  LIKE '%" . $biaolis[$i] . "%'";
             }
             $sql .= ")";
         }
@@ -559,7 +564,7 @@ class DoctorController extends Controller{
                 $sql .= " AND ";
             $sql .= " ( 1 != 1 ";
             for ($i = 0; $i < count($maizhengs); $i ++) {
-                $sql .= " OR other_condition LIKE '%" . $maizhengs[$i] . "%'";
+                $sql .= " OR other_condition LIKE '%" . $maizhengs[$i] . "%' OR maizheng  LIKE '%" . $maizhengs[$i] . "%'";
             }
             $sql .= ")";
         }

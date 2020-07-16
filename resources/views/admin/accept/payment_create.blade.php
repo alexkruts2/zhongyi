@@ -97,6 +97,20 @@
 <form method="post" action="#" id="printJS-form" style="position:absolute">
 
 </form>
+<style>
+    @media print and (width: 12cm) and (height: 14cm){
+        @page{
+            margin: 2cm;
+        }
+    }
+    @media print {
+        body{
+            width: 12cm;
+            height: 14cm;
+        }
+
+    }
+</style>
 
 @section('scripts')
     <!--morris JavaScript -->
