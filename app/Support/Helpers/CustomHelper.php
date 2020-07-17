@@ -851,7 +851,7 @@ if (!function_exists('getMedicineDatas')) {
     function getMedicineDatas($strMedicine){
         if(empty($strMedicine))
             return [];
-        $split_strings = preg_split('/[\ \n\,]+/', $strMedicine);
+        $split_strings = preg_split('/[\ \n\,\、\，]+/', $strMedicine);
         $recipe = [];
         foreach($split_strings as  $split_string){
             if (preg_match('/（(.*?)）/', $split_string, $match) == 1) {

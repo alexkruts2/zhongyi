@@ -92,7 +92,7 @@ class DoctorController extends Controller{
                         "max_weight" => $max_weight,
                         "unit" => $unit,
                         'option' => $each['option'],
-                        'price' => $recipe_price
+                        'price' => $price
                     );
                     array_push($dbMedicines,$item);
                 }
@@ -120,7 +120,7 @@ class DoctorController extends Controller{
                     'medicine' => json_encode($dbMedicines),
                     'ban'     => $row[5],
                     'maizheng' => $row[6],
-                    'price' => $price,
+                    'price' => $recipe_price,
                     'flag' => 'NORMAL'
                 ]);
             }
