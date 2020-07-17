@@ -543,7 +543,7 @@ class DoctorController extends Controller{
         }
         if (!empty($lizhengs)) {
             if (!empty($biaozhengs))
-                $sql .= " AND ";
+                $sql .= " OR ";
             $sql .= " ( 1 != 1 ";
             for ($i = 0; $i < count($lizhengs); $i ++) {
                 $sql .= " OR other_condition LIKE '%" . $lizhengs[$i] . "%' OR maizheng  LIKE '%" . $lizhengs[$i] . "%'";
@@ -552,7 +552,7 @@ class DoctorController extends Controller{
         }
         if (!empty($biaolis)) {
             if (!empty($lizhengs) || !empty($biaozhengs))
-                $sql .= " AND ";
+                $sql .= " OR ";
             $sql .= " ( 1 != 1 ";
             for ($i = 0; $i < count($biaolis); $i ++) {
                 $sql .= " OR other_condition LIKE '%" . $biaolis[$i] . "%' OR maizheng  LIKE '%" . $biaolis[$i] . "%'";
@@ -561,7 +561,7 @@ class DoctorController extends Controller{
         }
         if (!empty($maizhengs)) {
             if (!empty($lizhengs) || !empty($biaozhengs) || !empty($biaolis))
-                $sql .= " AND ";
+                $sql .= " OR ";
             $sql .= " ( 1 != 1 ";
             for ($i = 0; $i < count($maizhengs); $i ++) {
                 $sql .= " OR other_condition LIKE '%" . $maizhengs[$i] . "%' OR maizheng  LIKE '%" . $maizhengs[$i] . "%'";
