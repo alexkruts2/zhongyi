@@ -897,6 +897,7 @@ function drawRecipeOther(recipes){
             recipe_list[i].other_condition +
             '\' data-eating_method=\'' + recipe_list[i].eating_method +
             '\' data-price=\'' + recipe_list[i].price +
+            '\' data-maizheng=\'' + recipe_list[i].maizheng +
             '\' data-ban=\'' + recipe_list[i].ban + '\'>'+recipe_list[i].prescription_name+'</option>';
     }
     $("#recipe").html(html);
@@ -919,7 +920,8 @@ function showToolTip(spanId){
         var other_condition = $("#recipe").children('option[value="'+id+'"]').data('othercondition');
         var eating_method = $("#recipe").children('option[value="'+id+'"]').data('eating_method');
         var ban = $("#recipe").children('option[value="'+id+'"]').data('ban');
-        var price = $("#recipe").children('option[value="'+id+'"]').data('price');
+        var recipe_price = $("#recipe").children('option[value="'+id+'"]').data('price');
+        var maizheng = $("#recipe").children('option[value="'+id+'"]').data('maizheng');
         var recipe_name = $("#recipe").children('option[value="'+id+'"]').html();
 
 
@@ -959,7 +961,8 @@ function showToolTip(spanId){
         $("#modal_medicines").html(html);
         $("#modal_other_condition").html(other_condition);
         $("#modal_eatting_method").html(eating_method);
-        $("#modal_price").html(price);
+        $("#modal_price").html(recipe_price);
+        $("#modal_maizheng").html(maizheng);
         $("#modal_ban").html(ban);
         $("#tipModal").modal('show');
     }else if(flag=='search_history'){

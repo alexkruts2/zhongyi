@@ -306,6 +306,12 @@
                     </div>
                     <hr>
                     <div class="row">
+                        <div class="col-2 text-right" style="line-height: 38px;">方证</div>
+                        <div class="col-10" id="modal_other_condition">
+                        </div>
+                    </div><hr>
+
+                    <div class="row">
                         <div class="col-2 text-right" style="line-height: 38px;">方药</div>
                         <div class="col-10" id="modal_medicines">
                         </div>
@@ -325,6 +331,12 @@
                         <div class="col-10" id="modal_ban">
                         </div>
                     </div><hr>
+                    <div class="row">
+                        <div class="col-2 text-right" style="line-height: 38px; padding:0;">脉证、病症</div>
+                        <div class="col-10" id="modal_maizheng">
+                        </div>
+                    </div><hr>
+
                     <div class="row">
                         <div class="col-2 text-right">价格</div>
                         <div class="col-10" id="modal_price">
