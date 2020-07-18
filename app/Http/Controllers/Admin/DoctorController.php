@@ -58,14 +58,15 @@ class DoctorController extends Controller{
                 if(!empty($each)){
                     $medicine_name = $each['prescription_name'];
                     $medicine = medicine::where('name', $medicine_name)->first();
-                    $min_weight = $each['weight'];
-                    $max_weight = $each['weight'];
+//                    $min_weight = $each['weight'];
+//                    $max_weight = $each['weight'];
+
                     $unit = $each['unit'];
-                    if($each['unit']==config('constant.unit.liang')){
-                        $min_weight *= 50;
-                        $max_weight *= 50;
-                        $unit = config('constant.unit.gram');
-                    }
+//                    if($each['unit']==config('constant.unit.liang')){
+//                        $min_weight *= 50;
+//                        $max_weight *= 50;
+//                        $unit = config('constant.unit.gram');
+//                    }
 
                     if(empty($medicine)){
                         $medicine = medicine::create([
@@ -88,8 +89,6 @@ class DoctorController extends Controller{
                     $item = array(
                         'medicine_id' => $medicine->id,
                         "medicine" => $medicine_name,
-                        "min_weight" => $min_weight,
-                        "max_weight" => $max_weight,
                         "unit" => $unit,
                         'option' => $each['option'],
                         'price' => $price
@@ -537,7 +536,11 @@ class DoctorController extends Controller{
         if (!empty($biaozhengs)) {
             $sql .= "( 1 != 1 ";
             for ($i = 0; $i < count($biaozhengs); $i ++) {
-                $sql .= " OR other_condition LIKE '%" . $biaozhengs[$i] . "%' OR maizheng  LIKE '%" . $biaozhengs[$i] . "%'";
+//                $searchwords = str_word_count($biaozhengs[$i], 1, 'ÇçÖöŞşİIıĞğÜü@＃éß€1234567890');
+                $searchwords = explode(",", $biaozhengs[$i]);
+                for($j=0; $j<count($searchwords);$j++){
+                    $sql .= " OR other_condition LIKE '%" . $searchwords[$j] . "%' OR maizheng  LIKE '%" . $searchwords[$j] . "%'";
+                }
             }
             $sql .= ")";
         }
@@ -546,7 +549,12 @@ class DoctorController extends Controller{
                 $sql .= " OR ";
             $sql .= " ( 1 != 1 ";
             for ($i = 0; $i < count($lizhengs); $i ++) {
-                $sql .= " OR other_condition LIKE '%" . $lizhengs[$i] . "%' OR maizheng  LIKE '%" . $lizhengs[$i] . "%'";
+//                $searchwords = str_word_count($lizhengs[$i], 1, '0..3');
+                $searchwords = explode(",", $lizhengs[$i]);
+
+                for($j=0; $j<count($searchwords);$j++){
+                    $sql .= " OR other_condition LIKE '%" . $searchwords[$j] . "%' OR maizheng  LIKE '%" . $searchwords[$j] . "%'";
+                }
             }
             $sql .= ")";
         }
@@ -555,7 +563,11 @@ class DoctorController extends Controller{
                 $sql .= " OR ";
             $sql .= " ( 1 != 1 ";
             for ($i = 0; $i < count($biaolis); $i ++) {
-                $sql .= " OR other_condition LIKE '%" . $biaolis[$i] . "%' OR maizheng  LIKE '%" . $biaolis[$i] . "%'";
+                $searchwords = explode(",", $biaolis[$i]);
+
+                for($j=0; $j<count($searchwords);$j++){
+                    $sql .= " OR other_condition LIKE '%" . $searchwords[$j] . "%' OR maizheng  LIKE '%" . $searchwords[$j] . "%'";
+                }
             }
             $sql .= ")";
         }
@@ -564,7 +576,11 @@ class DoctorController extends Controller{
                 $sql .= " OR ";
             $sql .= " ( 1 != 1 ";
             for ($i = 0; $i < count($maizhengs); $i ++) {
-                $sql .= " OR other_condition LIKE '%" . $maizhengs[$i] . "%' OR maizheng  LIKE '%" . $maizhengs[$i] . "%'";
+                $searchwords = explode(",", $maizhengs[$i]);
+
+                for($j=0; $j<count($searchwords);$j++){
+                    $sql .= " OR other_condition LIKE '%" . $searchwords[$j] . "%' OR maizheng  LIKE '%" . $searchwords[$j] . "%'";
+                }
             }
             $sql .= ")";
         }
