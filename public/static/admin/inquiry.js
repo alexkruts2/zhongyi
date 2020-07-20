@@ -301,7 +301,6 @@ function startVideoCamera(){
         width: 80,
         height: 45,
         fluid: false,
-        autoplay:false,
         plugins: {
             record: {
                 audio: true,

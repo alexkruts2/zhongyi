@@ -430,7 +430,8 @@ class HomeController extends Controller
         $datas = department::select('*')
             ->orderBy('name')->get();
         $medicines = medicine::select('*')->orderBy('name')->get();
-        $recipe_medicines = json_decode($recipe->medicine);
+
+        $recipe_medicines = json_decode(getMedicineJSON($recipe->medicine));
         $conditions = explode(',',$recipe->condition);
 
         return view('admin.recipe.edit') -> with([
@@ -901,7 +902,7 @@ class HomeController extends Controller
         ]);
         $recipes = $request->get("recipes");
         $arr_recipes = explode (",", $recipes);
-        $recipes = recipe::select('id','medicine','prescription_name','other_condition','eating_method','ban')->whereIn('id',$arr_recipes)->get();
+        $recipes = recipe::select('id','medicine','prescription_name','other_condition','eating_method','ban','price')->whereIn('id',$arr_recipes)->get();
         $result = [];
         foreach($recipes as $recipe){
             $recipe->medicine = getMedicineJSON($recipe->medicine);

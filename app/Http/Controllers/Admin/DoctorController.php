@@ -58,9 +58,6 @@ class DoctorController extends Controller{
                 if(!empty($each)){
                     $medicine_name = $each['prescription_name'];
                     $medicine = medicine::where('name', $medicine_name)->first();
-//                    $min_weight = $each['weight'];
-//                    $max_weight = $each['weight'];
-
                     $unit = $each['unit'];
 //                    if($each['unit']==config('constant.unit.liang')){
 //                        $min_weight *= 50;
@@ -77,22 +74,37 @@ class DoctorController extends Controller{
                         ]);
                         $price = '0';
                         $unit = $each['unit'];
+                        $item = array(
+                            'medicine_id' => $medicine->id,
+                            "medicine" => $medicine_name,
+                            "unit" => $unit,
+                            "weight" => $each['weight'],
+                            'option' => $each['option'],
+                            'price' => $price
+                        );
+
                     }else{
                         $medicine->update([
                             'option' => $each['option'],
                             'flag' => 'NORMAL'
                         ]);
                         $price = $medicine->price;
+                        $min_weight = $medicine->min_weigth;
+                        $max_weight = $medicine->maz_weigth;
+                        $item = array(
+                            'medicine_id' => $medicine->id,
+                            "medicine" => $medicine_name,
+                            "unit" => $unit,
+                            'option' => $each['option'],
+                            'min' => $min_weight,
+                            'max' => $max_weight,
+                            "weight" => $each['weight'],
+                            'price' => $price
+                        );
+
                     }
 
 //                    updateRecipesByMedicineUnit($medicine->id,$each['unit']);
-                    $item = array(
-                        'medicine_id' => $medicine->id,
-                        "medicine" => $medicine_name,
-                        "unit" => $unit,
-                        'option' => $each['option'],
-                        'price' => $price
-                    );
                     array_push($dbMedicines,$item);
                 }
             }

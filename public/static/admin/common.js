@@ -373,8 +373,28 @@ function drawMedicine(data,inquiry=false,appendable,inquiry_detail=false) {
             var unitLable = unit==null||unit==''||unit==undefined||unit=='公克'?' 元/1g':unit=='两'?' 元/两':('元/'+unit);
             price = unit=='公克'?price/10:price;
 
+            var maxMin = '',maxMinLabel = '&nbsp;&nbsp;(';
+            if(data[i].shifouhefang!=true){
+                if(!empty(min_weight)&&min_weight!=0){
+                    maxMin += " min='"+min_weight+"' ";
+                    maxMinLabel +="最小：" +min_weight;
 
-            var maxMin = data[i].shifouhefang!=true?"max='"+max_weight+"' min='"+min_weight+"'":'';
+                }
+
+                if(!empty(max_weight)&&max_weight!=0){
+                    maxMin += "max='"+max_weight+"' ";
+                    maxMinLabel +="最大：" +max_weight;
+                }
+                maxMinLabel +=")";
+
+                if(maxMinLabel=="&nbsp;&nbsp;()")
+                    maxMinLabel = ''
+
+            }
+            if(maxMinLabel=="&nbsp;&nbsp;(")
+                maxMinLabel = ''
+
+
             html+="<div class=\"row\">\n" +
                 "   <div class='col-sm-1'></div> <label class=\"col-2 col-form-label text-right\">\n" +
                 "        <button type=\"button\" class=\"btn btn-default\" data-toggle=\"tooltip\" title=\"删除\" data-index=\""+selectedMedicine_id+"\" onclick=\"removeMedicineQA('" + data[i].id + "', this,"+inquiry+","+appendable+");\"><i class=\"fas fa-times\"></i> </button> &nbsp;"+selectedMedicine_name+
@@ -383,7 +403,7 @@ function drawMedicine(data,inquiry=false,appendable,inquiry_detail=false) {
                 "        <input class=\"form-control\" type=\"number\" value=\""+weight+"\" "+maxMin+" name=\"weight[]\" onchange='setWeight(\"" + data[i].id + "\",this,"+dbmedicines[j].medicine_id+","+inquiry+","+appendable+")'  id=\"weight"+data[i].id+'_'+selectedMedicine_id+"\" " + disabled + " >\n" +
                 "    </div>\n" +
                 "<div class=\"col-6 text-left\">\n" +
-                "    <label id=\"price_"+selectedMedicine_id+"\" style=\"line-height: 38px;\">"+price+" "+unitLable+" (最小："+min_weight+", 最大："+ max_weight+") </label><input type='hidden' name='price[]' value='"+price+"' /> \n" +
+                "    <label id=\"price_"+selectedMedicine_id+"\" style=\"line-height: 38px;\">"+price+" "+unitLable+maxMinLabel+" </label><input type='hidden' name='price[]' value='"+price+"' /> \n" +
                 "<input type='hidden' name='unit[]' value='"+dbmedicines[j].unit+"' />"+
                 "</div>\n"+
                 "<input class=\"form-control\" type=\"hidden\" value=\""+max_weight+"\" name=\"max_weight[]\" id=\"max_weight_"+selectedMedicine_id+"\">\n" +
@@ -506,6 +526,8 @@ function drawRecipeSections(recipes,inquiry) {
                 drawMedicine(drawRecipes,inquiry,true);
                 // nowRecipes = getMedicineList();
                 $("#medicines").val(JSON.stringify(drawRecipes));
+                calcPriceTotal();
+
             } else {
                 Swal.fire({
                     type: 'error',
@@ -542,7 +564,8 @@ function getDrawData(orginalRecipes,newRecipes){
                     tempMedicine[j].weight = weight;
                 }
                 newRecipes[i].medicine = JSON.stringify(tempMedicine);
-                newRecipes[i].price = calcPrice(newRecipes[i].medicine);
+                if(empty(newRecipes[i].price))
+                    newRecipes[i].price = calcPrice(newRecipes[i].medicine);
                 if(orginalRecipes.length>0){
                     if(orginalRecipes[orginalRecipes.length-1].id=='hefang'){
                         temp = orginalRecipes[orginalRecipes.length-1];
@@ -698,8 +721,14 @@ function calcPriceTotal(){
     var recipeDatas = JSON.parse($("#medicines").val());
     for(var i=0; i < recipeDatas.length; i++){
         var fuNumber = recipeDatas[i].fuNumber!=undefined&&recipeDatas[i].fuNumber!=null&&recipeDatas[i].fuNumber!=''?recipeDatas[i].fuNumber:1;
-        if(recipeDatas[i].shifouhefang!=true)
-            totalPrice += calcPrice(recipeDatas[i].medicine)*fuNumber;
+        if(recipeDatas[i].shifouhefang!=true){
+            if(empty(recipeDatas[i].price))
+                totalPrice += calcPrice(recipeDatas[i].medicine)*fuNumber;
+            else
+                totalPrice +=recipeDatas[i].price*1.0;
+
+        }
+
     }
     $("#total_price").val(totalPrice);
     $("#total_price_span").html(totalPrice);
@@ -898,6 +927,7 @@ function drawRecipeOther(recipes){
             '\' data-eating_method=\'' + recipe_list[i].eating_method +
             '\' data-price=\'' + recipe_list[i].price +
             '\' data-maizheng=\'' + recipe_list[i].maizheng +
+
             '\' data-ban=\'' + recipe_list[i].ban + '\'>'+recipe_list[i].prescription_name+'</option>';
     }
     $("#recipe").html(html);
@@ -930,7 +960,7 @@ function showToolTip(spanId){
         for(var j=0; j<dbmedicines.length; j++){
             html+='<div class="recipe_medicine_">';
             var min_weight =  dbmedicines[j].min_weight==undefined?"未定义":dbmedicines[j].min_weight;
-            var max_weight =  dbmedicines[j].max_weight?"未定义":dbmedicines[j].max_weight;
+            var max_weight =  dbmedicines[j].max_weight==undefined?"未定义":dbmedicines[j].max_weight;
             var weight = dbmedicines[j].weight==undefined?0:dbmedicines[j].weight;
             if(dbmedicines[j].weight==undefined&&dbmedicines[j].min_weight==dbmedicines[j].max_weight)
                 weight = dbmedicines[j].max_weight;
@@ -942,17 +972,21 @@ function showToolTip(spanId){
             if(price!='未定义')
                 price = unit=='公克'?price/10:price;
 
+            if(min_weight=='未定义'||max_weight=='未定义'){
+                weightLabel= "&nbsp;&nbsp;";
+                weightLabel += dbmedicines[j].weight==undefined? "未定义":dbmedicines[j].weight+"g";
+            }else
+                weightLabel = " (最小："+min_weight+", 最大："+ max_weight+")";
+
 
             html+="<div class=\"row\">\n" +
                 " <label class=\"col-2 col-form-label text-right\">\n" +
                 "         &nbsp;"+selectedMedicine_name+
                 "<input type='hidden' name='medicine_id[]' value='"+selectedMedicine_id+"' /><input type='hidden' name='medicine_name[]' value='"+selectedMedicine_name+"' /></label>\n" +
                 "<div class=\"col-10 text-left\">\n" +
-                "    <label id=\"price_"+selectedMedicine_id+"\" style=\"line-height: 38px;\">"+price+" "+unitLable+" (最小："+min_weight+", 最大："+ max_weight+") </label><input type='hidden' name='price[]' value='"+price+"' /> \n" +
+                "    <label id=\"price_"+selectedMedicine_id+"\" style=\"line-height: 38px;\">"+weightLabel+"&nbsp;&nbsp;&nbsp;"+price+" "+unitLable+"</label><input type='hidden' name='price[]' value='"+price+"' /> \n" +
                 "<input type='hidden' name='unit[]' value='"+dbmedicines[j].unit+"' />"+
                 "</div>\n"+
-                "<input class=\"form-control\" type=\"hidden\" value=\""+max_weight+"\" name=\"max_weight[]\" id=\"max_weight_"+selectedMedicine_id+"\">\n" +
-                "<input class=\"form-control\" type=\"hidden\" value=\""+min_weight+"\" name=\"min_weight[]\" id=\"min_weight_"+selectedMedicine_id+"\">\n" +
                 "</div></div>\n"
             html +='</div>';
 
@@ -1117,3 +1151,9 @@ $('input').on('itemRemoved',function(event){
     }
 
 })
+
+function empty(param){
+    if(param==''||param==undefined||param==null)
+        return true;
+    else return false;
+}
