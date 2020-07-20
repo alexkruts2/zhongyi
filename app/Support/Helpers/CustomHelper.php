@@ -943,12 +943,14 @@ if (!function_exists('updateRecipesByMedicinePrice')) {
             $medicines = json_decode($str_medicine);
             $medicine_array = [];
             $found = false;
-            foreach($medicines as $medicine){
-                if($medicine->medicine_id==$medicine_id){
-                    $found = true;
-                    $medicine->price = $price;
+            if(!empty($medicines)){
+                foreach($medicines as $medicine){
+                    if($medicine->medicine_id==$medicine_id){
+                        $found = true;
+                        $medicine->price = $price;
+                    }
+                    array_push($medicine_array,$medicine);
                 }
-                array_push($medicine_array,$medicine);
             }
             if($found)
                 \App\recipe::where('id',$recipe->id)->first()->update([
@@ -966,12 +968,14 @@ if (!function_exists('updateRecipesByMedicineUnit')) {
             $medicines = json_decode($str_medicine);
             $medicine_array = [];
             $found = false;
-            foreach($medicines as $medicine){
-                if($medicine->medicine_id==$medicine_id){
-                    $found = true;
-                    $medicine->unit = $unit;
+            if(!empty($medicines)){
+                foreach($medicines as $medicine){
+                    if($medicine->medicine_id==$medicine_id){
+                        $found = true;
+                        $medicine->unit = $unit;
+                    }
+                    array_push($medicine_array,$medicine);
                 }
-                array_push($medicine_array,$medicine);
             }
             if($found)
                 \App\recipe::where('id',$recipe->id)->first()->update([
@@ -1017,13 +1021,15 @@ if (!function_exists('getMedicineJSON')) {
     {
             $medicines = json_decode($strMedicine);
             $medicinesForArray = [];
-            foreach($medicines as $medicine){
-                $tempMedicine = \App\medicine::where('id',$medicine->medicine_id)->first();
-                $medicine->price = $tempMedicine->price;
-                $medicine->max_weight =  $tempMedicine->max_weight;
-                $medicine->min_weight =  $tempMedicine->min_weight;
-                $medicine->unit =  $tempMedicine->unit;
-                array_push($medicinesForArray,$medicine);
+            if(!empty($medicines)){
+                foreach($medicines as $medicine){
+                    $tempMedicine = \App\medicine::where('id',$medicine->medicine_id)->first();
+                    $medicine->price = $tempMedicine->price;
+                    $medicine->max_weight =  $tempMedicine->max_weight;
+                    $medicine->min_weight =  $tempMedicine->min_weight;
+                    $medicine->unit =  $tempMedicine->unit;
+                    array_push($medicinesForArray,$medicine);
+                }
             }
 
             return json_encode($medicinesForArray);
