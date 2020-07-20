@@ -1102,7 +1102,7 @@ function getMaizhengCheckValue(type){
     var elements = document.getElementsByClassName(type);
     for(var i = 0 ; elements[i];i++){
         if(elements[i].checked){
-            str += elements[i].value + ',';
+            str += elements[i].value.replace(",","，") + ',';
         }
     }
     if(str.length>1)
