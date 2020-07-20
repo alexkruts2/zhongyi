@@ -61,6 +61,12 @@
                                 <textarea class="form-control" type="text" name='other_condition' id="other_recipe" placeholder="按摩，抓药" data-parsley-required>{{$recipe->other_condition}}</textarea>
                             </div>
                         </div>
+                        <div class="form-group mt-3 row">
+                            <label for="example-text-input" class="col-2 col-form-label text-right">脉证</label>
+                            <div class="col-10">
+                                <textarea class="form-control" type="text" value="" name='maizheng' id="maizheng" placeholder="脉证" >{{$recipe->maizheng}}</textarea>
+                            </div>
+                        </div>
 
                         <div class="form-group mt-3 row">
                             <label for="example-text-input" class="col-2 col-form-label text-right">煎服法</label>

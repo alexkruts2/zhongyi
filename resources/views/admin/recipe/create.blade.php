@@ -67,6 +67,12 @@
                             </div>
                         </div>
                         <div class="form-group mt-3 row">
+                            <label for="example-text-input" class="col-2 col-form-label text-right">脉证</label>
+                            <div class="col-10">
+                                <textarea class="form-control" type="text" value="" name='maizheng' id="maizheng" placeholder="脉证" ></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group mt-3 row">
                             <label for="example-text-input" class="col-2 col-form-label text-right">煎服法</label>
                             <div class="col-10">
                                 <textarea class="form-control" type="text" value="" name='eating_method' id="eating_method" placeholder="上五昧，㕮咀三味" ></textarea>

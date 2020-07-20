@@ -321,6 +321,8 @@ class HomeController extends Controller
         $prescription_name = $request->get('prescription_name');
         $eating_method = $request->get('eating_method');
         $recipe_price = $request->get('recipe-price');
+        $maizheng = $request->get('maizheng');
+
         $ban = $request->get('ban');
 
         $str_conditions = implode(', ', $conditions);
@@ -337,6 +339,7 @@ class HomeController extends Controller
                 "max_weight" => $max_weight,
                 "unit" => $medicine->unit,
                 "option" => $medicine->option,
+                "maizheng" => $maizheng,
                 "price"=>$price
             );
             array_push($medicines,$item);
@@ -456,6 +459,7 @@ class HomeController extends Controller
         $prices = $request->get("price");
         $prescription_name = $request->get('prescription_name');
         $recipe_price = $request->get('recipe-price');
+        $maizheng = $request->get('maizheng');
 
         $eating_method = $request->get('eating_method');
         $ban = $request->get('ban');
@@ -490,6 +494,7 @@ class HomeController extends Controller
             'eating_method' => $eating_method,
             'ban' => $ban,
             'price' => $recipe_price,
+            "maizheng" => $maizheng,
             'flag' => 'NORMAL'
         ]);
         return success([
