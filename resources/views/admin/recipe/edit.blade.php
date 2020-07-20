@@ -89,8 +89,8 @@
                             </div>
                         </div>
                         <div id="medicineSection" class="mt-3">
-
-                            @foreach ($recipe_medicines as $key=>$recipe_medicine)
+                            @if(!empty($recipe_medicines))
+                            @foreach($recipe_medicines as $key=>$recipe_medicine)
                                 <div class="row">
                                     <label class="col-2 col-form-label text-right">
                                         <button type="button" class="btn btn-default" title="删除" data-index="{{$recipe_medicine->medicine_id}}" onclick="removeMedicine(this)"><i class="fas fa-times"></i> </button>&nbsp;{{$recipe_medicine->medicine}}
@@ -114,8 +114,8 @@
 
                                     </div>
                                 </div>
-
                             @endforeach
+                            @endif
                         </div>
 
 
@@ -172,9 +172,11 @@
     <script>
         currentDiseaseNumber = {{count($conditions)}};
         document.addEventListener("DOMContentLoaded", function(){
+            @if(!empty($recipe_medicines))
             @foreach ($recipe_medicines as $key=>$recipe_medicine)
                 $('#medicine option[value="{{$recipe_medicine->medicine_id}}"]').attr("disabled",true);
             @endforeach
+            @endif
         })
     </script>
 @endsection

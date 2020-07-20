@@ -929,17 +929,18 @@ function showToolTip(spanId){
         var dbmedicines = medicine;
         for(var j=0; j<dbmedicines.length; j++){
             html+='<div class="recipe_medicine_">';
-            var min_weight =  dbmedicines[j].min_weight;
-            var max_weight =  dbmedicines[j].max_weight;
+            var min_weight =  dbmedicines[j].min_weight==undefined?"未定义":dbmedicines[j].min_weight;
+            var max_weight =  dbmedicines[j].max_weight?"未定义":dbmedicines[j].max_weight;
             var weight = dbmedicines[j].weight==undefined?0:dbmedicines[j].weight;
             if(dbmedicines[j].weight==undefined&&dbmedicines[j].min_weight==dbmedicines[j].max_weight)
                 weight = dbmedicines[j].max_weight;
-            var price = dbmedicines[j].price;
+            var price = dbmedicines[j].price==0?'未定义':dbmedicines[j].price;
             var unit = dbmedicines[j].unit;
             selectedMedicine_id = dbmedicines[j].medicine_id;
             selectedMedicine_name = dbmedicines[j].medicine;
             var unitLable = unit==null||unit==''||unit==undefined||unit=='公克'?' 元/1g':unit=='两'?' 元/两':('元/'+unit);
-            price = unit=='公克'?price/10:price;
+            if(price!='未定义')
+                price = unit=='公克'?price/10:price;
 
 
             html+="<div class=\"row\">\n" +
