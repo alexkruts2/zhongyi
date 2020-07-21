@@ -84,6 +84,7 @@ Route::group(['prefix' => 'doctor'], function () {
             Route::get('/view','Admin\HomeController@viewRecipe')->name('doctor.recipe.view');
             Route::get('/getDatas','Admin\HomeController@getRecipeDatas')->name('doctor.recipe.view');
             Route::post('/delete','Admin\HomeController@deleteRecipe')->name('doctor.recipe.delete');
+            Route::post('/deleteAll','Admin\HomeController@deleteAllRecipe')->name('doctor.recipe.deleteAll');
             Route::get('/edit/{id}','Admin\HomeController@editRecipe')->name('doctor.recipe.edit');
 
             Route::post('/uploadRecipes', 'Admin\DoctorController@uploadRecipes')->name('doctor.medicine.uploadMedicine');

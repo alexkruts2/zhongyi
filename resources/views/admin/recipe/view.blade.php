@@ -26,6 +26,7 @@
         </div>
         <div class="col-md-6 text-right">
             <button type="button" class="btn btn-info" onclick="window.location.href = '/doctor/recipe/create'" >添加</button>
+            <button type="button" class="btn btn-danger" onclick="deleteAllRecipes()" >全部删除</button>
             <button type="button" class="btn btn-success" onclick="uploadRecipes()" ><i class=" fas fa-upload"></i></button>
         </div>
     </div>
@@ -76,5 +77,4 @@
     <script src="{{ asset('static/plugin/bootstrap/dist/js/bootstrap.min.js')}}"></script>
     <script src="{{ asset('static/admin/recipe.js') }}"></script>
     <script src="{{ asset('static/plugin/sweetalert2/sweetalert2.js') }}"></script>
-
 @endsection

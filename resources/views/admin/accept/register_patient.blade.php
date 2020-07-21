@@ -187,7 +187,6 @@
     </div>
 
 
-
     <div  id="printJS-form">
         <h1 style="text-align: center">修和中医问诊</h1>
         <h3  style="text-align: center">挂号单</h3>
@@ -248,12 +247,39 @@
         <h3  style="text-align: center">前面候诊人数：<span id="man_number"></span></h3>
         <h3 style="text-align: center">请您在候诊等持候诊！</h3>
         <h3 style="text-align: center">此单就诊，单日有效，请妥善保存</h3>
-
     </div>
     <style>
+        #printJS-form {
+            width: 120mm;
+            min-height: 140mm;
+            padding: 20mm;
+            margin: 10mm auto;
+            border: 1px #D3D3D3 solid;
+            border-radius: 5px;
+            background: white;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
         @media print {
-            @page{
-                size: 140mm 120mm;
+            @page {
+                size: 120mm 140mm; /* landscape */
+                /* you can also specify margins here: */
+                margin: 25mm;
+                margin-right: 45mm; /* for compatibility with both A4 and Letter */
+            }
+            html, body {
+                width: 120mm;
+                height: 140mm;
+            }
+            #printJS-form {
+                margin: 0;
+                border: initial;
+                border-radius: initial;
+                width: initial;
+                min-height: initial;
+                box-shadow: initial;
+                background: initial;
+                page-break-after: always;
             }
         }
     </style>

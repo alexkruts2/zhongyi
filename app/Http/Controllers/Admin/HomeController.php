@@ -424,6 +424,12 @@ class HomeController extends Controller
         ]);
         return success();
     }
+    public function deleteAllRecipe(Request $request){
+//        $recipe = recipe::where("id",$request->get('id'));
+        recipe::truncate();
+
+        return success();
+    }
     public function editRecipe($id){
 
         $recipe = recipe::where("id",$id)->first();

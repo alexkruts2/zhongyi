@@ -321,3 +321,58 @@ function drawTable() {
             ]
         });
 }
+function deleteAllRecipes() {
+    Swal.fire({
+        title: "你确定要删除全部药房吗?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        showLoaderOnConfirm: true,
+        closeOnConfirm: true,
+        closeOnCancel: true
+    }).then(result => {
+        if (result.value) {
+            showOverlay();
+            $.ajax({
+                url: '/doctor/recipe/deleteAll',
+                cache: false,
+                dataType: 'json',
+                processData: false,
+                type: 'POST',
+                success: function (resp) {
+                    hideOverlay();
+                    if (resp.code == '0') {
+                        Swal.fire({
+                            type: 'success',
+                            text: '',
+                            title: '删除成功',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        window.location.reload();
+                    } else {
+                        Swal.fire({
+                            type: 'error',
+                            text: resp.message,
+                            title: '错误',
+                            showConfirmButton: false,
+                            timer: 3000
+                        });
+                    }
+                },
+                error: function (e) {
+                    hideOverlay();
+                    Swal.fire({
+                        type: 'error',
+                        text: 'Internal Error ' + e.status + ' - ' + e.responseJSON.message,
+                        title: '错误',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+                }
+            });
+        }
+    });
+}
