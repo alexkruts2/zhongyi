@@ -908,7 +908,7 @@ class HomeController extends Controller
         ]);
         $recipes = $request->get("recipes");
         $arr_recipes = explode (",", $recipes);
-        $recipes = recipe::select('id','medicine','prescription_name','other_condition','eating_method','ban','price')->whereIn('id',$arr_recipes)->get();
+        $recipes = recipe::select('id','medicine','prescription_name','other_condition','eating_method','ban','price','maizheng')->whereIn('id',$arr_recipes)->get();
         $result = [];
         foreach($recipes as $recipe){
             $recipe->medicine = getMedicineJSON($recipe->medicine);

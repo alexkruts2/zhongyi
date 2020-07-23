@@ -96,8 +96,8 @@ class DoctorController extends Controller{
                             "medicine" => $medicine_name,
                             "unit" => $unit,
                             'option' => $each['option'],
-                            'min' => $min_weight,
-                            'max' => $max_weight,
+                            'min_weight' => $min_weight,
+                            'max_weigth' => $max_weight,
                             "weight" => $each['weight'],
                             'price' => $price
                         );

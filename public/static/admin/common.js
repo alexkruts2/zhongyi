@@ -363,8 +363,9 @@ function drawMedicine(data,inquiry=false,appendable,inquiry_detail=false) {
             var min_weight =  dbmedicines[j].min_weight;
             var max_weight =  dbmedicines[j].max_weight;
             var weight = dbmedicines[j].weight==undefined?0:dbmedicines[j].weight;
-            if(dbmedicines[j].weight==undefined&&dbmedicines[j].min_weight==dbmedicines[j].max_weight)
-                weight = dbmedicines[j].max_weight;
+            var plusWeight = dbmedicines[j].plusWeight==undefined?0:dbmedicines[j].plusWeight;
+            // if(dbmedicines[j].weight==undefined&&dbmedicines[j].min_weight==dbmedicines[j].max_weight)
+            //     weight = dbmedicines[j].max_weight;
             var price = dbmedicines[j].price;
             var unit = dbmedicines[j].unit;
             selectedMedicine_id = dbmedicines[j].medicine_id;
@@ -377,7 +378,7 @@ function drawMedicine(data,inquiry=false,appendable,inquiry_detail=false) {
             if(data[i].shifouhefang!=true){
                 if(!empty(min_weight)&&min_weight!=0){
                     maxMin += " min='"+min_weight+"' ";
-                    maxMinLabel +="最小：" +min_weight;
+                    maxMinLabel +="最小：" +min_weight+",&nbsp;&nbsp;";
 
                 }
 
@@ -400,7 +401,7 @@ function drawMedicine(data,inquiry=false,appendable,inquiry_detail=false) {
                 "        <button type=\"button\" class=\"btn btn-default\" data-toggle=\"tooltip\" title=\"删除\" data-index=\""+selectedMedicine_id+"\" onclick=\"removeMedicineQA('" + data[i].id + "', this,"+inquiry+","+appendable+");\"><i class=\"fas fa-times\"></i> </button> &nbsp;"+selectedMedicine_name+
                 "<input type='hidden' name='medicine_id[]' value='"+selectedMedicine_id+"' /><input type='hidden' name='medicine_name[]' value='"+selectedMedicine_name+"' /></label>\n" +
                 "    <div class=\"col-2\">\n" +
-                "        <input class=\"form-control\" type=\"number\" value=\""+weight+"\" "+maxMin+" name=\"weight[]\" onchange='setWeight(\"" + data[i].id + "\",this,"+dbmedicines[j].medicine_id+","+inquiry+","+appendable+")'  id=\"weight"+data[i].id+'_'+selectedMedicine_id+"\" " + disabled + " >\n" +
+                "        <input class=\"form-control\" type=\"number\" value=\""+(weight*1+plusWeight*1)+"\" "+maxMin+" name=\"weight[]\" onchange='setWeight(\"" + data[i].id + "\",this,"+dbmedicines[j].medicine_id+","+inquiry+","+appendable+")'  id=\"weight"+data[i].id+'_'+selectedMedicine_id+"\" " + disabled + " >\n" +
                 "    </div>\n" +
                 "<div class=\"col-6 text-left\">\n" +
                 "    <label id=\"price_"+selectedMedicine_id+"\" style=\"line-height: 38px;\">"+price+" "+unitLable+maxMinLabel+" </label><input type='hidden' name='price[]' value='"+price+"' /> \n" +
@@ -438,13 +439,22 @@ function drawMedicine(data,inquiry=false,appendable,inquiry_detail=false) {
         // if(inquiry==true){
             otherHtml = '<div class="row mt-3">\n' +
                 '   <div class="col-sm-1"></div> \n' +
-                '   <label class="col-2 col-form-label text-right mt-3">其他病症</label>\n' +
+                '   <label class="col-2 col-form-label text-right mt-3">方证</label>\n' +
                 '    <div class="col-7">\n' +
                 '        <textarea class="form-control" type="text" disabled rows="3">'+data[i].other_condition+'</textarea>\n' +
                 '    </div>\n' +
                 '</div>' ;
             html+=otherHtml;
-            eatingHtml = '<div class="row mt-3">\n' +
+
+        maizhengHtml ='<div class="row mt-3">\n' +
+            '   <div class="col-sm-1"></div> \n' +
+            '   <label class="col-2 col-form-label text-right mt-3">脉证、病症</label>\n' +
+            '    <div class="col-7">\n' +
+            '        <textarea class="form-control" type="text" disabled rows="3">'+data[i].maizheng+'</textarea>\n' +
+            '    </div>\n' +
+            '</div>' ;
+            html+=maizhengHtml;
+        eatingHtml = '<div class="row mt-3">\n' +
                 '   <div class="col-sm-1"></div> \n' +
                 '   <label class="col-2 col-form-label text-right mt-3">煎服法</label>\n' +
                 '    <div class="col-7">\n' +
@@ -470,15 +480,24 @@ function drawMedicine(data,inquiry=false,appendable,inquiry_detail=false) {
             '<div class="col-sm-2"><input type="number" onchange="changeDaiNumber(this)" name="daiNumber_'+data[i].id+'" id="daiNumber_'+data[i].id+'" class="form-control" '+disabled+' min="1" value="' + (data[i].daiNumber==undefined||data[i].daiNumber==null||data[i].daiNumber<1?1:data[i].daiNumber) + '" /></div>' +
             '<div class="col-sm-2 col-form-label p-l-0"><label style="line-height: 25px;">代</label></div></div>';
         html += '<div class="row"><div class="col-sm-3 p-r-0 text-right col-form-label">总价</div> ' +
-            '<div class="col-sm-2"><input type="text" disabled name="totalPrice_'+data[i].id+'" id="totalPrice_'+data[i].id+'" class="form-control" value="' + data[i].price + '" /><label></label></div>' +
+            '<div class="col-sm-2"><input type="text" disabled name="totalPrice_'+data[i].id+'" id="totalPrice_'+data[i].id+'" class="form-control" value="' + (data[i].price+(data[i].plusPrice==undefined?0:data[i].plusPrice))+ '" /><label></label></div>' +
             '</div>';
     }
     $("#medicineSection").html(html);
 }
-function calcPrice(strMedicines) {
+function calcRecipeItemPrice(recipeItem) {
+
+    if(recipeItem==undefined||recipeItem==''||recipeItem==null)
+        return 0;
+    if(recipeItem=='hefang')
+        return 0;
+    recipeItem.plusPrice = calcPlusPrice(recipeItem.medicine);
+    // recipeItem.plusPrice = calcPlusPrice(recipeItem.medicines);
+}
+
+function calcPlusPrice(strMedicines) {
     if(strMedicines==undefined||strMedicines==''||strMedicines==null)
         return 0;
-
     if(strMedicines=='hefang')
         return 0;
     var totalPrice = 0;
@@ -486,10 +505,25 @@ function calcPrice(strMedicines) {
     for(var i = 0 ; i < tempMedicines.length; i++){
         unit = tempMedicines[i].unit;
         amount_per_unit = unit=="null"||unit==null||unit==''||unit==undefined||unit=='公克' ? 10 : 1;
-        totalPrice += tempMedicines[i].weight*tempMedicines[i].price/amount_per_unit;
+        totalPrice += (tempMedicines[i].plusWeight<0?0:tempMedicines[i].plusWeight)*tempMedicines[i].price/amount_per_unit;
     }
     return totalPrice;
 }
+function calcMedicinePrice(strMedicines) {
+    if(strMedicines==undefined||strMedicines==''||strMedicines==null)
+        return 0;
+    if(strMedicines=='hefang')
+        return 0;
+    var totalPrice = 0;
+    var tempMedicines = JSON.parse(strMedicines);
+    for(var i = 0 ; i < tempMedicines.length; i++){
+        unit = tempMedicines[i].unit;
+        amount_per_unit = unit=="null"||unit==null||unit==''||unit==undefined||unit=='公克' ? 10 : 1;
+        totalPrice += (tempMedicines[i].weight==undefined?0:tempMedicines[i].weight)*tempMedicines[i].price/amount_per_unit;
+    }
+    return totalPrice;
+}
+
 function drawRecipeSections(recipes,inquiry) {
     var temp = medicines;
     if(recipes==''||recipes==null||recipes==undefined){
@@ -562,10 +596,13 @@ function getDrawData(orginalRecipes,newRecipes){
                     if(tempMedicine[j].weight==undefined&&tempMedicine[j].min_weight==tempMedicine[j].max_weight)
                         weight = tempMedicine[j].max_weight;
                     tempMedicine[j].weight = weight;
+                    tempMedicine[j].plusWeight = 0;
                 }
                 newRecipes[i].medicine = JSON.stringify(tempMedicine);
                 if(empty(newRecipes[i].price))
-                    newRecipes[i].price = calcPrice(newRecipes[i].medicine);
+                    newRecipes[i].price = calcMedicinePrice(newRecipes[i].medicine);
+                if(empty(newRecipes[i].plusPrice))
+                    newRecipes[i].plusPrice = 0;
                 if(orginalRecipes.length>0){
                     if(orginalRecipes[orginalRecipes.length-1].id=='hefang'){
                         temp = orginalRecipes[orginalRecipes.length-1];
@@ -607,12 +644,14 @@ function setWeight(recipe_id,obj,medicine_id,inquiry,appendable) {
             tempMedicines = JSON.parse(recipeDatas[i].medicine);
             for(var j=0; j<tempMedicines.length;j++){
                 if(tempMedicines[j].medicine_id==medicine_id){
-                    tempMedicines[j].weight = weight;
+                    // tempMedicines[j].weight = weight;
+                    tempMedicines[j].plusWeight = weight - tempMedicines[j].weight;
                     break;
                 }
             }
             recipeDatas[i].medicine = JSON.stringify(tempMedicines);
-            recipeDatas[i].price = calcPrice(recipeDatas[i].medicine);
+            // recipeDatas[i].price = calcPrice(recipeDatas[i].medicine);
+            calcRecipeItemPrice(recipeDatas[i]);
             break;
         }
     }
@@ -711,9 +750,7 @@ function addMedicineInModal(inquiry) {
                 console.log($target.val());//Will alert the value of the option
             }
         });
-
     });
-
 }
 
 function calcPriceTotal(){
@@ -723,9 +760,9 @@ function calcPriceTotal(){
         var fuNumber = recipeDatas[i].fuNumber!=undefined&&recipeDatas[i].fuNumber!=null&&recipeDatas[i].fuNumber!=''?recipeDatas[i].fuNumber:1;
         if(recipeDatas[i].shifouhefang!=true){
             if(empty(recipeDatas[i].price))
-                totalPrice += calcPrice(recipeDatas[i].medicine)*fuNumber;
+                totalPrice += (calcMedicinePrice(recipeDatas[i].medicine)*1+calcPlusPrice(recipeDatas[i].medicine)*1)*fuNumber;
             else
-                totalPrice +=recipeDatas[i].price*1.0;
+                totalPrice +=(recipeDatas[i].price*1.0+recipeDatas[i].plusPrice*1);
 
         }
 
@@ -748,13 +785,15 @@ function removeMedicineQA(recipeId, obj,inquiry,appendable) {
                 }
             }
             recipeDatas[i].medicine = JSON.stringify(medicine_temp);
-            recipeDatas[i].price = calcPrice(recipeDatas[i].medicine);
+            recipeDatas[i].price = calcRecipeItemPrice(recipeDatas[i]);
             break;
         }
     }
     drawMedicine(recipeDatas,inquiry,appendable);
     $("#medicines").val(JSON.stringify(recipeDatas));
-    calcPrice(recipeId);
+    // calcPrice(recipeId);
+
+
     calcPriceTotal();
 }
 function searchRecipes(callback=null){
