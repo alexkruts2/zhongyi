@@ -763,16 +763,13 @@ function calcPriceTotal(){
                 totalPrice += (calcMedicinePrice(recipeDatas[i].medicine)*1+calcPlusPrice(recipeDatas[i].medicine)*1)*fuNumber;
             else
                 totalPrice +=(recipeDatas[i].price*1.0+recipeDatas[i].plusPrice*1);
-
         }
-
     }
     $("#total_price").val(totalPrice);
     $("#total_price_span").html(totalPrice);
 }
 function removeMedicineQA(recipeId, obj,inquiry,appendable) {
     var id = $(obj).data("index");
-
     var strMedicines = $("#medicines").val();
     recipeDatas = JSON.parse(strMedicines);
     for(var i = 0 ; i < recipeDatas.length;i++){
@@ -1061,6 +1058,9 @@ function getHefang() {
     var strMedicins = $("#medicines").val();
     var recipeDatas = JSON.parse(strMedicins);
     var recipeIds = '';
+    var maizheng = '';
+    var price = 0;
+    var hefangNumber = 0;
     for(var i = 0 ; i < recipeDatas.length; i++){
         recipeIds +=recipeDatas[i].id+',';
         if(recipeDatas[i].shifouhefang==true){
@@ -1069,6 +1069,9 @@ function getHefang() {
             otherCondition += recipeDatas[i].other_condition==null?'':recipeDatas[i].other_condition+"\n";
             eatting_method += recipeDatas[i].eating_method==null?'':recipeDatas[i].eating_method + "\n";
             ban += recipeDatas[i].ban==null?'':recipeDatas[i].ban + "\n";
+            maizheng += ((recipeDatas[i].maizheng==null||recipeDatas[i].maizheng==undefined)?'':recipeDatas[i].maizheng);
+            price += recipeDatas[i].price*1;
+            hefangNumber ++;
         }
     }
     if(temp.length<1){
@@ -1082,12 +1085,27 @@ function getHefang() {
     }
     recipeIds = recipeIds.replace(/,\s*$/, "");
 
+    switch (hefangNumber) {
+        case 1:
+            price = price;
+            break;
+        case 2:
+            price = price * 0.9;
+            break;
+        case 3:
+            price = price * 0.8;
+            break;
+        default:
+            price = price * 0.7;
+            break;
+    }
     for(var i=0; i < temp.length; i++) {
         for (var j = 0; j < hefangMedicines.length; j++) {
             if (hefangMedicines[j].medicine_id == temp[i].medicine_id) {
                 hefangMedicines[j].max_weight = hefangMedicines[j].max_weight > temp[i].max_weight ? hefangMedicines[j].max_weight : temp[i].max_weight;
                 hefangMedicines[j].min_weight = hefangMedicines[j].min_weight < temp[i].min_weight ? hefangMedicines[j].min_weight : temp[i].min_weight;
                 hefangMedicines[j].weight = hefangMedicines[j].weight > temp[i].weight ? hefangMedicines[j].weight : temp[i].weight;
+                hefangMedicines[j].plusWeight = 0;
                 break;
             }
         }
@@ -1103,9 +1121,11 @@ function getHefang() {
         eating_method:eatting_method,
         medicine:strHefangMedicines,
         other_condition:otherCondition,
-        price:calcPrice(strHefangMedicines),
+        maizheng:maizheng,
+        price:price,
         daiNumber:1
-    }
+    };
+    calcRecipeItemPrice(hefangRecipe);
     for(var i = 0 ; i < recipeDatas.length; i++){
         if(recipeDatas[i].id=='hefang'){
             recipeDatas[i] = hefangRecipe;
